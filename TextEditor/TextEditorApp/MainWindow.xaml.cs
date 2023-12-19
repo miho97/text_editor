@@ -26,11 +26,12 @@ namespace TextEditorApp
             InitializeComponent();
         }
 
-        public void NewFile_Click(object sender, RoutedEventArgs e)
+        private void NewFile_Click(object sender, RoutedEventArgs e)
         {
 
             TabItem newTab = new TabItem();
-            newTab.Header = "File " + (++fileCount);
+            newTab.Header = "Untitled" + (++fileCount) + ".txt";
+            newTab.PreviewMouseRightButtonDown += TabItem_PreviewMouseRightButtonDown;
 
             DockPanel panel = new DockPanel();
 
@@ -50,6 +51,15 @@ namespace TextEditorApp
             MainTabControl.Items.Add(newTab);
 
             MainTabControl.SelectedItem = newTab;
+        }
+
+        private void TabItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TabItem tabItem && e.RightButton == MouseButtonState.Pressed)
+            {
+                MainTabControl.Items.Remove(tabItem);
+                fileCount--;
+            }
         }
     }
 }

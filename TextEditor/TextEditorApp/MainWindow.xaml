@@ -33,12 +33,13 @@
 
         <DockPanel>
             <TabControl x:Name="MainTabControl">
-                <TabItem Header="File 1">
+                <TabItem Header="File 1" PreviewMouseRightButtonDown="TabItem_PreviewMouseRightButtonDown">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Bottom">Status bar for File 1</TextBlock>
                         <TextBox VerticalScrollBarVisibility="Visible"/>
                     </DockPanel>
                 </TabItem>
+                
             </TabControl>
         </DockPanel>
     </DockPanel>
