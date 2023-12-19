@@ -1,0 +1,38 @@
+# Binaries
+Debug/
+Release/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.suo
+*.sdf
+
+# Visual Studio files
+.vscode/
+.vs2022/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.suo
+*.sdf
+*.opensdf
+*.dbmdl
+*.log
+*.sqlite
+*.sqlite3
+*.sdb
+*.opendb
+bin/
+obj/
+
+
+
+
+
+
+
+
