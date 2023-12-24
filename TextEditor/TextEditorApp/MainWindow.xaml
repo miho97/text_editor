@@ -29,6 +29,12 @@
                     <RibbonButton Label="About" />
                 </RibbonGroup>
             </RibbonTab>
+
+            <RibbonTab Header="Settings">
+                <RibbonGroup Header="Settings">
+                    <RibbonButton Label="About settings" />
+                </RibbonGroup>
+            </RibbonTab>
         </Ribbon>
 
         <DockPanel>
@@ -36,7 +42,7 @@
                 <TabItem Header="File 1" PreviewMouseRightButtonDown="TabItem_PreviewMouseRightButtonDown">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Bottom">Status bar for File 1</TextBlock>
-                        <TextBox VerticalScrollBarVisibility="Visible"/>
+                        <TextBox VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True"/>
                     </DockPanel>
                 </TabItem>
                 

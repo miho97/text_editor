@@ -40,7 +40,10 @@ namespace TextEditorApp
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
             TextBox textBox = new TextBox();
+            textBox.IsReadOnly = false;
             textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            textBox.AcceptsReturn = true;
+            textBox.AcceptsTab = true;
             DockPanel.SetDock(textBox, Dock.Top);
 
             panel.Children.Add(statusBar);
@@ -51,6 +54,8 @@ namespace TextEditorApp
             MainTabControl.Items.Add(newTab);
 
             MainTabControl.SelectedItem = newTab;
+
+            textBox.Focus();
         }
 
         private void TabItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
