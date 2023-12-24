@@ -29,6 +29,8 @@ namespace TextEditorApp
         private void NewFile_Click(object sender, RoutedEventArgs e)
         {
 
+            // objekt newTab pri svakom raisenjau Preview....  poziva TabItem... funkciju
+            // += jer nadodajemo na listu evenata, subscribera moze biti vise
             TabItem newTab = new TabItem();
             newTab.Header = "Untitled" + (++fileCount) + ".txt";
             newTab.PreviewMouseRightButtonDown += TabItem_PreviewMouseRightButtonDown;

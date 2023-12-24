@@ -7,36 +7,49 @@
         mc:Ignorable="d"
         Title="TextEditor" Height="450" Width="800">
     <DockPanel Margin="1">
-        <Ribbon DockPanel.Dock="Top" >
+        <Ribbon DockPanel.Dock="Top" Height="48">
+            <!-- Application Menu -->
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu KeyTip="F" >
+                <RibbonApplicationMenu KeyTip="F">
                     <RibbonApplicationMenuItem Header="New" Click="NewFile_Click"/>
-                    <RibbonApplicationMenuItem Header="Open" />
-                    <RibbonApplicationMenuItem Header="Save" />
-                    <RibbonApplicationMenuItem Header="Save As..." />
+                    <RibbonApplicationMenuItem Header="Open"/>
+                    <RibbonApplicationMenuItem Header="Save"/>
+                    <RibbonApplicationMenuItem Header="Save As..."/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
-            <RibbonTab Header="Format">
-                <RibbonGroup Header="Format">
-                    <RibbonButton Label="Format" />
-                    <RibbonButton Label="Word wrap" />
-                </RibbonGroup>
-            </RibbonTab>
+            <!-- Format Options -->
+            <RibbonMenuButton Label="Format">
+                <RibbonMenuItem Header="Font"/>
+                <RibbonMenuItem Header="Paragraph"/>
+                <RibbonMenuItem Header="Color"/>
+                <!-- More format options -->
+            </RibbonMenuButton>
 
-            <RibbonTab Header="Help">
-                <RibbonGroup Header="Help">
-                    <RibbonButton Label="About" />
-                </RibbonGroup>
-            </RibbonTab>
+            <!-- Settings -->
+            <RibbonMenuButton Label="Settings">
+                <RibbonMenuItem Header="Edit Preferences"/>
+                <RibbonMenuItem Header="Theme Settings"/>
+                <RibbonMenuItem Header="Language"/>
+                <!-- More settings options -->
+            </RibbonMenuButton>
 
-            <RibbonTab Header="Settings">
-                <RibbonGroup Header="Settings">
-                    <RibbonButton Label="About settings" />
-                </RibbonGroup>
-            </RibbonTab>
+            <!-- C# Highlighting -->
+            <RibbonMenuButton Label="C_sharp_Highlighting">
+                <RibbonMenuItem Header="Enable Highlighting"/>
+                <RibbonMenuItem Header="Disable Highlighting"/>
+                <!-- Additional options for C# highlighting -->
+            </RibbonMenuButton>
+
+            <!-- Find & Replace -->
+            <RibbonMenuButton Label="Find_Replace">
+                <RibbonMenuItem Header="Find"/>
+                <RibbonMenuItem Header="Replace"/>
+                <!-- Additional options for Find & Replace -->
+            </RibbonMenuButton>
         </Ribbon>
 
+        <!-- Main Content Area -->
         <DockPanel>
             <TabControl x:Name="MainTabControl">
                 <TabItem Header="File 1" PreviewMouseRightButtonDown="TabItem_PreviewMouseRightButtonDown">
@@ -45,7 +58,7 @@
                         <TextBox VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True"/>
                     </DockPanel>
                 </TabItem>
-                
+                <!-- Additional TabItems can be added here -->
             </TabControl>
         </DockPanel>
     </DockPanel>
