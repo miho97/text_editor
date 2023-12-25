@@ -21,9 +21,24 @@
 
             <!-- Format Options -->
             <RibbonMenuButton Label="Format">
-                <RibbonMenuItem Header="Font"/>
-                <RibbonMenuItem Header="Paragraph"/>
-                <RibbonMenuItem Header="Color"/>
+                <RibbonMenuButton Label="Font">
+                    <RibbonMenuItem Header="Consolas" Click="Consolas_click"/>
+                    <RibbonMenuItem Header="Courier new" Click="Courier_new_click"/>
+                    <RibbonMenuItem Header="Roboto mono" Click="Roboto_mono_click"/>
+                </RibbonMenuButton>
+                <RibbonMenuButton Label="Font size">
+                    <RibbonMenuButton Label ="Change font size">
+                        <RibbonMenuItem Header="size 12" Click="Font12_click"/>
+                        <RibbonMenuItem Header="size 16" Click="Font16_click"/>
+                        <RibbonMenuItem Header="size 20" Click="Font20_click"/>
+
+                    </RibbonMenuButton >
+                </RibbonMenuButton>
+                <!-- Popup for changing font size -->
+                <!--Popup x:Name="FontSizePopup" Placement="MousePoint" StaysOpen="False"-->
+                    <!--TextBox x:Name="FontSizeInput" Width="50" KeyDown="FontSizeInput_KeyDown"/-->
+                <!--/Popup-->
+                <RibbonMenuItem Header="Read-only mode"/>
                 <!-- More format options -->
             </RibbonMenuButton>
 
@@ -38,7 +53,7 @@
             <!-- C# Highlighting -->
             <RibbonMenuButton Label="C# sharp Highlighting">
                 <RibbonMenuItem Header="Enable Highlighting" Click="EnableHighlighting_click"/>
-                <RibbonMenuItem Header="Disable Highlighting"/>
+                <RibbonMenuItem Header="Disable Highlighting" Click="DisableHighlighting_click"/>
                 <!-- Additional options for C# highlighting -->
             </RibbonMenuButton>
 
