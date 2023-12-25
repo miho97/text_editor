@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Highlighting;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TextEditorApp
@@ -31,8 +32,8 @@ namespace TextEditorApp
         private void NewFile_Click(object sender, RoutedEventArgs e)
         {
 
-            // objekt newTab pri svakom raisenjau Preview....  poziva TabItem... funkciju
-            // += jer nadodajemo na listu evenata, subscribera moze biti vise
+            // tabItem function called on every raise of event Preview...
+            // += for possible list of events
             TabItem newTab = new TabItem();
             newTab.Header = "Untitled" + (++fileCount) + ".txt";
             newTab.PreviewMouseRightButtonDown += TabItem_PreviewMouseRightButtonDown;
@@ -43,13 +44,15 @@ namespace TextEditorApp
             statusBar.Text = "Status bar for " + newTab.Header;
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
-            TextEditor text_editor = new TextEditor();
-            text_editor.IsReadOnly = false;
-            text_editor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-            DockPanel.SetDock(text_editor, Dock.Top);
+            var textEditor = new TextEditor();
+            textEditor.IsReadOnly = false;
+            textEditor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            textEditor.ShowLineNumbers = true;
+            //textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            DockPanel.SetDock(textEditor, Dock.Top);
 
             panel.Children.Add(statusBar);
-            panel.Children.Add(text_editor);
+            panel.Children.Add(textEditor);
 
             newTab.Content = panel;
 
@@ -57,7 +60,7 @@ namespace TextEditorApp
 
             MainTabControl.SelectedItem = newTab;
 
-            text_editor.Focus();
+            textEditor.Focus();
         }
 
         private void TabItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -71,8 +74,14 @@ namespace TextEditorApp
 
         private void EnableHighlighting_click(object sender, RoutedEventArgs e)
         {
-            textEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition("C#");
-
+            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            {
+                var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                if( textEditor != null)
+                {
+                    textEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition("C#");
+                }
+            }
         }
     }
 }
