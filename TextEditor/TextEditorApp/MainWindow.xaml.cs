@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -131,6 +132,40 @@ namespace TextEditorApp
                 }
             }
         }
+        private void SaveFile_click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog()
+            {
+                Filter = "All files|*.*",
+                DefaultExt = ".txt"
+            };
+
+            if ( saveFileDialog.ShowDialog() == true)
+            {
+                var filename = saveFileDialog.FileName;
+                SaveContentToFile(filename);
+            }
+        }
+        private void SaveContentToFile(string filename)
+        {
+            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            {
+                var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                if (textEditor != null)
+                {
+                    try
+                    {
+                        File.WriteAllText(filename, textEditor.Text);
+
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show($"Error in saving file");
+                    }
+                }
+            }
+        }
+
         private void ApplyFontSize(int fontSize)
         {
             if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)

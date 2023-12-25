@@ -14,7 +14,7 @@
                 <RibbonApplicationMenu KeyTip="F">
                     <RibbonApplicationMenuItem Header="New" Click="NewFile_Click"/>
                     <RibbonApplicationMenuItem Header="Open"/>
-                    <RibbonApplicationMenuItem Header="Save"/>
+                    <RibbonApplicationMenuItem Header="Save" Click="SaveFile_click"/>
                     <RibbonApplicationMenuItem Header="Save As..."/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
