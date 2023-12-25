@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ICSharpCode.AvalonEdit;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TextEditorApp
 {
@@ -41,15 +43,13 @@ namespace TextEditorApp
             statusBar.Text = "Status bar for " + newTab.Header;
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
-            TextBox textBox = new TextBox();
-            textBox.IsReadOnly = false;
-            textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-            textBox.AcceptsReturn = true;
-            textBox.AcceptsTab = true;
-            DockPanel.SetDock(textBox, Dock.Top);
+            TextEditor text_editor = new TextEditor();
+            text_editor.IsReadOnly = false;
+            text_editor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            DockPanel.SetDock(text_editor, Dock.Top);
 
             panel.Children.Add(statusBar);
-            panel.Children.Add(textBox);
+            panel.Children.Add(text_editor);
 
             newTab.Content = panel;
 
@@ -57,7 +57,7 @@ namespace TextEditorApp
 
             MainTabControl.SelectedItem = newTab;
 
-            textBox.Focus();
+            text_editor.Focus();
         }
 
         private void TabItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -67,6 +67,12 @@ namespace TextEditorApp
                 MainTabControl.Items.Remove(tabItem);
                 fileCount--;
             }
+        }
+
+        private void EnableHighlighting_click(object sender, RoutedEventArgs e)
+        {
+            textEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition("C#");
+
         }
     }
 }

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         xmlns:local="clr-namespace:TextEditorApp"
         mc:Ignorable="d"
         Title="TextEditor" Height="450" Width="800">
@@ -35,14 +36,14 @@
             </RibbonMenuButton>
 
             <!-- C# Highlighting -->
-            <RibbonMenuButton Label="C_sharp_Highlighting">
-                <RibbonMenuItem Header="Enable Highlighting"/>
+            <RibbonMenuButton Label="C# sharp Highlighting">
+                <RibbonMenuItem Header="Enable Highlighting" Click="EnableHighlighting_click"/>
                 <RibbonMenuItem Header="Disable Highlighting"/>
                 <!-- Additional options for C# highlighting -->
             </RibbonMenuButton>
 
             <!-- Find & Replace -->
-            <RibbonMenuButton Label="Find_Replace">
+            <RibbonMenuButton Label="Find Replace">
                 <RibbonMenuItem Header="Find"/>
                 <RibbonMenuItem Header="Replace"/>
                 <!-- Additional options for Find & Replace -->
@@ -55,7 +56,9 @@
                 <TabItem Header="File 1" PreviewMouseRightButtonDown="TabItem_PreviewMouseRightButtonDown">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Bottom">Status bar for File 1</TextBlock>
-                        <TextBox VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True"/>
+                        <avalonEdit:TextEditor Name="textEditor" VerticalScrollBarVisibility="Visible"
+                                               ShowLineNumbers="True">
+                        </avalonEdit:TextEditor>
                     </DockPanel>
                 </TabItem>
                 <!-- Additional TabItems can be added here -->
