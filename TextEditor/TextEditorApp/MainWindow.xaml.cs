@@ -165,6 +165,36 @@ namespace TextEditorApp
                 }
             }
         }
+        private void Open_click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog();
+
+            if(openFileDialog.ShowDialog() == true)
+            {
+                var filename = openFileDialog.FileName;
+                OpenFile(filename);
+            }
+
+        }
+        private void OpenFile(string filename)
+        {
+            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            {
+                var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                if (textEditor != null)
+                {
+                    try
+                    {
+                        textEditor.Text = File.ReadAllText(filename);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error in saving file");
+                    }
+                }
+            }
+        }
 
         private void ApplyFontSize(int fontSize)
         {

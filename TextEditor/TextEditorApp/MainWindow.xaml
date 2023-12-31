@@ -13,7 +13,7 @@
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F">
                     <RibbonApplicationMenuItem Header="New" Click="NewFile_Click"/>
-                    <RibbonApplicationMenuItem Header="Open"/>
+                    <RibbonApplicationMenuItem Header="Open" Click="Open_click"/>
                     <RibbonApplicationMenuItem Header="Save" Click="SaveFile_click"/>
                     <RibbonApplicationMenuItem Header="Save As..."/>
                 </RibbonApplicationMenu>
