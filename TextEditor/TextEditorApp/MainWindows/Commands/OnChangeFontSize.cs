@@ -38,6 +38,26 @@ namespace TextEditorApp.MainWindows.Commands
                         textEditor.FontSize = fontSize;
                     }
                 }
+                return;
+            }
+            if(parameter is TextCompositionEventArgs args2 && args2.Text is string fontSizeText)
+            {
+                if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+                {
+                    var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                    if (textEditor != null)
+                    {
+                        if (int.TryParse(fontSizeText, out int fontSizeTextToInt))
+                        {
+                            textEditor.FontSize = fontSizeTextToInt;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nije moguće konvertirati string u double.");
+                        }
+                    }
+                }
+                return;
             }
         }
     }
