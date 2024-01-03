@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-        xmlns:local="clr-namespace:TextEditorApp"
+        xmlns:local="clr-namespace:TextEditorApp" 
+        xmlns:i1="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic"
         mc:Ignorable="d"
         Title="TextEditor" Height="450" Width="800">
     <DockPanel Margin="1">
@@ -12,10 +14,10 @@
             <!-- Application Menu -->
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F">
-                    <RibbonApplicationMenuItem Header="New" Click="NewFile_Click"/>
-                    <RibbonApplicationMenuItem Header="Open" Click="Open_click"/>
-                    <RibbonApplicationMenuItem Header="Save" Click="SaveFile_click"/>
-                    <RibbonApplicationMenuItem Header="Save As..."/>
+                    <RibbonApplicationMenuItem Header="New" Command="{Binding NewFileCommand}"/>
+                    <RibbonApplicationMenuItem Header="Open" Command="{Binding OpenFileCommand}"/>
+                    <RibbonApplicationMenuItem Header="Save" Command="{Binding SaveFileAsCommand}"/>
+                    <RibbonApplicationMenuItem Header="Save As..." Command="{Binding SaveFileAsCommand}"/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
@@ -52,8 +54,8 @@
 
             <!-- C# Highlighting -->
             <RibbonMenuButton Label="C# sharp Highlighting">
-                <RibbonMenuItem Header="Enable Highlighting" Click="EnableHighlighting_click"/>
-                <RibbonMenuItem Header="Disable Highlighting" Click="DisableHighlighting_click"/>
+                <RibbonMenuItem Header="Enable Highlighting" Command="{Binding OnEnableHighlighting}"/>
+                <RibbonMenuItem Header="Disable Highlighting" Command="{Binding OnDisableHighlighting}"/>
                 <!-- Additional options for C# highlighting -->
             </RibbonMenuButton>
 
@@ -67,8 +69,13 @@
 
         <!-- Main Content Area -->
         <DockPanel>
-            <TabControl x:Name="MainTabControl">
-                <TabItem Header="File 1" PreviewMouseRightButtonDown="TabItem_PreviewMouseRightButtonDown">
+            <TabControl x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}">
+                <TabItem Header="File 1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                            <i:InvokeCommandAction Command="{Binding OnRemoveTabCommand}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Bottom">Status bar for File 1</TextBlock>
                         <avalonEdit:TextEditor Name="textEditor" VerticalScrollBarVisibility="Visible"
