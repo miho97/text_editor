@@ -15,6 +15,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
     internal class MainWinViewModel : ViewModelBase
     {
         private TabControl? _MainTabControl;
+        private ComboBox? _FontSizeComboBox;
 
         private int _FileCount;
 
@@ -33,12 +34,32 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 OnPropertyChanged(nameof(_MainTabControl));
             }
         }
-        public MainWinViewModel(TabControl _MainTabControl) 
+
+        public ComboBox FontSizeComboBox
+        {
+            get { return _FontSizeComboBox; }
+            set
+            {
+                _FontSizeComboBox = value;
+                OnPropertyChanged(nameof(_FontSizeComboBox));
+            }
+        }
+        public MainWinViewModel(TabControl _MainTabControl, ComboBox _FontCombo) 
         {
             MainTabControl = _MainTabControl;
+            FontSizeComboBox = _FontCombo;
+            FontSizeComboBox.SelectionChanged += (sender, args) =>
+            {
+                OnChangeFontSize?.Execute(args);
+            };
         }
 
-        
+        public List<int> FontSizeList => new List<int> { 12, 16, 20 };
+
+
+        private ICommand? _OnChangeFontSize;
+        public ICommand OnChangeFontSize => _OnChangeFontSize ??= new OnChangeFontSize(this);
+
         private ICommand? _saveFileAsCommand;
         public ICommand SaveFileAsCommand => _saveFileAsCommand ??= new SaveFileAsCommand(this);
 

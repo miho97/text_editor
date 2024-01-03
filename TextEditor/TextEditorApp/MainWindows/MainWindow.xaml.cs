@@ -30,7 +30,7 @@ namespace TextEditorApp
         {
             InitializeComponent();
 
-            DataContext = new MainWinViewModel(MainTabControl);
+            DataContext = new MainWinViewModel(MainTabControl, FontSizeComboBox);
         }
 
        
