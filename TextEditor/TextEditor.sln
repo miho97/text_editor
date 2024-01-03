@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorApp.Dialogs", "Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorApp.Utils", "TextEditorApp.Utils\TextEditorApp.Utils.csproj", "{F0BE57D9-C06A-4328-8EEC-7C59C430AF7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEditorApp.Common", "TextEditorApp.Common\TextEditorApp.Common.csproj", "{308656AA-C377-47F8-B3B0-46B87F68EE85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorApp.Common", "TextEditorApp.Common\TextEditorApp.Common.csproj", "{308656AA-C377-47F8-B3B0-46B87F68EE85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEditorApp.Controls", "TextEditorApp.Controls\TextEditorApp.Controls.csproj", "{796A60A6-F76B-4F9E-949E-66CEBDEB65D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{308656AA-C377-47F8-B3B0-46B87F68EE85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{308656AA-C377-47F8-B3B0-46B87F68EE85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{308656AA-C377-47F8-B3B0-46B87F68EE85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{796A60A6-F76B-4F9E-949E-66CEBDEB65D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796A60A6-F76B-4F9E-949E-66CEBDEB65D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796A60A6-F76B-4F9E-949E-66CEBDEB65D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796A60A6-F76B-4F9E-949E-66CEBDEB65D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

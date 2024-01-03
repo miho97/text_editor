@@ -16,4 +16,8 @@
     </COMReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TextEditorApp.Common\TextEditorApp.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -18,6 +18,9 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using TextEditorApp.MainWindows.WinViewModels;
+using System.Windows.Controls.Ribbon;
+using TextEditorApp.Utils.StaticModels;
+using TextEditorApp.MainWindows.Commands;
 
 namespace TextEditorApp
 {
@@ -33,7 +36,8 @@ namespace TextEditorApp
             DataContext = new MainWinViewModel(MainTabControl, FontSizeComboBox);
         }
 
-       
+
+
         private void Consolas_click(object sender, RoutedEventArgs e)
         {
             if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
@@ -57,6 +61,7 @@ namespace TextEditorApp
                 }
             }
         }
+
         private void Roboto_mono_click(object sender, RoutedEventArgs e)
         {
             if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
@@ -93,6 +98,16 @@ namespace TextEditorApp
         {
             ApplyFontSize(20);
         }
+
+
+        private void MyComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+            }
+        }
+
 
         /*
         private void FontSizePopup_click(object sender, RoutedEventArgs e)

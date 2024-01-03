@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TextEditorApp.Common\TextEditorApp.Common.csproj" />
+    <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />
   </ItemGroup>
 
 </Project>

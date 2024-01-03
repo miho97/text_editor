@@ -24,14 +24,29 @@
             <!-- Format Options -->
             <RibbonMenuButton Label="Format">
                 <RibbonMenuButton Label="Font">
-                    <RibbonMenuItem Header="Consolas" Click="Consolas_click"/>
-                    <RibbonMenuItem Header="Courier new" Click="Courier_new_click"/>
-                    <RibbonMenuItem Header="Roboto mono" Click="Roboto_mono_click"/>
+                    <ComboBox x:Name="FontFamilyComboBox" Width="60" VerticalAlignment="Center" HorizontalAlignment="Left"
+              ItemsSource="{Binding FontFamilies}" IsEditable="False" IsTextSearchEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding OnFontFamilyChanged}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FontfamilyString}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </RibbonMenuButton>
                 <RibbonMenuButton Label="Font size">
-                    <ComboBox x:Name="FontSizeComboBox" Width="60" Text="Enter size" VerticalAlignment="Center" HorizontalAlignment="Left"
-            ItemsSource="{Binding FontSizeList}" IsEditable="True" StaysOpenOnEdit="True" IsReadOnly="true" 
-          IsDropDownOpen="True">
+                    <ComboBox x:Name="FontSizeComboBox" Width="60"  VerticalAlignment="Center" HorizontalAlignment="Left"
+                        ItemsSource="{Binding FontSizeList}" IsEditable="True" IsTextSearchEnabled="False"
+                              Text="{Binding FontSizeModel.FontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <i:InvokeCommandAction Command="{Binding FilterKeysUntilEnter}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding}" />

@@ -59,6 +59,25 @@ namespace TextEditorApp.MainWindows.Commands
                 }
                 return;
             }
+            if(parameter is String fontSizeString)
+            {
+                if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+                {
+                    var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                    if (textEditor != null)
+                    {
+                        if (int.TryParse(fontSizeString, out int fontSizeTextToInt))
+                        {
+                            textEditor.FontSize = fontSizeTextToInt > 0 ? fontSizeTextToInt : 15;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nije moguće konvertirati string u double.");
+                        }
+                    }
+                }
+                return;
+            }
         }
     }
 }
