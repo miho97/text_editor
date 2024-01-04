@@ -122,6 +122,27 @@ namespace TextEditorApp
             FontSizePopup.IsOpen = false;
         }
         */
+        public static FindReplaceWindow? findReplaceWindow;
+        private TextEditor? currentTextEditor;
 
+        private void Find_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            {
+                currentTextEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                if (currentTextEditor != null)
+                {
+                    if (findReplaceWindow == null)
+                    {
+                        findReplaceWindow = new FindReplaceWindow(currentTextEditor);
+                    }
+
+                    findReplaceWindow.FindAndHighlight(); // Show the window as a dialog
+
+                    // Reset findReplaceWindow after using it
+                    findReplaceWindow = null;
+                }
+            }
+        }
     }
 }

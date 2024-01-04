@@ -64,8 +64,7 @@
 
             <!-- Find & Replace -->
             <RibbonMenuButton Label="Find Replace">
-                <RibbonMenuItem Header="Find"/>
-                <RibbonMenuItem Header="Replace"/>
+                <RibbonMenuItem Header="Find/Replace" Click="Find_Click"/>
                 <!-- Additional options for Find & Replace -->
             </RibbonMenuButton>
 
