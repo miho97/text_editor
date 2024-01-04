@@ -144,5 +144,49 @@ namespace TextEditorApp
                 }
             }
         }
+
+        private void Replace_Click(object sender, RoutedEventArgs e)
+        {
+            if (findReplaceWindow == null)
+            {
+                findReplaceWindow = new FindReplaceWindow(currentTextEditor);
+            }
+
+            if (findReplaceWindow.ShowDialog() == true)
+            {
+                string searchText = findReplaceWindow.SearchText;
+                string replaceText = findReplaceWindow.ReplaceText;
+                bool findNext = findReplaceWindow.FindNext;
+
+                StringComparison comparison = findReplaceWindow.MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+                int index = textEditor.Text.IndexOf(searchText, comparison);
+
+                if (index != -1)
+                {
+                    textEditor.Document.Replace(index, searchText.Length, replaceText);
+
+                    if (findNext)
+                    {
+                        // Find the next occurrence if Find Next is checked
+                        index = textEditor.Text.IndexOf(searchText, index + replaceText.Length, comparison);
+                        if (index != -1)
+                        {
+                            textEditor.Select(index, searchText.Length);
+                            textEditor.ScrollToLine(textEditor.Document.GetLineByOffset(index).LineNumber);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Text not found", "Replace");
+                }
+
+                // Reset findReplaceWindow after using it
+                findReplaceWindow = null;
+            }
+        }
+
+
     }
 }
