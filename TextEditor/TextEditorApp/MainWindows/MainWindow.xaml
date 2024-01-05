@@ -39,17 +39,20 @@
                     </ComboBox>
                 </RibbonMenuButton>
                 <RibbonMenuButton Label="Font size">
-                    <ComboBox x:Name="FontSizeComboBox" Width="60"  VerticalAlignment="Center" HorizontalAlignment="Left"
-                        ItemsSource="{Binding FontSizeList}" IsEditable="True" IsTextSearchEnabled="False"
-                              Text="{Binding FontSizeModel.FontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                    <ComboBox x:Name="FontSizeComboBox" IsDropDownOpen="True"  Width="60" StaysOpenOnEdit="True"  VerticalAlignment="Center" HorizontalAlignment="Left"
+                        ItemsSource="{Binding FontSizes}" IsEditable="True" IsTextSearchEnabled="False"
+                              Text="{Binding SelectedFontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewKeyDown">
                                 <i:InvokeCommandAction Command="{Binding FilterKeysUntilEnter}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding OnChangeFontSize}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" />
+                                <TextBlock Text="{Binding FontSizeText}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>

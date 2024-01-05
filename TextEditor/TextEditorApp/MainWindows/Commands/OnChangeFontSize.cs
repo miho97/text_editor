@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
+using TextEditorApp.Utils.StaticModels;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TextEditorApp.MainWindows.Commands
 {
@@ -28,7 +30,8 @@ namespace TextEditorApp.MainWindows.Commands
 
         public void Execute(object? parameter)
         {
-            if(parameter is SelectionChangedEventArgs args && args.AddedItems[0] is int fontSize)
+            if (parameter is SelectionChangedEventArgs args && args.AddedItems[0] is FontSizeListModel fModel 
+                && fModel.FontSize is double fontSize)
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
@@ -36,11 +39,11 @@ namespace TextEditorApp.MainWindows.Commands
                     if (textEditor != null)
                     {
                         textEditor.FontSize = fontSize;
+                        CallerViewModel.SelectedFontSize.FontSize = fontSize;
                     }
                 }
-                return;
             }
-            if(parameter is TextCompositionEventArgs args2 && args2.Text is string fontSizeText)
+            else if(parameter is TextCompositionEventArgs args2 && args2.Text is string fontSizeText)
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
@@ -50,6 +53,7 @@ namespace TextEditorApp.MainWindows.Commands
                         if (int.TryParse(fontSizeText, out int fontSizeTextToInt))
                         {
                             textEditor.FontSize = fontSizeTextToInt;
+                            CallerViewModel.SelectedFontSize.FontSize = fontSizeTextToInt;
                         }
                         else
                         {
@@ -57,9 +61,8 @@ namespace TextEditorApp.MainWindows.Commands
                         }
                     }
                 }
-                return;
             }
-            if(parameter is String fontSizeString)
+            else if(parameter is String fontSizeString)
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
@@ -69,6 +72,7 @@ namespace TextEditorApp.MainWindows.Commands
                         if (int.TryParse(fontSizeString, out int fontSizeTextToInt))
                         {
                             textEditor.FontSize = fontSizeTextToInt > 0 ? fontSizeTextToInt : 15;
+                            CallerViewModel.SelectedFontSize.FontSize = fontSizeTextToInt;
                         }
                         else
                         {
@@ -76,7 +80,6 @@ namespace TextEditorApp.MainWindows.Commands
                         }
                     }
                 }
-                return;
             }
         }
     }

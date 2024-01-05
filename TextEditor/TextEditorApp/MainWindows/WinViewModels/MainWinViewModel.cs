@@ -21,12 +21,11 @@ namespace TextEditorApp.MainWindows.WinViewModels
     {
 
         private FontSizeListModel? _FontSizeModel;
-        public FontSizeListModel FontSizeModel => _FontSizeModel ??= new FontSizeListModel();
+        //public FontSizeListModel FontSizeModel => _FontSizeModel ??= new FontSizeListModel();
 
         private TabControl? _MainTabControl;
         private ComboBox? _FontSizeComboBox;
         //private RibbonComboBox _FontSizeComboboxOuter;
-        private string trenutniUnos = "";
 
 
         private int _FileCount;
@@ -62,13 +61,17 @@ namespace TextEditorApp.MainWindows.WinViewModels
             FontSizeComboBox = _FontCombo;
             //FontSizeComboboxOuter = _FontSizeComboboxOuter;
 
-            FontSizeComboBox.SelectionChanged += (sender, args) =>
-            {
-                OnChangeFontSize?.Execute(args);
-            };
+            //FontSizeComboBox.SelectionChanged += (sender, args) =>
+            //{
+            //    OnChangeFontSize?.Execute(args);
+            //};
             foreach (var fontFamily in Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList())
             {
                 FontFamilies.Add(new FontFamilyModel(fontFamily, true));
+            };
+            foreach (var fontSize in FontSizeList)
+            {
+                FontSizes.Add(new FontSizeListModel(fontSize, true));
             };
         }
 
@@ -77,14 +80,33 @@ namespace TextEditorApp.MainWindows.WinViewModels
             throw new NotImplementedException();
         }
 
-        public List<int> FontSizeList => new List<int> { 12, 16, 20 };
+        private List<int> FontSizeList => new List<int> { 12, 16, 20 };
 
-        public List<FontSizeListModel> FontSizeListObjects { get; set; } = new List<FontSizeListModel>
+        private FontSizeListModel _selectedFontSize = new FontSizeListModel(12.0, true);
+
+        public FontSizeListModel SelectedFontSize
         {
-            new FontSizeListModel { FontSize = 12, IsEnabled = true },
-            new FontSizeListModel { FontSize = 16, IsEnabled = true },
-            new FontSizeListModel { FontSize = 20, IsEnabled = true }
-        };
+            get { return _selectedFontSize; }
+            set
+            {
+                _selectedFontSize = value;
+                OnPropertyChanged(nameof(SelectedFontSize));
+            }
+        }
+
+
+
+        private ObservableCollection<FontSizeListModel> _fontSizes = new ObservableCollection<FontSizeListModel>();
+
+        public ObservableCollection<FontSizeListModel> FontSizes
+        {
+            get { return _fontSizes; }
+            set
+            {
+                _fontSizes = value;
+                OnPropertyChanged(nameof(FontSizes));
+            }
+        }
 
         private ObservableCollection<FontFamilyModel> _fontFamilies = new ObservableCollection<FontFamilyModel>();
 

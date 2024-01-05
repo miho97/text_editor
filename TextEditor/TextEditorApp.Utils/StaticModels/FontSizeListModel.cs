@@ -4,22 +4,50 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using TextEditorApp.Common;
 
 namespace TextEditorApp.Utils.StaticModels
 {
     public class FontSizeListModel : ViewModelBase
     {
-        private int fontSize;
-        public int FontSize
+        private double _fontSize;
+        public string _FontSizeText;
+        public FontSizeListModel(double fontSize, bool isEnabled)
         {
-            get { return fontSize; }
+            _fontSize = fontSize;
+            IsEnabled = isEnabled;
+            _FontSizeText = fontSize.ToString();
+        }
+        public double FontSize
+        {
+            get { return _fontSize; }
             set
             {
-                if (fontSize != value)
+                if (_fontSize != value)
                 {
-                    fontSize = value;
+                    _fontSize = value;
+                    FontSizeText = value.ToString();
                     OnPropertyChanged(nameof(FontSize));
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return _FontSizeText;
+        }
+
+        public string FontSizeText
+        {
+            get { return _FontSizeText; }
+            set
+            {
+                if (_FontSizeText != value && value is string val2)
+                {
+                    _FontSizeText = val2;
+                    FontSize = double.Parse(_FontSizeText);
+                    OnPropertyChanged(nameof(FontSizeText));
                 }
             }
         }
