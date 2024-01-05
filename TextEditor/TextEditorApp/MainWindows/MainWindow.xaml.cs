@@ -21,6 +21,7 @@ using TextEditorApp.MainWindows.WinViewModels;
 using System.Windows.Controls.Ribbon;
 using TextEditorApp.Utils.StaticModels;
 using TextEditorApp.MainWindows.Commands;
+using Microsoft.CodeAnalysis;
 
 namespace TextEditorApp
 {
@@ -36,7 +37,19 @@ namespace TextEditorApp
             DataContext = new MainWinViewModel(MainTabControl, FontSizeComboBox);
         }
 
-
+        private void HighlightErrorInEditor(Location errorLocation, string errorMessage)
+        {
+            if (errorLocation.IsInSource)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    var lineSpan = errorLocation.GetLineSpan().Span;
+                    // Use AvalonEdit APIs to create a text marker at this lineSpan
+                    // Example: textEditor.TextArea.TextView.Redraw(lineSpan, DispatcherPriority.Background);
+                    // You may need a custom TextMarkerService or similar to add markers
+                });
+            }
+        }
 
         private void Consolas_click(object sender, RoutedEventArgs e)
         {

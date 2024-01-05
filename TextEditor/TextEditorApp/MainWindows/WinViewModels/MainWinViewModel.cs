@@ -14,6 +14,8 @@ using TextEditorApp.Utils.StaticModels;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Drawing;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {
@@ -28,6 +30,9 @@ namespace TextEditorApp.MainWindows.WinViewModels
         //private RibbonComboBox _FontSizeComboboxOuter;
         private string trenutniUnos = "";
 
+
+        private readonly CodeAnalysisService _codeAnalysisService;
+        private string _currentDocumentName = "Document.cs";
 
         private int _FileCount;
 
@@ -61,6 +66,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
             MainTabControl = _MainTabControl;
             FontSizeComboBox = _FontCombo;
             //FontSizeComboboxOuter = _FontSizeComboboxOuter;
+            _codeAnalysisService = new CodeAnalysisService();
 
             FontSizeComboBox.SelectionChanged += (sender, args) =>
             {
@@ -71,6 +77,32 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 FontFamilies.Add(new FontFamilyModel(fontFamily, true));
             };
         }
+
+        public void OnEditorTextChanged(string newText)
+        {
+            _codeAnalysisService.UpdateDocument(_currentDocumentName, newText);
+            AnalyzeDocument(newText);
+        }
+        private void AnalyzeDocument(string text)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(text);
+            var compilation = CSharpCompilation.Create("Analysis")
+                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                .AddSyntaxTrees(syntaxTree);
+
+            var semanticModel = compilation.GetSemanticModel(syntaxTree);
+
+            // Check for syntax errors
+            var diagnostics = syntaxTree.GetDiagnostics();
+            foreach (var diag in diagnostics)
+            {
+                if (diag.Severity == DiagnosticSeverity.Error)
+                {
+                 
+                }
+            }
+        }
+        
 
         private void FontSizeComboBox_GotFocus(object sender, System.Windows.RoutedEventArgs e)
         {
