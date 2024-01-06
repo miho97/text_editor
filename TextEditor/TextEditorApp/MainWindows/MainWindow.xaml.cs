@@ -21,6 +21,11 @@ using TextEditorApp.MainWindows.WinViewModels;
 using System.Windows.Controls.Ribbon;
 using TextEditorApp.Utils.StaticModels;
 using TextEditorApp.MainWindows.Commands;
+using RoslynPad.Editor;
+using RoslynPad.Roslyn;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+using System.Reflection;
 
 namespace TextEditorApp
 {
@@ -34,6 +39,37 @@ namespace TextEditorApp
             InitializeComponent();
 
             DataContext = new MainWinViewModel(MainTabControl, FontSizeComboBox);
+
+        }
+
+        private async void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            // Pristup StackPanel-u unutar ScrollViewer-a
+            if (sender is RoslynCodeEditor editor)
+            {
+                // Pristup RoslynCodeEditor-u unutar StackPanel-a
+                var roslynCodeEditor = editor as RoslynCodeEditor;
+
+                if (roslynCodeEditor != null)
+                {
+                    await InitializeRoslynCodeEditorAsync(roslynCodeEditor);
+                }
+            }
+        }
+
+        private async Task InitializeRoslynCodeEditorAsync(RoslynCodeEditor roslynCodeEditor)
+        {
+            var roslynHost = new RoslynHost(additionalAssemblies: new[]
+            {
+            Assembly.Load("RoslynPad.Roslyn.Windows"),
+            Assembly.Load("RoslynPad.Editor.Windows"),
+        });
+
+            roslynCodeEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("HTML");
+            roslynCodeEditor.ShowLineNumbers = true;
+
+            var workingDirectory = Directory.GetCurrentDirectory();
+            await roslynCodeEditor.InitializeAsync(roslynHost, new ClassificationHighlightColors(), workingDirectory, "", SourceCodeKind.Script);
         }
 
 

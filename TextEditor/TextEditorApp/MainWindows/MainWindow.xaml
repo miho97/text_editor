@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+        xmlns:rp="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
         xmlns:local="clr-namespace:TextEditorApp" 
         xmlns:i1="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic"
         mc:Ignorable="d"
@@ -99,10 +99,18 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Bottom">Status bar for File 1</TextBlock>
-                        <avalonEdit:TextEditor Name="textEditor" VerticalScrollBarVisibility="Visible"
-                                               ShowLineNumbers="True">
-                        </avalonEdit:TextEditor>
+                        <rp:RoslynCodeEditor x:Name="editor"
+                                                                Loaded="OnMainWindowLoaded"
+                                                              FontFamily="Consolas"
+                                                              Margin="5"
+                                                              ShowLineNumbers="False"
+                                                                IsReadOnly="False"
+                                             DockPanel.Dock="Top"  
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" 
+                                                              />
+                        <TextBlock Text="{Binding Result}" TextWrapping="Wrap" />
+
                     </DockPanel>
                 </TabItem>
                 <!-- Additional TabItems can be added here -->
