@@ -78,7 +78,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TextEditorApp.Common\TextEditorApp.Common.csproj" />
+    <ProjectReference Include="..\TextEditorApp.Controls\TextEditorApp.Controls.csproj" />
+    <ProjectReference Include="..\TextEditorApp.Intellisense.Service\TextEditorApp.Intellisense.Service.csproj" />
     <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="MainWindows\Commands\Font Commands\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">

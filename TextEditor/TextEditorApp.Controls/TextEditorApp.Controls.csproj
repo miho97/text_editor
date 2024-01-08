@@ -7,4 +7,13 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="RoslynPad.Editor.Windows" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TextEditorApp.Common\TextEditorApp.Common.csproj" />
+    <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />
+  </ItemGroup>
+
 </Project>

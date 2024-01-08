@@ -11,4 +11,8 @@
     <PackageReference Include="RoslynPad.Editor.Windows" Version="4.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TextEditorApp.Controls\TextEditorApp.Controls.csproj" />
+  </ItemGroup>
+
 </Project>
