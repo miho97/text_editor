@@ -18,7 +18,6 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using TextEditorApp.MainWindows.WinViewModels;
-using TextEditorApp.Utils.BrowserModels;
 using System.Windows.Controls.Ribbon;
 using TextEditorApp.Utils.StaticModels;
 using TextEditorApp.MainWindows.Commands;

@@ -174,12 +174,5 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         private ICommand? _OnShowLineNumbersChanged;
         public ICommand OnShowLineNumbersChanged => _OnShowLineNumbersChanged ??= new OnShowLineNumbersChanged(this);
-
-        private ICommand? _OnBrowserCommand;
-        public ICommand OnBrowserCommand => _OnBrowserCommand ??= new OnBrowserCommand(this);
-
-
-
-
     }
 }
