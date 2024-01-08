@@ -5,65 +5,102 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:rp="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
+        xmlns:browser="clr-namespace:TextEditorApp.Utils.BrowserModels;assembly=TextEditorApp.Utils"
+        xmlns:behaviours="clr-namespace:TextEditorApp.MainWindows.Behaviours"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:TextEditorApp" 
         xmlns:i1="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic"
+        xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
-        Title="TextEditor" Height="450" Width="800">
+        Title="TextEditor"
+        WindowState="Maximized">
     <DockPanel Margin="1">
-        <Ribbon DockPanel.Dock="Top" Height="48">
+        <Ribbon DockPanel.Dock="Top" Height="135">
             <!-- Application Menu -->
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu KeyTip="F">
-                    <RibbonApplicationMenuItem Header="New" Command="{Binding NewFileCommand}"/>
-                    <RibbonApplicationMenuItem Header="Open" Command="{Binding OpenFileCommand}"/>
-                    <RibbonApplicationMenuItem Header="Save" Command="{Binding SaveFileAsCommand}"/>
-                    <RibbonApplicationMenuItem Header="Save As..." Command="{Binding SaveFileAsCommand}"/>
+                <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F">
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N" Header="New" Command="{Binding NewFileCommand}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Header="Open" Command="{Binding OpenFileCommand}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileAsCommand}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/SaveFileAs.png" Header="Save As..." Command="{Binding SaveFileAsCommand}"/>
+                    <RibbonSeparator />
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Print.png" Header="Print" Command="{Binding PrintCommand}"/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
-            <!-- Format Options -->
-            <RibbonMenuButton Label="Format">
-                <RibbonMenuButton Label="Font">
-                    <ComboBox x:Name="FontFamilyComboBox" Width="60" VerticalAlignment="Center" HorizontalAlignment="Left"
-              ItemsSource="{Binding FontFamilies}" IsEditable="False" IsTextSearchEnabled="True">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding OnFontFamilyChanged}" PassEventArgsToCommand="True" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+            <!--Clipboard options-->
+
+            <RibbonTab Header="Home">
+                <RibbonGroup Header="Clipboard">
+                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png"/>
+                    <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png"/>
+                    <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png"/>
+                </RibbonGroup>
+                <RibbonGroup Header="Text Alignment">
+                    <RibbonControlGroup>
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignLeft.png" />
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignCenter.png" />
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignRight.png" />
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignJustify.png" />
+                    </RibbonControlGroup>
+                </RibbonGroup>
+                <RibbonGroup Header="Font format">
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="FontFamilyComboBox" Width="90" VerticalAlignment="Center" HorizontalAlignment="Left"
+ItemsSource="{Binding FontFamilies}" IsEditable="False" IsTextSearchEnabled="True">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding OnFontFamilyChanged}" PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding FontfamilyString}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox x:Name="FontSizeComboBox"  Width="50" StaysOpenOnEdit="True"  VerticalAlignment="Center" HorizontalAlignment="Left"
+    ItemsSource="{Binding FontSizes}" IsEditable="True" IsTextSearchEnabled="False"
+          Text="{Binding SelectedFontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewKeyDown">
+                                    <i:InvokeCommandAction Command="{Binding FilterKeysUntilEnter}" PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding OnChangeFontSize}" PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding FontSizeText}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </RibbonGroup>
+                <RibbonGroup Header="Languages">
+                    <ComboBox x:Name="DocumentLanguage" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left"
+ItemsSource="{Binding DocumentLanguages}" SelectedValue="{Binding ChosenLanguage}" 
+                              SelectionChanged="OnLanguageChanged" IsEditable="False" IsTextSearchEnabled="True">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding FontfamilyString}" />
+                                <TextBlock Text="{Binding }" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                </RibbonMenuButton>
-                <RibbonMenuButton Label="Font size">
-                    <ComboBox x:Name="FontSizeComboBox" IsDropDownOpen="True"  Width="60" StaysOpenOnEdit="True"  VerticalAlignment="Center" HorizontalAlignment="Left"
-                        ItemsSource="{Binding FontSizes}" IsEditable="True" IsTextSearchEnabled="False"
-                              Text="{Binding SelectedFontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                </RibbonGroup>
+                <RibbonGroup Header="Intellisense">
+                    <RibbonToggleButton Label="Enable Code Completition" HorizontalAlignment="Center" Checked="Intellisese_Handler" Unchecked="Intellisese_Handler"/>
+                    <RibbonSeparator/>
+                    <RibbonToggleButton Label="Show Line Numbers" HorizontalAlignment="Center">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PreviewKeyDown">
-                                <i:InvokeCommandAction Command="{Binding FilterKeysUntilEnter}" PassEventArgsToCommand="True" />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding OnChangeFontSize}" PassEventArgsToCommand="True" />
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding OnShowLineNumbersChanged}" PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding FontSizeText}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </RibbonMenuButton>
-                <!-- Popup for changing font size -->
-                <!--Popup x:Name="FontSizePopup" Placement="MousePoint" StaysOpen="False"-->
-                    <!--TextBox x:Name="FontSizeInput" Width="50" KeyDown="FontSizeInput_KeyDown"/-->
-                <!--/Popup-->
-                <RibbonMenuItem Header="Read-only mode"/>
-                <!-- More format options -->
-            </RibbonMenuButton>
+                    </RibbonToggleButton>
+                </RibbonGroup>
+            </RibbonTab>
 
             <!-- Settings -->
             <RibbonMenuButton Label="Settings">
@@ -90,16 +127,21 @@
         </Ribbon>
 
         <!-- Main Content Area -->
-        <DockPanel>
-            <TabControl x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}">
-                <TabItem Header="File 1">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseRightButtonDown">
-                            <i:InvokeCommandAction Command="{Binding OnRemoveTabCommand}" PassEventArgsToCommand="True"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <DockPanel>
-                        <rp:RoslynCodeEditor x:Name="editor"
+        <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60*"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="882">
+                <TabControl DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}"  >
+                    <TabItem Header="File 1">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                                <i:InvokeCommandAction Command="{Binding OnRemoveTabCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DockPanel>
+                            <rp:RoslynCodeEditor x:Name="editor"
                                                                 Loaded="OnMainWindowLoaded"
                                                               FontFamily="Consolas"
                                                               Margin="5"
@@ -109,12 +151,60 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch" 
                                                               />
-                        <TextBlock Text="{Binding Result}" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Result}" TextWrapping="Wrap" />
 
-                    </DockPanel>
-                </TabItem>
-                <!-- Additional TabItems can be added here -->
-            </TabControl>
+                        </DockPanel>
+                    </TabItem>
+                    <!-- Additional TabItems can be added here -->
+                </TabControl>
+            </DockPanel>
+            </Grid>
+
+            <DockPanel DockPanel.Dock="Right" MaxWidth="500" Margin="5,20,5,5">
+                <DockPanel DockPanel.Dock="Top"  Margin="2,2,2,2" Width="Auto">
+                    <Button DockPanel.Dock="Top" Content="Back" Command="{Binding WebBrowser.BackCommand, ElementName=Browser}" Width="Auto">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button DockPanel.Dock="Top" Content="Forward" Command="{Binding WebBrowser.ForwardCommand, ElementName=Browser}"  Width="Auto">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <TextBox DockPanel.Dock="Top" x:Name="txtBoxAddress" Text="{Binding Address, ElementName=Browser, FallbackValue=www.google.com}" FontSize="12" BorderBrush="Gray" BorderThickness="1">
+                        <behaviors:Interaction.Behaviors>
+                            <behaviours:TextBoxBindingUpdateOnEnterBehaviour/>
+                        </behaviors:Interaction.Behaviors>
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+                    <ProgressBar DockPanel.Dock="Top" IsIndeterminate="{Binding IsLoading, ElementName=Browser}"
+                                HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 Height="5"
+                                 Visibility="Visible"
+                                 BorderThickness="0"
+                                >
+                        <ProgressBar.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ProgressBar.Resources>
+                    </ProgressBar>
+                    <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,1">
+                        <web:ChromiumWebBrowser Margin="2,2,2,2" HorizontalAlignment="Stretch" x:Name="Browser" Address="www.google.com"/>
+                    </Border>
+                </DockPanel>
+            </DockPanel>
+
         </DockPanel>
     </DockPanel>
 </Window>

@@ -14,6 +14,8 @@ using TextEditorApp.Utils.StaticModels;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Drawing;
+using ICSharpCode.AvalonEdit.Highlighting;
+using System.Reactive.Linq;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {
@@ -59,12 +61,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
         {
             MainTabControl = _MainTabControl;
             FontSizeComboBox = _FontCombo;
-            //FontSizeComboboxOuter = _FontSizeComboboxOuter;
 
-            //FontSizeComboBox.SelectionChanged += (sender, args) =>
-            //{
-            //    OnChangeFontSize?.Execute(args);
-            //};
             foreach (var fontFamily in Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList())
             {
                 FontFamilies.Add(new FontFamilyModel(fontFamily, true));
@@ -73,6 +70,11 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 FontSizes.Add(new FontSizeListModel(fontSize, true));
             };
+
+            foreach (var textLanguage in HighlightingManager.Instance.HighlightingDefinitions )
+            {
+                DocumentLanguages.Add(textLanguage.Name);
+            }
         }
 
         private void FontSizeComboBox_GotFocus(object sender, System.Windows.RoutedEventArgs e)
@@ -91,6 +93,20 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 _selectedFontSize = value;
                 OnPropertyChanged(nameof(SelectedFontSize));
+            }
+        }
+
+        public LanguageViewModel ChosenLanguage = new LanguageViewModel("None", true);
+
+        private List<string> _DocumentLanguages = new List<string> { "None"};
+
+        public List<string> DocumentLanguages
+        {
+            get { return _DocumentLanguages; }
+            set
+            {
+                _DocumentLanguages = value;
+                OnPropertyChanged(nameof(DocumentLanguages));
             }
         }
 
@@ -153,7 +169,16 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private ICommand? _FilterKeysUntilEnter;
         public ICommand FilterKeysUntilEnter => _FilterKeysUntilEnter ??= new FilterKeysUntilEnter(this);
 
-        
+        private ICommand? _PrintCommand;
+        public ICommand PrintCommand => _PrintCommand ??= new PrintCommand(this);
+
+        private ICommand? _OnShowLineNumbersChanged;
+        public ICommand OnShowLineNumbersChanged => _OnShowLineNumbersChanged ??= new OnShowLineNumbersChanged(this);
+
+        private ICommand? _OnBrowserCommand;
+        public ICommand OnBrowserCommand => _OnBrowserCommand ??= new OnBrowserCommand(this);
+
+
 
 
     }
