@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
 using System.Windows;
+using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
@@ -36,7 +37,7 @@ namespace TextEditorApp.MainWindows.Commands
                 {
                     if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                     {
-                        var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
+                        var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
                         if (textEditor != null)
                         {
                             textEditor.ShowLineNumbers = true;
@@ -47,7 +48,7 @@ namespace TextEditorApp.MainWindows.Commands
                 {
                     if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                     {
-                        var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
+                        var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
                         if (textEditor != null)
                         {
                             textEditor.ShowLineNumbers = false;

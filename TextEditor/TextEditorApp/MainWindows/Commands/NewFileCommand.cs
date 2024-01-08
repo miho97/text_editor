@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.MainWindows.WinViewModels;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TextEditorApp.MainWindows.Commands
 {
@@ -47,11 +49,7 @@ namespace TextEditorApp.MainWindows.Commands
             statusBar.Text = "Status bar for " + newTab.Header;
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
-            var textEditor = new RoslynCodeEditor();
-            textEditor.IsReadOnly = false;
-            textEditor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-            textEditor.ShowLineNumbers = true;
-            //textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            var textEditor = new CustomTextEditorModel();
             DockPanel.SetDock(textEditor, Dock.Top);
 
             panel.Children.Add(statusBar);

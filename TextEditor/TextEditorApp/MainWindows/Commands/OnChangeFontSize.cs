@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.MainWindows.WinViewModels;
 using TextEditorApp.Utils.StaticModels;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
@@ -36,7 +37,7 @@ namespace TextEditorApp.MainWindows.Commands
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
-                    var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
+                    var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
                     if (textEditor != null)
                     {
                         textEditor.FontSize = fontSize;
