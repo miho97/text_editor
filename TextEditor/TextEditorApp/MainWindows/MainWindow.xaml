@@ -8,11 +8,16 @@
         xmlns:behaviours="clr-namespace:TextEditorApp.MainWindows.Behaviours"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:TextEditorApp" 
+        xmlns:enum="clr-namespace:TextEditorApp.Common.Enums;assembly=TextEditorApp.Common" 
         xmlns:i1="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic"
         xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:controls="clr-namespace:TextEditorApp.Controls.ControlsModels;assembly=TextEditorApp.Controls" 
         mc:Ignorable="d"
         Title="TextEditor"
         WindowState="Maximized">
+    <Window.Resources>
+        <enum:EnumToBoolConverter x:Key="EnumConverter" />
+    </Window.Resources>
     <DockPanel Margin="1">
         <Ribbon DockPanel.Dock="Top" Height="135">
             <!-- Application Menu -->
@@ -31,22 +36,30 @@
 
             <RibbonTab Header="Home">
                 <RibbonGroup Header="Clipboard">
-                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png"/>
-                    <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png"/>
-                    <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png"/>
+                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png" Command="{Binding OnPasteCommand}"/>
+                    <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png" Command="{Binding OnCutCommand}"/>
+                    <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png" Command="{Binding OnCopyCommand}"/>
                 </RibbonGroup>
                 <RibbonGroup Header="Text Alignment">
                     <RibbonControlGroup>
-                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignLeft.png" />
-                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignCenter.png" />
-                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignRight.png" />
-                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignJustify.png" />
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignLeft.png" 
+                                           IsChecked="{Binding HorizontalTextAlignment, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:CustomHorizontalTextAlignment.Left}}"
+                                           Command="{Binding OnAlignCommand}" CommandParameter="{x:Static enum:CustomHorizontalTextAlignment.Left}"/>
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignCenter.png" 
+                                           IsChecked="{Binding HorizontalTextAlignment, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:CustomHorizontalTextAlignment.Centered}}"
+                                           Command="{Binding OnAlignCommand}" CommandParameter="{x:Static enum:CustomHorizontalTextAlignment.Centered}"/>
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignRight.png" 
+                                           IsChecked="{Binding HorizontalTextAlignment, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:CustomHorizontalTextAlignment.Right}}"
+                                           Command="{Binding OnAlignCommand}" CommandParameter="{x:Static enum:CustomHorizontalTextAlignment.Right}"/>
+                        <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignJustify.png" 
+                                           IsChecked="{Binding HorizontalTextAlignment, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:CustomHorizontalTextAlignment.Justified}}"
+                                           Command="{Binding OnAlignCommand}" CommandParameter="{x:Static enum:CustomHorizontalTextAlignment.Justified}"/>
                     </RibbonControlGroup>
                 </RibbonGroup>
                 <RibbonGroup Header="Font format">
                     <StackPanel Orientation="Horizontal">
                         <ComboBox x:Name="FontFamilyComboBox" Width="90" VerticalAlignment="Center" HorizontalAlignment="Left"
-ItemsSource="{Binding FontFamilies}" IsEditable="False" IsTextSearchEnabled="True">
+ItemsSource="{Binding FontFamilies}" Text="{Binding ChosenFontFamily.Fontfamily, Mode=TwoWay, UpdateSourceTrigger=Default}" IsEditable="False" IsTextSearchEnabled="True">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
                                     <i:InvokeCommandAction Command="{Binding OnFontFamilyChanged}" PassEventArgsToCommand="True" />
@@ -60,7 +73,7 @@ ItemsSource="{Binding FontFamilies}" IsEditable="False" IsTextSearchEnabled="Tru
                         </ComboBox>
                         <ComboBox x:Name="FontSizeComboBox"  Width="50" StaysOpenOnEdit="True"  VerticalAlignment="Center" HorizontalAlignment="Left"
     ItemsSource="{Binding FontSizes}" IsEditable="True" IsTextSearchEnabled="False"
-          Text="{Binding SelectedFontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
+          Text="{Binding SelectedFontSize.FontSize, Mode=TwoWay, UpdateSourceTrigger=Default}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewKeyDown">
                                     <i:InvokeCommandAction Command="{Binding FilterKeysUntilEnter}" PassEventArgsToCommand="True" />
@@ -79,8 +92,12 @@ ItemsSource="{Binding FontFamilies}" IsEditable="False" IsTextSearchEnabled="Tru
                 </RibbonGroup>
                 <RibbonGroup Header="Languages">
                     <ComboBox x:Name="DocumentLanguage" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left"
-ItemsSource="{Binding DocumentLanguages}" SelectedValue="{Binding ChosenLanguage}" 
-                              SelectionChanged="OnLanguageChanged" IsEditable="False" IsTextSearchEnabled="True">
+ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=Default}" IsEditable="False" IsTextSearchEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding OnLanguageChanged}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding }" />
@@ -89,9 +106,18 @@ ItemsSource="{Binding DocumentLanguages}" SelectedValue="{Binding ChosenLanguage
                     </ComboBox>
                 </RibbonGroup>
                 <RibbonGroup Header="Intellisense">
-                    <RibbonToggleButton Label="Enable Code Completition" HorizontalAlignment="Center" Checked="Intellisese_Handler" Unchecked="Intellisese_Handler"/>
+                    <RibbonToggleButton Label="Enable Code Completition" HorizontalAlignment="Center"  IsChecked="{Binding IsCodeCompletitionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding OnCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding OnCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RibbonToggleButton>
                     <RibbonSeparator/>
-                    <RibbonToggleButton Label="Show Line Numbers" HorizontalAlignment="Center">
+                    <RibbonToggleButton Label="Show Line Numbers" HorizontalAlignment="Center" IsChecked="{Binding IsShowLineNumbers, Mode=TwoWay, UpdateSourceTrigger=Default}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:InvokeCommandAction Command="{Binding OnShowLineNumbersChanged}" PassEventArgsToCommand="True"/>
@@ -105,15 +131,7 @@ ItemsSource="{Binding DocumentLanguages}" SelectedValue="{Binding ChosenLanguage
             <RibbonMenuButton Label="Settings">
                 <RibbonMenuItem Header="Edit Preferences"/>
                 <RibbonMenuItem Header="Theme Settings"/>
-                <RibbonMenuItem Header="Language"/>
                 <!-- More settings options -->
-            </RibbonMenuButton>
-
-            <!-- C# Highlighting -->
-            <RibbonMenuButton Label="C# sharp Highlighting">
-                <RibbonMenuItem Header="Enable Highlighting" Command="{Binding OnEnableHighlighting}"/>
-                <RibbonMenuItem Header="Disable Highlighting" Command="{Binding OnDisableHighlighting}"/>
-                <!-- Additional options for C# highlighting -->
             </RibbonMenuButton>
 
             <!-- Find & Replace -->
@@ -132,20 +150,23 @@ ItemsSource="{Binding DocumentLanguages}" SelectedValue="{Binding ChosenLanguage
                     <ColumnDefinition Width="60*"/>
                 </Grid.ColumnDefinitions>
                 <DockPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="882">
-                <TabControl DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}"  >
-                    <TabItem Header="File 1">
+                    <TabControl DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="Loaded">
+                                <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <TabItem Header="File 1">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding OnRemoveTabCommand}" PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <DockPanel>
-                            <rp:RoslynCodeEditor x:Name="editor"
-                                                                Loaded="OnMainWindowLoaded"
-                                                              FontFamily="Consolas"
-                                                              Margin="5"
-                                                              ShowLineNumbers="False"
-                                                                IsReadOnly="False"
+                                <controls:CustomTextEditorModel x:Name="editor"
                                              DockPanel.Dock="Top"  
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch" 
