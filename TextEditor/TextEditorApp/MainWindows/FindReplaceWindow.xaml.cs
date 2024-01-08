@@ -1,18 +1,7 @@
 ﻿using ICSharpCode.AvalonEdit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace TextEditorApp
 {
@@ -28,6 +17,10 @@ namespace TextEditorApp
         public bool PreviousClicked { get; private set; }
         public bool FindNext { get; private set; }
         private bool replacementMade = false;
+        public bool CircularSearch { get; private set; }
+        private int totalMatches = 0;
+        private int currentMatchIndex = 0;
+
 
         private readonly TextEditor textEditor;
         private int currentIndex = -1;
@@ -60,29 +53,23 @@ namespace TextEditorApp
         {
             if (textEditor != null && textEditor.SelectionLength > 0)
             {
-                // Replace the selected text
                 textEditor.Document.Replace(textEditor.SelectionStart, textEditor.SelectionLength, ReplaceText);
             }
         }
 
         private void ReplaceAll_Click(object sender, RoutedEventArgs e)
         {
-            // Get the search and replace strings
             string searchText = txtFind.Text;
             string replaceText = txtReplace.Text;
 
-            // Set up the StringComparison based on MatchCase
             StringComparison comparison = MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
-            // Get the entire text content of the editor
             string editorText = textEditor.Text;
 
-            // Perform a case-sensitive or case-insensitive replace all
             string newText = MatchCase
                 ? editorText.Replace(searchText, replaceText)
                 : Regex.Replace(editorText, searchText, replaceText, RegexOptions.IgnoreCase);
 
-            // Replace the entire content of the editor with the modified text
             textEditor.Document.Text = newText;
          }
 
@@ -100,10 +87,8 @@ namespace TextEditorApp
 
             NextClicked = true;
 
-            // Update the highlighting without closing the window
             UpdateHighlighting();
 
-            // Replace the found text if "Replace" button is checked
             if (FindNext && chkFindNext.IsChecked == true)
             {
                 ReplaceTextInTextEditor();
@@ -119,7 +104,6 @@ namespace TextEditorApp
 
                 if (selectionLength > 0)
                 {
-                    // Replace the selected text
                     textEditor.Document.Replace(selectionStart, selectionLength, ReplaceText);
 
                     // Move the cursor to the end of the replaced text
@@ -135,7 +119,6 @@ namespace TextEditorApp
                 string searchText = SearchText;
                 StringComparison comparison = MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
-                // Start searching from the current index + 1
                 currentIndex = textEditor.Text.IndexOf(searchText, currentIndex + 1, comparison);
 
                 if (currentIndex != -1)
@@ -166,7 +149,6 @@ namespace TextEditorApp
 
             PreviousClicked = true;
 
-            // Update the highlighting without closing the window
             UpdateHighlighting();
         }
 
@@ -178,7 +160,6 @@ namespace TextEditorApp
 
         public bool FindAndHighlight()
         {
-            // Show the window as a dialog
             ShowDialog();
 
             return NextClicked;
@@ -203,8 +184,13 @@ namespace TextEditorApp
                     string searchText = SearchText;
                     StringComparison comparison = MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
-                    // Start searching from the current index + 1
                     currentIndex = textEditor.Text.IndexOf(searchText, currentIndex + 1, comparison);
+
+                    // Wrap around to the beginning if not found
+                    if (currentIndex == -1)
+                    {
+                        currentIndex = textEditor.Text.IndexOf(searchText, 0, comparison);
+                    }
 
                     if (currentIndex != -1)
                     {
@@ -214,7 +200,7 @@ namespace TextEditorApp
                     else
                     {
                         MessageBox.Show("No more matches found", "Find");
-                        currentIndex = -1; // Reset for the next search
+                        currentIndex = -1; 
                     }
 
                     NextClicked = false; // Reset for the next iteration
@@ -224,10 +210,15 @@ namespace TextEditorApp
                     string searchText = SearchText;
                     StringComparison comparison = MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
-                    // Search in reverse order, starting from the current index - 1
                     currentIndex = textEditor.Text.LastIndexOf(searchText, Math.Max(0, currentIndex - 1), comparison);
 
-                    if (currentIndex >= 0)
+                    // Wrap around to the end if not found
+                    if (currentIndex == -1)
+                    {
+                        currentIndex = textEditor.Text.LastIndexOf(searchText, textEditor.Text.Length - 1, comparison);
+                    }
+
+                    if (currentIndex != -1)
                     {
                         textEditor.Select(currentIndex, searchText.Length);
                         textEditor.ScrollToLine(textEditor.Document.GetLineByOffset(currentIndex).LineNumber);

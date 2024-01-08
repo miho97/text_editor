@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextEditorApp"
         mc:Ignorable="d"
-        Title="FindReplaceWindow" Height="404" Width="350">
+        Title="FindReplaceWindow" Height="481" Width="350">
     <Grid Margin="0,10,46,0">
         <StackPanel Margin="69,20,10,20">
             <Label Content="Find:" Width="196"/>
@@ -19,6 +19,12 @@
             <CheckBox x:Name="chkFindNext" Content="Find Next" Margin="0,0,0,5" Width="202"/>
             <Button Content="Replace All" Width="87" Height="25" Click="ReplaceAll_Click" HorizontalAlignment="Center"/>
             <Button Content="Close" Width="87" Height="25" Click="Close_Click"/>
+
+            <Label Content="Total Matches: " />
+            <Label x:Name="lblTotalMatches" Content="0" />
+
+            <Label Content="Current Match: " />
+            <Label x:Name="lblCurrentMatch" Content="0" />
         </StackPanel>
     </Grid>
 </Window>
