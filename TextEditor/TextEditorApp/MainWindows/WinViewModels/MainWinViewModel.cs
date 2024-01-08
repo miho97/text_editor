@@ -241,6 +241,8 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private ICommand? _OnAlignCommand;
         public ICommand OnAlignCommand => _OnAlignCommand ??= new OnAlignCommand(this);
 
+        /// Clipboard commands
+
         private ICommand? _OnPasteCommand;
         public ICommand OnPasteCommand => _OnPasteCommand ??= new OnPasteCommand(this);
 
@@ -262,13 +264,13 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private ICommand? _PrintCommand;
         public ICommand PrintCommand => _PrintCommand ??= new PrintCommand(this);
 
+        private ICommand? _NewFileCommand;
+        public ICommand NewFileCommand => _NewFileCommand ??= new NewFileCommand(this);
+
         /// Commands for adding and removing tabs or documents
 
         private ICommand? _OnRemoveTabCommand;
         public ICommand OnRemoveTabCommand => _OnRemoveTabCommand ??= new OnRemoveTabCommand(this);
-
-        private ICommand? _NewFileCommand;
-        public ICommand NewFileCommand => _NewFileCommand ??= new NewFileCommand(this);
 
         private ICommand? _FilterKeysUntilEnter;
         public ICommand FilterKeysUntilEnter => _FilterKeysUntilEnter ??= new FilterKeysUntilEnter(this);
