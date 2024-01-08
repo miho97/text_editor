@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace TextEditorApp.Utils.WriteToFiles
+namespace TextEditorApp.Utils.DocumentFiles
 {
-    internal class WriteToFiles
+    internal class DocumentFiles
     {
         protected static bool IsExistDirectory(string directoryPath)
         {
@@ -24,7 +24,7 @@ namespace TextEditorApp.Utils.WriteToFiles
             return Path.GetDirectoryName(filePath)!;
         }
 
-        public void WriteToFile(WriteToFiles_Model model)
+        public void WriteToFile(DocumentFiles_Model model)
         {
             string directoryPath = GetDirectoryPath(model.FilePath)!;
 
