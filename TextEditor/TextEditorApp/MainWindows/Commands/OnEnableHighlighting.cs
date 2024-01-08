@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit;
+using RoslynPad.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace TextEditorApp.MainWindows.Commands
         {
             if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
             {
-                var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
                 if (textEditor != null)
                 {
                     textEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition("C#");

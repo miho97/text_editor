@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit;
+using RoslynPad.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace TextEditorApp.MainWindows.Commands
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
-                    var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                    var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
                     if (textEditor != null)
                     {
                         textEditor.FontSize = fontSize;
@@ -47,7 +48,7 @@ namespace TextEditorApp.MainWindows.Commands
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
-                    var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                    var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
                     if (textEditor != null)
                     {
                         if (int.TryParse(fontSizeText, out int fontSizeTextToInt))
@@ -66,7 +67,7 @@ namespace TextEditorApp.MainWindows.Commands
             {
                 if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
                 {
-                    var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                    var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
                     if (textEditor != null)
                     {
                         if (int.TryParse(fontSizeString, out int fontSizeTextToInt))

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.IO;
 using TextEditorApp.MainWindows.WinViewModels;
 using System.Windows;
+using RoslynPad.Editor;
 
 namespace TextEditorApp.MainWindows.Commands
 {
@@ -46,7 +47,7 @@ namespace TextEditorApp.MainWindows.Commands
         {
             if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
             {
-                var textEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
+                var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
                 if (textEditor != null)
                 {
                     try

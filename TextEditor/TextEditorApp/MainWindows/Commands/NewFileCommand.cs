@@ -1,5 +1,6 @@
 ﻿using ICSharpCode.AvalonEdit;
 using Microsoft.Xaml.Behaviors;
+using RoslynPad.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace TextEditorApp.MainWindows.Commands
             statusBar.Text = "Status bar for " + newTab.Header;
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
-            var textEditor = new TextEditor();
+            var textEditor = new RoslynCodeEditor();
             textEditor.IsReadOnly = false;
             textEditor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             textEditor.ShowLineNumbers = true;
