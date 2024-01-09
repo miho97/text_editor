@@ -19,6 +19,9 @@
             <CheckBox x:Name="chkFindNext" Content="Find Next" Margin="0,0,0,5" Width="202"/>
             <Button Content="Replace All" Width="87" Height="25" Click="ReplaceAll_Click" HorizontalAlignment="Center"/>
             <Button Content="Close" Width="87" Height="25" Click="Close_Click"/>
+            <CheckBox x:Name="chkCircularSearch" Content="Circular Search" Margin="0,0,0,5" Width="202"
+            Checked="chkCircularSearch_Checked" Unchecked="chkCircularSearch_Unchecked"/>
+
 
             <Label Content="Total Matches: " />
             <Label x:Name="lblTotalMatches" Content="0" />
