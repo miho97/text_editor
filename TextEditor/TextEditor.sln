@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorApp.Controls", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorApp.Intellisense.Service", "TextEditorApp.Intellisense.Service\TextEditorApp.Intellisense.Service.csproj", "{46BAA35D-FA2C-45C9-8AA6-E64C30CAE6BB}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TextEditorInstaller", "TextEditorInstaller\TextEditorInstaller.vdproj", "{F0F2B13A-D156-49C3-8317-E80AC8D807B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,8 @@ Global
 		{46BAA35D-FA2C-45C9-8AA6-E64C30CAE6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46BAA35D-FA2C-45C9-8AA6-E64C30CAE6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46BAA35D-FA2C-45C9-8AA6-E64C30CAE6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0F2B13A-D156-49C3-8317-E80AC8D807B2}.Debug|Any CPU.ActiveCfg = Debug
+		{F0F2B13A-D156-49C3-8317-E80AC8D807B2}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
