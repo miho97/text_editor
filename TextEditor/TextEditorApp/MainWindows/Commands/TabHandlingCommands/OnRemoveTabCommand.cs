@@ -35,7 +35,7 @@ namespace TextEditorApp.MainWindows.Commands
                 CallerViewModel.MainTabControl.Items.Remove(tabItem);
                 CallerViewModel.FileCount--;
 
-                if(CallerViewModel != null && CallerViewModel.FileCount == 0)
+                if(CallerViewModel != null && CallerViewModel.FileCount <= 0)
                 {
                     CallerViewModel.NewFileCommand.Execute(CallerViewModel);
                 }

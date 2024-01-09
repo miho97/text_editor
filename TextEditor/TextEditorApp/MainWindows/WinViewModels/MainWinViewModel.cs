@@ -142,7 +142,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 DocumentLanguages.Add(textLanguage.Name);
             }
-
+            _FileCount = 0;
             NewFileCommand.Execute(this);
         }
 

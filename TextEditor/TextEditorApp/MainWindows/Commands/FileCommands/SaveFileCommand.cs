@@ -51,6 +51,7 @@ namespace TextEditorApp.MainWindows.Commands
                 {
                     var filepath = saveFileDialog.FileName;
                     CallerViewModel.ActiveTextEditor.DocumentModel.FilePath = filepath;
+                    CallerViewModel.ActiveTextEditor.DocumentModel.FileName = Path.GetFileName(filepath);
                     SaveContentToFile(filepath);
                 }
             }

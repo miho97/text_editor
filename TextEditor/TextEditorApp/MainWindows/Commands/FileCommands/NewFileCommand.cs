@@ -36,6 +36,7 @@ namespace TextEditorApp.MainWindows.Commands
         {
             // tabItem function called on every raise of event Preview...
             // += for possible list of events
+            CallerViewModel.FileCount++;
             TabItem newTab = new TabItem();
             newTab.PreviewMouseRightButtonDown += (sender, args) =>
             {
