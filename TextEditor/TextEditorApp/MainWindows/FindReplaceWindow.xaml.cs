@@ -2,6 +2,8 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.ComponentModel;
+
 
 namespace TextEditorApp
 {
@@ -20,6 +22,7 @@ namespace TextEditorApp
         public bool CircularSearch { get; private set; }
         private int totalMatches = 0;
         private int currentMatchIndex = 0;
+        private bool countingMatches = false;
 
 
         private readonly TextEditor textEditor;
@@ -32,6 +35,39 @@ namespace TextEditorApp
             UpdateHighlighting();
         }
 
+        public int TotalMatches
+        {
+            get { return totalMatches; }
+            set
+            {
+                if (totalMatches != value)
+                {
+                    totalMatches = value;
+                    OnPropertyChanged(nameof(TotalMatches));
+                }
+            }
+        }
+
+        public int CurrentMatchIndex
+        {
+            get { return currentMatchIndex; }
+            set
+            {
+                if (currentMatchIndex != value)
+                {
+                    currentMatchIndex = value;
+                    OnPropertyChanged(nameof(CurrentMatchIndex));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void Replace_Click(object sender, RoutedEventArgs e)
         {
             SearchText = txtFind.Text;
@@ -41,7 +77,9 @@ namespace TextEditorApp
 
             if (FindNext)
             {
+                --currentMatchIndex;
                 replacementMade = FindAndReplaceNext();
+                UpdateMatchLabels();
             }
             else
             {
@@ -71,7 +109,11 @@ namespace TextEditorApp
                 : Regex.Replace(editorText, searchText, replaceText, RegexOptions.IgnoreCase);
 
             textEditor.Document.Text = newText;
-         }
+
+            totalMatches = 0;
+            currentMatchIndex = 0;
+            UpdateMatchLabels();
+        }
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
@@ -152,11 +194,13 @@ namespace TextEditorApp
             UpdateHighlighting();
         }
 
+        /*
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Delay setting DialogResult until the window is loaded
             DialogResult = NextClicked; // Set DialogResult based on whether "Next" button was clicked
         }
+        */
 
         public bool FindAndHighlight()
         {
@@ -186,24 +230,32 @@ namespace TextEditorApp
 
                     currentIndex = textEditor.Text.IndexOf(searchText, currentIndex + 1, comparison);
 
-                    // Wrap around to the beginning if not found
+                    // Ako nije nađen par vrati se na početak
                     if (currentIndex == -1)
                     {
                         currentIndex = textEditor.Text.IndexOf(searchText, 0, comparison);
+                        currentMatchIndex = 0;
+                        UpdateMatchLabels();
                     }
 
                     if (currentIndex != -1)
                     {
                         textEditor.Select(currentIndex, searchText.Length);
                         textEditor.ScrollToLine(textEditor.Document.GetLineByOffset(currentIndex).LineNumber);
+
+                        // Update countera
+                        totalMatches = CountMatches(searchText, CircularSearch);
+                        currentMatchIndex++;
+
+                        UpdateMatchLabels();
                     }
                     else
                     {
                         MessageBox.Show("No more matches found", "Find");
-                        currentIndex = -1; 
+                        currentIndex = -1; // Reset za sljedeće traženje
                     }
 
-                    NextClicked = false; // Reset for the next iteration
+                    NextClicked = false; // Reset za sljedeću iteraciju
                 }
                 else if (PreviousClicked)
                 {
@@ -212,26 +264,82 @@ namespace TextEditorApp
 
                     currentIndex = textEditor.Text.LastIndexOf(searchText, Math.Max(0, currentIndex - 1), comparison);
 
-                    // Wrap around to the end if not found
+                    // Ako nije nađen par vrati se na početak
                     if (currentIndex == -1)
                     {
+                        // Update countera
                         currentIndex = textEditor.Text.LastIndexOf(searchText, textEditor.Text.Length - 1, comparison);
+                        currentMatchIndex = CountMatches(searchText, CircularSearch) + 1;
+                        UpdateMatchLabels();
                     }
 
                     if (currentIndex != -1)
                     {
                         textEditor.Select(currentIndex, searchText.Length);
                         textEditor.ScrollToLine(textEditor.Document.GetLineByOffset(currentIndex).LineNumber);
+
+                        // Update countera
+                        totalMatches = CountMatches(searchText, CircularSearch);
+                        currentMatchIndex--;
+
+                        UpdateMatchLabels();
                     }
                     else
                     {
                         MessageBox.Show("No more matches found", "Find");
-                        currentIndex = textEditor.Text.Length; // Reset for the next search
+                        currentIndex = textEditor.Text.Length; // Reset za sljedeće traženje
                     }
 
-                    PreviousClicked = false; // Reset for the next iteration
+                    PreviousClicked = false; // Reset za sljedeću iteraciju
                 }
             }
         }
+
+        private void UpdateMatchLabels()
+        {
+            // Update totalMatches i currentMatchIndex
+            lblTotalMatches.Content = totalMatches.ToString();
+            lblCurrentMatch.Content = currentMatchIndex.ToString();
+        }
+
+        private int CountMatches(string searchText, bool circularSearch)
+        {
+            int count = 0;
+            int startPosition = 0;
+
+            StringComparison comparison = MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+            while (startPosition < textEditor.Text.Length)
+            {
+                int index = textEditor.Text.IndexOf(searchText, startPosition, comparison);
+
+                if (index == -1)
+                {
+                    if (circularSearch)
+                    {
+                        // Ukoliko je cirkularno traženje omogućemo kreni ispočetka
+                        index = textEditor.Text.IndexOf(searchText, 0, comparison);
+                        count = 0;
+                    }
+                    else
+                    {
+                        // Nema više parova
+                        break;
+                    }
+                }
+
+                startPosition = index + searchText.Length;
+                count++;
+
+                if (circularSearch && startPosition >= textEditor.Text.Length)
+                {
+                    // Restart početne pozicije ako je cirkularno traženje omogućemo
+                    startPosition = 0;
+                }
+            }
+
+            return count;
+        }
+
     }
 }
