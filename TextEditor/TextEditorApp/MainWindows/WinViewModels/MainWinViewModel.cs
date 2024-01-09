@@ -225,6 +225,44 @@ namespace TextEditorApp.MainWindows.WinViewModels
             }
         }
 
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            if ( CancelMainWinClosing() ) e.Cancel = true;
+        }
+
+        private bool CancelMainWinClosing()
+        {
+            foreach (var tab in MainTabControl.Items.OfType<TabItem>())
+            {
+                if (tab.Content is DockPanel dockPanel)
+                {
+                    var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
+                    if (textEditor != null && textEditor.DocumentModel.IsSaved == false)
+                    {
+                        return CancelMainWinDialogOptions();
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool CancelMainWinDialogOptions()
+        {
+            MessageBoxResult result = MessageBox.Show("You've got some unsaved doucuments. Are you sure you want to quit before saving them? " +
+                "If you do so all of the changes will be erased. ", "Quit", MessageBoxButton.YesNoCancel);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    return false;
+                case MessageBoxResult.No:
+                    return true;
+                case MessageBoxResult.Cancel:
+                    return true;
+            }
+            return false;
+        }
+
+
         /// 
         ///  Commands section
         /// 
@@ -232,7 +270,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
 
         /// Font commands
-    
+
 
         private ICommand? _OnChangeFontSize;
         public ICommand OnChangeFontSize => _OnChangeFontSize ??= new OnChangeFontSize(this);
@@ -283,22 +321,25 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private ICommand? _NewFileCommand;
         public ICommand NewFileCommand => _NewFileCommand ??= new NewFileCommand(this);
 
+
         /// Commands for adding and removing tabs or documents
 
         private ICommand? _OnRemoveTabCommand;
         public ICommand OnRemoveTabCommand => _OnRemoveTabCommand ??= new OnRemoveTabCommand(this);
 
-        private ICommand? _FilterKeysUntilEnter;
-        public ICommand FilterKeysUntilEnter => _FilterKeysUntilEnter ??= new FilterKeysUntilEnter(this);
-
-        /// misc commands
-
         private ICommand? _OnTabSelectionChanged;
         public ICommand OnTabSelectionChanged => _OnTabSelectionChanged ??= new OnTabSelectionChanged(this);
 
-        
 
-        
+        /// misc commands
+
+        private ICommand? _FilterKeysUntilEnter;
+        public ICommand FilterKeysUntilEnter => _FilterKeysUntilEnter ??= new FilterKeysUntilEnter(this);
+
+
+
+
+
 
     }
 }

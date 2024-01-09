@@ -63,7 +63,6 @@ namespace TextEditorApp.MainWindows.Commands
 
             newTab.SetBinding(HeaderedContentControl.HeaderProperty, binding);
 
-            // Dodajte TabItem u TabControl
 
             statusBar.Text = "Status bar for " + newTab.Header;
 

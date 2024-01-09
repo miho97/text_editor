@@ -15,6 +15,11 @@
         mc:Ignorable="d"
         Title="TextEditor"
         WindowState="Maximized">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:CallMethodAction TargetObject="{Binding}" MethodName="OnWindowClosing" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <enum:EnumToBoolConverter x:Key="EnumConverter" />
     </Window.Resources>

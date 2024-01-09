@@ -53,7 +53,7 @@ namespace TextEditorApp.Utils.DocumentFiles
         {
             _documentLanguage = new LanguageViewModel("None", true);
             _fileName = "Untitled.txt";
-            IsSaved = false;
+            IsSaved = true;
         }
 
         private string _content = string.Empty;
