@@ -40,22 +40,29 @@ namespace TextEditorApp.MainWindows.Commands
             }
         }
 
-        private void OpenFile(string filename)
+        private void OpenFile(string filepath)
         {
-            if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            if (!File.Exists(filepath))
             {
-                var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
-                if (textEditor != null)
-                {
-                    try
-                    {
-                        textEditor.Text = File.ReadAllText(filename);
+                return;
+            }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error in saving file");
-                    }
+            CallerViewModel.NewFileCommand.Execute(CallerViewModel);
+
+            if (CallerViewModel.ActiveTextEditor != null)
+            {
+                try
+                {
+                    var fileContent = File.ReadAllText(filepath);
+                    CallerViewModel.ActiveTextEditor.Text = fileContent;
+                    CallerViewModel.ActiveTextEditor.DocumentModel.Content = fileContent;
+                    CallerViewModel.ActiveTextEditor.DocumentModel.FilePath = filepath;
+                    CallerViewModel.ActiveTextEditor.DocumentModel.FileName = Path.GetFileName(filepath);
+                    CallerViewModel.ActiveTextEditor.DocumentModel.IsSaved = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error in saving file");
                 }
             }
         }

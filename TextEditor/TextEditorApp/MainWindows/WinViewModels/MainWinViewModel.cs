@@ -37,6 +37,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private bool _IsCodeCompletitionEnabled;
         private FontFamilyModel _ChosenFontFamily;
         private CustomHorizontalTextAlignment _HorizontalTextAlignment;
+        private CustomTextEditorModel _activeTextEditor;
 
         public CustomHorizontalTextAlignment HorizontalTextAlignment
         {
@@ -55,6 +56,16 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 _ChosenFontFamily = value;
                 OnPropertyChanged(nameof(ChosenFontFamily));
+            }
+        }
+
+        public CustomTextEditorModel ActiveTextEditor
+        {
+            get { return _activeTextEditor; }
+            set
+            {
+                _activeTextEditor = value;
+                OnPropertyChanged(nameof(ActiveTextEditor));
             }
         }
 
@@ -131,6 +142,8 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 DocumentLanguages.Add(textLanguage.Name);
             }
+
+            NewFileCommand.Execute(this);
         }
 
         public void UpdateWindow()
@@ -257,6 +270,9 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         private ICommand? _saveFileAsCommand;
         public ICommand SaveFileAsCommand => _saveFileAsCommand ??= new SaveFileAsCommand(this);
+
+        private ICommand? _SaveFileCommand;
+        public ICommand SaveFileCommand => _SaveFileCommand ??= new SaveFileCommand(this);
 
         private ICommand? _OpenFileCommand;
         public ICommand OpenFileCommand => _OpenFileCommand ??= new OpenFileCommand(this);

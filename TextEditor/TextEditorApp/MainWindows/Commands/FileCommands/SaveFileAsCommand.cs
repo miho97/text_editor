@@ -30,6 +30,11 @@ namespace TextEditorApp.MainWindows.Commands
 
         public void Execute(object? parameter)
         {
+            if(CallerViewModel.ActiveTextEditor == null )
+            {
+                return;
+            }
+
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog()
             {
                 Filter = "All files|*.*",
@@ -38,27 +43,26 @@ namespace TextEditorApp.MainWindows.Commands
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                var filename = saveFileDialog.FileName;
-                SaveContentToFile(filename);
+                var filepath = saveFileDialog.FileName;
+                SaveContentToFile(filepath);
             }
         }
 
-        private void SaveContentToFile(string filename)
+        private void SaveContentToFile(string filepath)
         {
-            if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            if (CallerViewModel.ActiveTextEditor != null)
             {
-                var textEditor = dockPanel.Children.OfType<RoslynCodeEditor>().FirstOrDefault();
-                if (textEditor != null)
+                try
                 {
-                    try
-                    {
-                        File.WriteAllText(filename, textEditor.Text);
+                    File.WriteAllText(filepath, CallerViewModel.ActiveTextEditor.Text);
+                    CallerViewModel.ActiveTextEditor.DocumentModel.FilePath = filepath;
+                    CallerViewModel.ActiveTextEditor.DocumentModel.FileName = Path.GetFileName(filepath);
+                    CallerViewModel.ActiveTextEditor.DocumentModel.IsSaved = true;
 
-                    }
-                    catch (Exception ex)
-                    {
-                        //MessageBox.Show($"Error in saving file");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show($"Error in saving file");
                 }
             }
         }

@@ -28,6 +28,10 @@ namespace TextEditorApp.Controls.ControlsModels
             base.ShowLineNumbers = false;
             base.IsReadOnly = false;
             base.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            base.TextChanged += (sender, args) =>
+            {
+                DocumentModel.IsSaved = false;
+            };
         }
 
         private CustomHorizontalTextAlignment _textAlignment = CustomHorizontalTextAlignment.Left;

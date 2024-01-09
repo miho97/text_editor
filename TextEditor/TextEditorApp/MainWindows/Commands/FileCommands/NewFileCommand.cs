@@ -3,10 +3,12 @@ using Microsoft.Xaml.Behaviors;
 using RoslynPad.Editor;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.MainWindows.WinViewModels;
@@ -35,8 +37,6 @@ namespace TextEditorApp.MainWindows.Commands
             // tabItem function called on every raise of event Preview...
             // += for possible list of events
             TabItem newTab = new TabItem();
-            newTab.Header = "Untitled" + (++CallerViewModel.FileCount) + ".txt";
-
             newTab.PreviewMouseRightButtonDown += (sender, args) =>
             {
                 // Ovdje smo u kontekstu gdje je args dostupan
@@ -46,7 +46,7 @@ namespace TextEditorApp.MainWindows.Commands
             DockPanel panel = new DockPanel();
 
             TextBlock statusBar = new TextBlock();
-            statusBar.Text = "Status bar for " + newTab.Header;
+            
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
             var textEditor = new CustomTextEditorModel();
@@ -57,11 +57,23 @@ namespace TextEditorApp.MainWindows.Commands
 
             newTab.Content = panel;
 
+            var binding = new Binding(nameof(textEditor.DocumentModel.FileName));
+            binding.Source = textEditor.DocumentModel;
+
+            newTab.SetBinding(HeaderedContentControl.HeaderProperty, binding);
+
+            // Dodajte TabItem u TabControl
+
+            statusBar.Text = "Status bar for " + newTab.Header;
+
             CallerViewModel.MainTabControl.Items.Add(newTab);
 
             CallerViewModel.MainTabControl.SelectedItem = newTab;
 
+            CallerViewModel.ActiveTextEditor = textEditor;
+
             textEditor.Focus();
+
         }
     }
 }

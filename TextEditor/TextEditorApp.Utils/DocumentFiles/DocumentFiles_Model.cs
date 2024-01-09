@@ -31,9 +31,29 @@ namespace TextEditorApp.Utils.DocumentFiles
             }
         }
 
+        private string? _fileName;
+        public string FileName
+        {
+            get
+            {
+                return _fileName!;
+            }
+
+            set
+            {
+                if (_fileName != value)
+                {
+                    _fileName = value;
+                    OnPropertyChanged(nameof(FileName));
+                }
+            }
+        }
+
         public DocumentFiles_Model()
         {
             _documentLanguage = new LanguageViewModel("None", true);
+            _fileName = "Untitled.txt";
+            IsSaved = false;
         }
 
         private string _content = string.Empty;
@@ -112,7 +132,23 @@ namespace TextEditorApp.Utils.DocumentFiles
             get => _isSaved;
             set
             {
-                isEnabled = value;
+                _isSaved = value;
+                if (!IsSaved)
+                {
+                    if (_fileName != null && !_fileName.EndsWith("*"))
+                    {
+                        _fileName += "*";
+                        OnPropertyChanged(nameof(FileName));
+                    }
+                }
+                else
+                {
+                    if (_fileName != null &&  _fileName.EndsWith("*"))
+                    {
+                        _fileName = _fileName.Substring(0, _fileName.Length - 1);
+                        OnPropertyChanged(nameof(FileName));
+                    }
+                }
                 OnPropertyChanged(nameof(IsSaved));
             }
         }

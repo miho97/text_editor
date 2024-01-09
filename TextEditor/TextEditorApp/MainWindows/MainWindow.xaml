@@ -25,7 +25,7 @@
                 <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F">
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N" Header="New" Command="{Binding NewFileCommand}"/>
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Header="Open" Command="{Binding OpenFileCommand}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileAsCommand}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileCommand}"/>
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/SaveFileAs.png" Header="Save As..." Command="{Binding SaveFileAsCommand}"/>
                     <RibbonSeparator />
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/Print.png" Header="Print" Command="{Binding PrintCommand}"/>
@@ -159,22 +159,22 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                                 <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <TabItem Header="File 1">
+                        <!--<TabItem Header="File 1">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding OnRemoveTabCommand}" PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <DockPanel>
-                                <controls:CustomTextEditorModel x:Name="editor"
+                                --><!--<controls:CustomTextEditorModel x:Name="editor"
                                              DockPanel.Dock="Top"  
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch" 
-                                                              />
+                                                              />--><!--
                             <TextBlock Text="{Binding Result}" TextWrapping="Wrap" />
 
                         </DockPanel>
-                    </TabItem>
+                    </TabItem>-->
                     <!-- Additional TabItems can be added here -->
                 </TabControl>
             </DockPanel>
