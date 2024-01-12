@@ -35,9 +35,11 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private ComboBox? _FontSizeComboBox;
         private bool _IsShowLineNumbers;
         private bool _IsCodeCompletitionEnabled;
+        private bool _IsPrimCodeCompletionEnabled;
         private FontFamilyModel _ChosenFontFamily;
         private CustomHorizontalTextAlignment _HorizontalTextAlignment;
         private CustomTextEditorModel _activeTextEditor;
+        private bool _IsBrowserEnabled;
 
         public CustomHorizontalTextAlignment HorizontalTextAlignment
         {
@@ -46,6 +48,16 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 _HorizontalTextAlignment = value;
                 OnPropertyChanged(nameof(HorizontalTextAlignment));
+            }
+        }
+
+        public bool IsBrowserEnabled
+        {
+            get => _IsBrowserEnabled;
+            set
+            {
+                _IsBrowserEnabled = value;
+                OnPropertyChanged(nameof(IsBrowserEnabled));
             }
         }
 
@@ -86,6 +98,16 @@ namespace TextEditorApp.MainWindows.WinViewModels
             {
                 _IsCodeCompletitionEnabled = value;
                 OnPropertyChanged(nameof(IsCodeCompletitionEnabled));
+            }
+        }
+
+        public bool IsPrimCodeCompletionEnabled
+        {
+            get { return _IsPrimCodeCompletionEnabled; }
+            set
+            {
+                _IsPrimCodeCompletionEnabled = value;
+                OnPropertyChanged(nameof(IsPrimCodeCompletionEnabled));
             }
         }
 
@@ -159,6 +181,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     ChosenFontFamily = textEditor.DocumentModel.DocumentFontFamily;
                     HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
                     IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
+                    IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
                 }
             }
         }
@@ -285,6 +308,9 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         private ICommand? _OnCodeCompletitionCommand;
         public ICommand OnCodeCompletitionCommand => _OnCodeCompletitionCommand ??= new OnCodeCompletitionCommand(this);
+
+        private ICommand? _OnPrimCodeCompletitionCommand;
+        public ICommand OnPrimCodeCompletitionCommand => _OnPrimCodeCompletitionCommand ??= new OnPrimCodeCompletitionCommand(this);
 
         private ICommand? _OnShowLineNumbersChanged;
         public ICommand OnShowLineNumbersChanged => _OnShowLineNumbersChanged ??= new OnShowLineNumbersChanged(this);

@@ -22,6 +22,7 @@
     </i:Interaction.Triggers>
     <Window.Resources>
         <enum:EnumToBoolConverter x:Key="EnumConverter" />
+        <enum:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <DockPanel Margin="1">
         <Ribbon DockPanel.Dock="Top" Height="135">
@@ -111,7 +112,18 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                     </ComboBox>
                 </RibbonGroup>
                 <RibbonGroup Header="Intellisense">
-                    <RibbonToggleButton Label="Enable Code Completition" HorizontalAlignment="Center"  IsChecked="{Binding IsCodeCompletitionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                    <RibbonToggleButton Label="Enable Primitive Code Completion" HorizontalAlignment="Center"  IsChecked="{Binding IsPrimCodeCompletionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding OnPrimCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding OnPrimCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RibbonToggleButton>
+                    <RibbonSeparator/>
+                    <RibbonToggleButton Label="Enable Code Completion" HorizontalAlignment="Center"  IsChecked="{Binding IsCodeCompletitionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Checked">
                                 <i:InvokeCommandAction Command="{Binding OnCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
@@ -128,6 +140,10 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                                 <i:InvokeCommandAction Command="{Binding OnShowLineNumbersChanged}" PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+                    </RibbonToggleButton>
+                </RibbonGroup>
+                <RibbonGroup Header="Web browser">
+                    <RibbonToggleButton Label="Enable Web Browser" HorizontalAlignment="Center" IsChecked="{Binding IsBrowserEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
                     </RibbonToggleButton>
                 </RibbonGroup>
             </RibbonTab>
@@ -150,42 +166,28 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
 
         <!-- Main Content Area -->
         <DockPanel LastChildFill="True">
-            <Grid DockPanel.Dock="Left">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="70*"/>
+                    <ColumnDefinition Width="30*"/>
                 </Grid.ColumnDefinitions>
-                <DockPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="882">
-                    <TabControl DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}" >
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="Loaded">
-                                <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <!--<TabItem Header="File 1">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PreviewMouseRightButtonDown">
-                                <i:InvokeCommandAction Command="{Binding OnRemoveTabCommand}" PassEventArgsToCommand="True"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <DockPanel>
-                                --><!--<controls:CustomTextEditorModel x:Name="editor"
-                                             DockPanel.Dock="Top"  
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch" 
-                                                              />--><!--
-                            <TextBlock Text="{Binding Result}" TextWrapping="Wrap" />
+                <Border Grid.Column="0" Background="LightBlue">
 
-                        </DockPanel>
-                    </TabItem>-->
-                    <!-- Additional TabItems can be added here -->
-                </TabControl>
-            </DockPanel>
-            </Grid>
-
-            <DockPanel DockPanel.Dock="Right" MaxWidth="500" Margin="5,20,5,5">
+                    <DockPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="882">
+                        <TabControl DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:InvokeCommandAction Command="{Binding OnTabSelectionChanged}" PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TabControl>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Background="LightGray">
+                    <DockPanel DockPanel.Dock="Right" Visibility="{Binding IsBrowserEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"  Margin="5,20,5,5">
                 <DockPanel DockPanel.Dock="Top"  Margin="2,2,2,2" Width="Auto">
                     <Button DockPanel.Dock="Top" Content="Back" Command="{Binding WebBrowser.BackCommand, ElementName=Browser}" Width="Auto">
                         <Button.Resources>
@@ -229,7 +231,8 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                     </Border>
                 </DockPanel>
             </DockPanel>
-
+                </Border>
+            </Grid>
         </DockPanel>
     </DockPanel>
 </Window>

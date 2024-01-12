@@ -58,6 +58,8 @@ namespace TextEditorApp.MainWindows.Commands
 
             newTab.Content = panel;
 
+            textEditor.DockParent = panel;
+
             var binding = new Binding(nameof(textEditor.DocumentModel.FileName));
             binding.Source = textEditor.DocumentModel;
 
