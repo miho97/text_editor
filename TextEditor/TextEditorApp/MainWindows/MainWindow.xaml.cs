@@ -156,7 +156,7 @@ namespace TextEditorApp
             {
                 string searchText = findReplaceWindow.SearchText;
                 string replaceText = findReplaceWindow.ReplaceText;
-                bool findNext = findReplaceWindow.FindNext;
+                bool findNext = findReplaceWindow.ReplaceNext;
 
                 StringComparison comparison = findReplaceWindow.MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
