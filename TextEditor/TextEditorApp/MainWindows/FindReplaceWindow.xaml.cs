@@ -23,6 +23,8 @@ namespace TextEditorApp
         private int totalMatches = 0;
         private int currentMatchIndex = 0;
         private bool countingMatches = false;
+        private bool replaced;
+
         public bool CircularSearch
         {
             get { return chkCircularSearch.IsChecked ?? false; }
@@ -82,6 +84,7 @@ namespace TextEditorApp
             ReplaceText = txtReplace.Text;
             MatchCase = chkMatchCase.IsChecked ?? false;
             FindNext = chkFindNext.IsChecked ?? false;
+            replaced = true;
 
             if (FindNext)
             {
@@ -235,6 +238,11 @@ namespace TextEditorApp
                     StringComparison comparison = MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
                     currentIndex = textEditor.Text.IndexOf(searchText, currentIndex + 1, comparison);
+                    if(replaced == true)
+                    {
+                        currentMatchIndex--;
+                        replaced = false;
+                    }
 
                     // Ako nije nađen par vrati se na početak
                     if (currentIndex == -1 && CircularSearch)
@@ -380,7 +388,7 @@ namespace TextEditorApp
 
                 if (index == -1)
                 {
-                    // No more matches found
+                    // Nema više parova
                     break;
                 }
 
@@ -391,6 +399,7 @@ namespace TextEditorApp
             return count;
         }
 
+        // Circular Search uključeno/isključeno
         private void chkCircularSearch_Checked(object sender, RoutedEventArgs e)
         {
             CircularSearch = true;
