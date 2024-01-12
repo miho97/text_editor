@@ -7,33 +7,36 @@ using System.IO;
 
 namespace TextEditorApp.Utils.DocumentFiles
 {
-    internal class DocumentFiles
+    public static class DocumentFiles
     {
-        protected static bool IsExistDirectory(string directoryPath)
-        {
-            return Directory.Exists(directoryPath);
-        }
 
-        protected static void CreateDirectory(string directoryPath)
-        {
-            Directory.CreateDirectory(directoryPath);
-        }
+        public static List<string> suggestedWords = new List<string> { "class", "if", "else", "for", "while", "int", "string" };
+        static List<string> basicTypes = new List<string> { "class", "if", "else", "for", "while", "int", "string" };
+        //protected static bool IsExistDirectory(string directoryPath)
+        //{
+        //    return Directory.Exists(directoryPath);
+        //}
 
-        protected static string GetDirectoryPath(string filePath)
-        {
-            return Path.GetDirectoryName(filePath)!;
-        }
+        //protected static void CreateDirectory(string directoryPath)
+        //{
+        //    Directory.CreateDirectory(directoryPath);
+        //}
 
-        public void WriteToFile(DocumentFiles_Model model)
-        {
-            string directoryPath = GetDirectoryPath(model.FilePath)!;
+        //protected static string GetDirectoryPath(string filePath)
+        //{
+        //    return Path.GetDirectoryName(filePath)!;
+        //}
 
-            if (!IsExistDirectory(directoryPath))
-            {
-                CreateDirectory(directoryPath);
-            }
+        //public void WriteToFile(DocumentFiles_Model model)
+        //{
+        //    string directoryPath = GetDirectoryPath(model.FilePath)!;
 
-            File.WriteAllText(model.FilePath, model.Content as string);
-        }
+        //    if (!IsExistDirectory(directoryPath))
+        //    {
+        //        CreateDirectory(directoryPath);
+        //    }
+
+        //    File.WriteAllText(model.FilePath, model.Content as string);
+        //}
     }
 }

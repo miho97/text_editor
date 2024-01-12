@@ -1,25 +1,22 @@
-﻿using RoslynPad.Editor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Ribbon;
-using System.Windows.Controls;
-using System.Windows.Input;
-using TextEditorApp.MainWindows.WinViewModels;
-using TextEditorApp.Controls.ControlsModels;
 using System.Windows;
+using System.Windows.Input;
 using TextEditorApp.Intellisense.Service;
+using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class OnCodeCompletitionCommand : ICommand
+    internal class OnPrimCodeCompletitionCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
         protected readonly MainWinViewModel CallerViewModel;
 
-        public OnCodeCompletitionCommand(MainWinViewModel callerViewModel)
+        public OnPrimCodeCompletitionCommand(MainWinViewModel callerViewModel)
         {
             CallerViewModel = callerViewModel;
         }
@@ -34,15 +31,7 @@ namespace TextEditorApp.MainWindows.Commands
             var textEditor = CallerViewModel.ActiveTextEditor;
             if (parameter is RoutedEventArgs args && args.Source is RibbonToggleButton toggleButton && textEditor != null)
             {
-                if (toggleButton.IsChecked == true)
-                {
-                    var roslynHandler = new RoslynCodeEditorHandler();
-                    await roslynHandler.InitializeRoslynCodeEditorAsync(textEditor);
-                }
-                else
-                {
-                    textEditor.CompletionProvider = null;
-                }
+                textEditor.IsPrimIntellisenseEnabled = toggleButton.IsChecked ?? false;
             }
         }
     }
