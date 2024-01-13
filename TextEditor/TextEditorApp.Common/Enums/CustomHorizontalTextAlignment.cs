@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TextEditorApp.Common.Enums
+﻿namespace TextEditorApp.Common.Enums
 {
     public enum CustomHorizontalTextAlignment
     {
