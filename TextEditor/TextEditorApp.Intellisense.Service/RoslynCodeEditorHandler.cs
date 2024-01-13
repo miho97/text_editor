@@ -1,13 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using RoslynPad.Editor;
 using RoslynPad.Roslyn;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.Intellisense.Service

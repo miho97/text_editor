@@ -1,12 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.Diagnostics;
 using RoslynPad.Roslyn;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TextEditorApp.Intellisense.Service
 {

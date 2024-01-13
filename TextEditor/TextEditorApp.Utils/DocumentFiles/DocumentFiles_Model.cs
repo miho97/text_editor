@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Reflection;
-using TextEditorApp.Utils.StaticModels;
+﻿using TextEditorApp.Utils.StaticModels;
 using System.Windows.Media;
-using System.Windows.Automation.Text;
 using TextEditorApp.Common;
-using System.Windows;
 using TextEditorApp.Common.Enums;
 
 namespace TextEditorApp.Utils.DocumentFiles
