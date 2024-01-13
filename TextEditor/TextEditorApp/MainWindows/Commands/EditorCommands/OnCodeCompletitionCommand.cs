@@ -16,7 +16,9 @@ namespace TextEditorApp.MainWindows.Commands
 {
     internal class OnCodeCompletitionCommand : ICommand
     {
+        #pragma warning disable CS0067
         public event EventHandler? CanExecuteChanged;
+        #pragma warning restore CS0067
         protected readonly MainWinViewModel CallerViewModel;
 
         public OnCodeCompletitionCommand(MainWinViewModel callerViewModel)

@@ -26,7 +26,7 @@ namespace TextEditorApp.MainWindows.Behaviours
             if (e.Key == Key.Enter)
             {
                 var txtBox = sender as TextBox;
-                txtBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                txtBox?.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
 
 
@@ -13,7 +9,7 @@ namespace TextEditorApp.Dialogs.EditorSaveFileDialog
         public void ShowDialog()
         {
 
-            var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            var saveFileDialog = new SaveFileDialog();
             //dlg.FileName = "Document"; // Default file name
             //dlg.DefaultExt = ".txt"; // Default file extension
             //dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension

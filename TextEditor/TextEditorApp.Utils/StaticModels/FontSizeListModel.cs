@@ -19,6 +19,13 @@ namespace TextEditorApp.Utils.StaticModels
             IsEnabled = isEnabled;
             _FontSizeText = fontSize.ToString();
         }
+
+        public FontSizeListModel()
+        {
+            _fontSize = 12;
+            IsEnabled = true;
+            _FontSizeText = _fontSize.ToString();
+        }
         public double FontSize
         {
             get { return _fontSize; }

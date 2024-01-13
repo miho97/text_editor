@@ -17,7 +17,9 @@ namespace TextEditorApp.MainWindows.Commands
 {
     internal class PrintCommand : ICommand
     {
+        #pragma warning disable CS0067
         public event EventHandler? CanExecuteChanged;
+        #pragma warning restore CS0067
         protected readonly MainWinViewModel CallerViewModel;
 
         public PrintCommand(MainWinViewModel callerViewModel)
@@ -56,13 +58,13 @@ namespace TextEditorApp.MainWindows.Commands
                     pd.PrintPage += (sender, e) =>
                     {
                         // TODO - check printing, bind with corresponding font and size
-                        e.Graphics.DrawString(textEditor.Text, new Font("Arial", 10), Brushes.Black, 10, 10);
+                        e?.Graphics?.DrawString(textEditor.Text, new Font("Arial", 10), Brushes.Black, 10, 10);
                     };                    
                     try
                     {
                         
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // TODO
                         return;

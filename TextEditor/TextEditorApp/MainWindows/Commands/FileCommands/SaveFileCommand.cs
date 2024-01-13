@@ -11,7 +11,9 @@ namespace TextEditorApp.MainWindows.Commands
 {
     internal class SaveFileCommand : ICommand
     {
+        #pragma warning disable CS0067
         public event EventHandler? CanExecuteChanged;
+        #pragma warning restore CS0067
         protected readonly MainWinViewModel CallerViewModel;
 
         public SaveFileCommand(MainWinViewModel callerViewModel)
@@ -67,7 +69,7 @@ namespace TextEditorApp.MainWindows.Commands
                     CallerViewModel.ActiveTextEditor.DocumentModel.IsSaved = true;
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //MessageBox.Show($"Error in saving file");
                 }

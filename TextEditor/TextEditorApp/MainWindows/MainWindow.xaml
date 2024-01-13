@@ -204,9 +204,9 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </Button.Resources>
                     </Button>
                     <TextBox DockPanel.Dock="Top" x:Name="txtBoxAddress" Text="{Binding Address, ElementName=Browser, FallbackValue=www.google.com}" FontSize="12" BorderBrush="Gray" BorderThickness="1">
-                        <behaviors:Interaction.Behaviors>
+                        <i:Interaction.Behaviors>
                             <behaviours:TextBoxBindingUpdateOnEnterBehaviour/>
-                        </behaviors:Interaction.Behaviors>
+                        </i:Interaction.Behaviors>
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -227,7 +227,9 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </ProgressBar.Resources>
                     </ProgressBar>
                     <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,1">
-                        <web:ChromiumWebBrowser Margin="2,2,2,2" HorizontalAlignment="Stretch" x:Name="Browser" Address="www.google.com"/>
+                        <web:ChromiumWebBrowser Margin="2,2,2,2" HorizontalAlignment="Stretch" 
+                                                x:Name="Browser" Address="www.google.com"
+                                                VerticalAlignment="Stretch"/>
                     </Border>
                 </DockPanel>
             </DockPanel>

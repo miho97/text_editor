@@ -20,7 +20,9 @@ namespace TextEditorApp.MainWindows.Commands
             CallerViewModel = callerViewModel;
         }
 
+        #pragma warning disable CS0067
         public event EventHandler? CanExecuteChanged;
+        #pragma warning restore CS0067
 
         public bool CanExecute(object? parameter)
         {
@@ -36,7 +38,7 @@ namespace TextEditorApp.MainWindows.Commands
                 {
                     {
                         try { textEditor.Cut(); }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             MessageBox.Show($"Error in cutting from file");
                         }

@@ -1,38 +1,19 @@
-﻿using ICSharpCode.AvalonEdit;
-using RoslynPad.Editor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using TextEditorApp.Common;
 using TextEditorApp.Common.Enums;
 using TextEditorApp.Utils.DocumentFiles;
-using TextEditorApp.Utils.StaticModels;
 using System.Windows;
 using Microsoft.CodeAnalysis;
-using RoslynPad.Roslyn;
-using System.IO;
-using System.Reflection;
-using Microsoft.CodeAnalysis.Completion;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using System.Windows.Documents;
 using TextEditorApp.Dialogs.CodeCompetionDialog;
 using ICSharpCode.AvalonEdit.Rendering;
-using Microsoft.CodeAnalysis.Differencing;
-using ICSharpCode.AvalonEdit.Document;
-using System.Windows.Input;
-//using System.Drawing;
-using Point = System.Windows.Point;
-using System.Windows.Media;
 
 namespace TextEditorApp.Controls.ControlsModels
 {
     public class CustomTextEditorModel : CustomTextEditorBaseModel
     {
         private DocumentFiles_Model _document;
-        private DockPanel _dockParent;
+        private DockPanel? _dockParent;
         private bool uglyDirtyCompletionDisabler = false;
 
 
@@ -43,6 +24,7 @@ namespace TextEditorApp.Controls.ControlsModels
             _document = new DocumentFiles_Model();
             base.ShowLineNumbers = false;
             base.IsReadOnly = false;
+            base.HorizontalAlignment = HorizontalAlignment.Stretch;
             base.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
             base.TextChanged += (sender, args) =>
@@ -90,8 +72,9 @@ namespace TextEditorApp.Controls.ControlsModels
             get => _textAlignment;
             set
             {
+                
                 _textAlignment = value;
-                base.TextArea.HorizontalAlignment =  ((HorizontalAlignment)Enum.ToObject(typeof(HorizontalAlignment), (int)value));
+                base.TextArea.TextView.HorizontalAlignment = ((HorizontalAlignment)Enum.ToObject(typeof(HorizontalAlignment), (int)value));
                 OnPropertyChanged(nameof(TextAlignment));
             }
         }
@@ -123,7 +106,7 @@ namespace TextEditorApp.Controls.ControlsModels
 
         public DockPanel DockParent
         {
-            get { return _dockParent; }
+            get { return _dockParent ?? (_dockParent = new DockPanel()); }
             set
             {
                 if (_dockParent != value)
@@ -264,12 +247,15 @@ namespace TextEditorApp.Controls.ControlsModels
 
             comboBox.SelectionChanged += (sender, args) =>
             {
-                InsertSelectedWord(comboBox.SelectedValue?.ToString());
-                comboBox.IsDropDownOpen = false;
-                comboBox.IsEnabled = false;
-                RemoveAllAdorners();
-                this.Focus();
-                this.TextArea.Focus();
+                if (comboBox.SelectedValue != null)
+                {
+                    InsertSelectedWord(comboBox.SelectedValue.ToString() ?? string.Empty);
+                    comboBox.IsDropDownOpen = false;
+                    comboBox.IsEnabled = false;
+                    RemoveAllAdorners();
+                    this.Focus();
+                    this.TextArea.Focus();
+                }
             };
 
             return comboBox;

@@ -47,5 +47,10 @@ namespace TextEditorApp
 
             DataContext = new MainWinViewModel(MainTabControl, FontSizeComboBox);
         }
+
+        private void Browser_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
     }
 }

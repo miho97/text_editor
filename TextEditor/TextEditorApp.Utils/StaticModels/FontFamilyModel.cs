@@ -16,19 +16,27 @@ namespace TextEditorApp.Utils.StaticModels
         public FontFamilyModel(FontFamily fontFamily, bool isEnabled)
         {
             Fontfamily = fontFamily;
-            _FontfamilyString = fontFamily?.ToString();
+            _FontfamilyString = Fontfamily.ToString();
             IsEnabled = isEnabled;
+        }
+
+        public FontFamilyModel()
+        {
+            Fontfamily = new FontFamily();
+            _FontfamilyString = Fontfamily.ToString();
+            IsEnabled = isEnabled;
+
         }
         public FontFamily Fontfamily
         {
-            get { return fontFamily; }
+            get { return fontFamily ?? (fontFamily = new FontFamily()); }
             set
             {
                 if (fontFamily != value)
                 {
                     fontFamily = value;
                     OnPropertyChanged(nameof(fontFamily));
-                    FontfamilyString = value?.ToString();
+                    FontfamilyString = value.ToString();
                 }
             }
         }

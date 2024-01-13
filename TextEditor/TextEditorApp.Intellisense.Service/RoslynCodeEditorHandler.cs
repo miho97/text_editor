@@ -18,12 +18,12 @@ namespace TextEditorApp.Intellisense.Service
 
         public RoslynCodeEditorHandler()
         {
-            InitializeRoslynHost();
+            _host = InitializeRoslynHost();
         }
 
-        private void InitializeRoslynHost()
+        private CustomRoslynHost InitializeRoslynHost()
         {
-            _host = new CustomRoslynHost(additionalAssemblies: new[]
+            var host = new CustomRoslynHost(additionalAssemblies: new[]
                         {
                             Assembly.Load("RoslynPad.Roslyn.Windows"),
                             Assembly.Load("RoslynPad.Editor.Windows")
@@ -35,6 +35,7 @@ namespace TextEditorApp.Intellisense.Service
                                 }
                             )
                         );
+            return host;
         }
         public async Task InitializeRoslynCodeEditorAsync(CustomTextEditorModel roslynCodeEditor)
         {

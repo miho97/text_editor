@@ -36,10 +36,12 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private bool _IsShowLineNumbers;
         private bool _IsCodeCompletitionEnabled;
         private bool _IsPrimCodeCompletionEnabled;
-        private FontFamilyModel _ChosenFontFamily;
+        private FontFamilyModel? _ChosenFontFamily;
         private CustomHorizontalTextAlignment _HorizontalTextAlignment;
-        private CustomTextEditorModel _activeTextEditor;
+        private CustomTextEditorModel? _activeTextEditor;
         private bool _IsBrowserEnabled;
+        private FontSizeListModel? _selectedFontSize;
+        private LanguageViewModel? _ChosenLanguage;
 
         public CustomHorizontalTextAlignment HorizontalTextAlignment
         {
@@ -63,7 +65,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         public FontFamilyModel ChosenFontFamily
         {
-            get { return _ChosenFontFamily; }
+            get { return _ChosenFontFamily ?? (_ChosenFontFamily = new FontFamilyModel()); }
             set
             {
                 _ChosenFontFamily = value;
@@ -73,7 +75,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         public CustomTextEditorModel ActiveTextEditor
         {
-            get { return _activeTextEditor; }
+            get { return _activeTextEditor ?? (_activeTextEditor = new CustomTextEditorModel()); }
             set
             {
                 _activeTextEditor = value;
@@ -122,7 +124,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         public TabControl MainTabControl
         {
-            get { return _MainTabControl; }
+            get { return _MainTabControl ?? (_MainTabControl = new TabControl()); }
             set
             {
                 _MainTabControl = value;
@@ -132,7 +134,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         public ComboBox FontSizeComboBox
         {
-            get { return _FontSizeComboBox; }
+            get { return _FontSizeComboBox ?? (_FontSizeComboBox = new ComboBox()); }
             set
             {
                 _FontSizeComboBox = value;
@@ -188,11 +190,11 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         private List<int> FontSizeList => new List<int> { 12, 16, 20 };
 
-        private FontSizeListModel _selectedFontSize;
+        
 
         public FontSizeListModel SelectedFontSize
         {
-            get { return _selectedFontSize; }
+            get { return _selectedFontSize ?? (_selectedFontSize = new FontSizeListModel()); }
             set
             {
                 _selectedFontSize = value;
@@ -200,11 +202,11 @@ namespace TextEditorApp.MainWindows.WinViewModels
             }
         }
 
-        private LanguageViewModel _ChosenLanguage;
+        
 
         public LanguageViewModel ChosenLanguage
         {
-            get { return _ChosenLanguage; }
+            get { return _ChosenLanguage ?? (_ChosenLanguage = new LanguageViewModel()); }
             set
             {
                 _ChosenLanguage = value;

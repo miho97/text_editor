@@ -13,7 +13,9 @@ namespace TextEditorApp.MainWindows.Commands
 {
     internal class OnPrimCodeCompletitionCommand : ICommand
     {
+        #pragma warning disable CS0067
         public event EventHandler? CanExecuteChanged;
+        #pragma warning restore CS0067
         protected readonly MainWinViewModel CallerViewModel;
 
         public OnPrimCodeCompletitionCommand(MainWinViewModel callerViewModel)
@@ -26,7 +28,7 @@ namespace TextEditorApp.MainWindows.Commands
             return true;
         }
 
-        public async void Execute(object? parameter)
+        public void Execute(object? parameter)
         {
             var textEditor = CallerViewModel.ActiveTextEditor;
             if (parameter is RoutedEventArgs args && args.Source is RibbonToggleButton toggleButton && textEditor != null)

@@ -17,6 +17,12 @@ namespace TextEditorApp.Utils.StaticModels
             _SelectedLanguage = SelectedLanguage;
             IsEnabled = isEnabled;
         }
+
+        public LanguageViewModel()
+        {
+            _SelectedLanguage = "None";
+            IsEnabled = true;
+        }
         public string SelectedLanguage
         {
             get { return _SelectedLanguage; }
