@@ -36,8 +36,6 @@ namespace TextEditorApp.Dialogs.CodeCompetionDialog
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-
-            // Prikazi samo ComboBox na mjestu _pos
             comboBox.IsDropDownOpen = true;
         }
         protected override Visual GetVisualChild(int index)

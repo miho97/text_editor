@@ -11,9 +11,6 @@
     <Folder Include="AboutDialog\" />
   </ItemGroup>
 
-  <!--<ItemGroup>
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />

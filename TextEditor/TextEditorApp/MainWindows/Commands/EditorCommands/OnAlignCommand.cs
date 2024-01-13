@@ -33,17 +33,6 @@ namespace TextEditorApp.MainWindows.Commands
 
         public void Execute(object? parameter)
         {
-            //if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel
-            //    && parameter is CustomHorizontalTextAlignment align)
-            //{
-            //    var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
-            //    if (textEditor != null)
-            //    {
-            //        textEditor.DocumentModel.TextAlignment = align;
-            //        textEditor.TextAlignment = align;
-            //    }
-            //}
-
             if(CallerViewModel.ActiveTextEditor != null && parameter is CustomHorizontalTextAlignment align)
             {
                 CallerViewModel.ActiveTextEditor.TextAlignment = align;

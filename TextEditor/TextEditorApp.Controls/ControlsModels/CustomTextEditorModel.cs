@@ -15,10 +15,12 @@ namespace TextEditorApp.Controls.ControlsModels
         private DocumentFiles_Model _document;
         private DockPanel? _dockParent;
         private bool uglyDirtyCompletionDisabler = false;
+        private List<string> usedVariables;
 
 
         public CustomTextEditorModel() : base()
         {
+            usedVariables = new List<string>();
             this.ClipToBounds = true;
             base.IsBraceCompletionEnabled = true;
             _document = new DocumentFiles_Model();
@@ -31,6 +33,7 @@ namespace TextEditorApp.Controls.ControlsModels
             {
                 DocumentModel.IsSaved = false;
                 UpdateCurrentWord();
+                CheckForNewVariable();
                 ExecuteCodeCompletion();
             };
             //base.PreviewTextInput += (sender, args) =>
@@ -180,7 +183,7 @@ namespace TextEditorApp.Controls.ControlsModels
         {
             if (string.IsNullOrEmpty(selectedWord)) return;
 
-                        int cursorIndex = base.SelectionStart;
+            int cursorIndex = base.SelectionStart;
             string text = base.Text;
 
             int startOfWord = cursorIndex - 1;
@@ -205,13 +208,51 @@ namespace TextEditorApp.Controls.ControlsModels
             uglyDirtyCompletionDisabler = activeCompFilter;
         }
 
+        private void CheckForNewVariable()
+        {
+            if (CurrentWord != "=" || base.Text == string.Empty) return;
+
+            int cursorIndex = base.SelectionStart;
+            string text = base.Text;
+
+            int endOfWord = cursorIndex - 2;
+            var currentChar = text[endOfWord];
+            if (!char.IsLetterOrDigit(currentChar) && !char.IsWhiteSpace(currentChar)) return;
+            while (endOfWord >= 0 && !char.IsWhiteSpace(text[endOfWord]))
+            {
+                endOfWord--;
+            }
+
+            while (endOfWord >= 0 && char.IsWhiteSpace(text[endOfWord]))
+            {
+                endOfWord--;
+            }
+
+            int startOfWord = endOfWord;
+            while (startOfWord >= 0 && !char.IsWhiteSpace(text[startOfWord]))
+            {
+                startOfWord--;
+            }
+
+            if (startOfWord >= 0)
+            {
+                string variableName = text.Substring(startOfWord + 1, endOfWord - startOfWord);
+                if(!usedVariables.Contains(variableName))
+                {
+                    usedVariables.Add(variableName);
+                }
+            }
+
+        }
+
         private List<string> GetMatchingKeywords()
         {
             if (CurrentWord == string.Empty)  {
                 RemoveAllAdorners();
                 return new List<string>(); ;
             }
-            return CSKeywords.AllKeywords
+            return usedVariables
+                .Concat(CSKeywords.AllKeywords)
                 .Where(w => w.StartsWith(CurrentWord, StringComparison.OrdinalIgnoreCase) || w.Contains(CurrentWord, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
