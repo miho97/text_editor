@@ -1,14 +1,7 @@
-﻿using RoslynPad.Editor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Controls.Ribbon;
-using System.Windows.Controls;
 using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
-using TextEditorApp.Controls.ControlsModels;
 using System.Windows;
 using TextEditorApp.Intellisense.Service;
 

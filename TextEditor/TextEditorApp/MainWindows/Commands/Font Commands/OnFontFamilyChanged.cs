@@ -1,10 +1,6 @@
-﻿using ICSharpCode.AvalonEdit;
-using RoslynPad.Editor;
+﻿using RoslynPad.Editor;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;

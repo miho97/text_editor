@@ -1,18 +1,9 @@
-﻿using ICSharpCode.AvalonEdit;
-using Microsoft.Xaml.Behaviors;
-using RoslynPad.Editor;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.MainWindows.WinViewModels;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TextEditorApp.MainWindows.Commands
 {

@@ -1,30 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
 using System.Windows.Input;
 using TextEditorApp.Common;
 using TextEditorApp.MainWindows.Commands;
 using TextEditorApp.Utils.StaticModels;
 using System.ComponentModel;
 using System.Windows.Media;
-using System.Drawing;
 using ICSharpCode.AvalonEdit.Highlighting;
 using System.Reactive.Linq;
-using RoslynPad.Editor;
 using TextEditorApp.Controls.ControlsModels;
-using System.Windows.Automation.Text;
 using TextEditorApp.Common.Enums;
 using System.Windows;
 using Microsoft.CodeAnalysis;
-using RoslynPad.Roslyn;
-using System.IO;
-using System.Reflection;
-using TextEditorApp.Intellisense.Service;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {

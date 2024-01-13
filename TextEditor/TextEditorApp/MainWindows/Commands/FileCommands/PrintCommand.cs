@@ -1,16 +1,10 @@
-﻿using ICSharpCode.AvalonEdit;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.IO;
 using TextEditorApp.MainWindows.WinViewModels;
 using System.Drawing;
 using System.Drawing.Printing;
-using Microsoft.CodeAnalysis.Scripting;
 using RoslynPad.Editor;
 
 namespace TextEditorApp.MainWindows.Commands

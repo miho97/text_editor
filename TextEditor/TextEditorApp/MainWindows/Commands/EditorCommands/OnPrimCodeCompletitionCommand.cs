@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls.Ribbon;
 using System.Windows;
 using System.Windows.Input;
-using TextEditorApp.Intellisense.Service;
 using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands

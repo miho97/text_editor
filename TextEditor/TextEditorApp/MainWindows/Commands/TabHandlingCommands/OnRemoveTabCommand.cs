@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TextEditorApp.MainWindows.WinViewModels;
-using System.IO;
 using System.Windows;
-using ICSharpCode.AvalonEdit;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TextEditorApp.Controls.ControlsModels;
