@@ -5,6 +5,14 @@ using TextEditorApp.Common.Enums;
 
 namespace TextEditorApp.Utils.DocumentFiles
 {
+
+    /// <summary>
+    /// Model class representing a document file with properties related to its content, styling, and file management.
+    /// This class in practice represents all important informations related to document user is working on such as path on the user disc, font size, etc.
+    /// </summary>
+    /// 
+
+    // since all of the properties, setters and getter are verbose enough we will only explain those that are not straightforward
     public class DocumentFiles_Model : ViewModelBase
     {
         private string? _filePath;
@@ -40,6 +48,9 @@ namespace TextEditorApp.Utils.DocumentFiles
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentFiles_Model"/> class with default values.
+        /// </summary>
         public DocumentFiles_Model()
         {
             _documentLanguage = new LanguageViewModel("None", true);
@@ -61,6 +72,10 @@ namespace TextEditorApp.Utils.DocumentFiles
 
         private FontSizeListModel _fontSize = new FontSizeListModel(12, true);
 
+        /// <summary>
+        /// Gets or sets the font size used in the current document.
+        /// Refers to  <see cref="FontSizeListModel"/>.
+        /// </summary>
         public FontSizeListModel FontSize
         {
             get => _fontSize;
@@ -71,6 +86,11 @@ namespace TextEditorApp.Utils.DocumentFiles
             }
         }
         private FontFamilyModel _documentFontFamily = new FontFamilyModel(new FontFamily("Times New Roman"), true);
+
+        /// <summary>
+        /// Gets or sets the font used in the current document.
+        /// Refers to  <see cref="FontFamilyModel"/>.
+        /// </summary>
 
         public FontFamilyModel DocumentFontFamily
         {
@@ -83,6 +103,10 @@ namespace TextEditorApp.Utils.DocumentFiles
         }
         private LanguageViewModel _documentLanguage;
 
+        /// <summary>
+        /// Gets or sets the language used for text highlighting.
+        /// Refers to  <see cref="LanguageViewModel"/>.
+        /// </summary>
         public LanguageViewModel DocumentLanguage
         {
             get => _documentLanguage;
@@ -92,8 +116,13 @@ namespace TextEditorApp.Utils.DocumentFiles
                 OnPropertyChanged(nameof(DocumentLanguage));
             }
         }
+
         private CustomHorizontalTextAlignment _textAlignment = CustomHorizontalTextAlignment.Left;
 
+        /// <summary>
+        /// Gets or sets the horizontal text alignment for the document.
+        /// Default value: <see cref="CustomHorizontalTextAlignment.Left"/>.
+        /// </summary>
         public CustomHorizontalTextAlignment TextAlignment
         {
             get => _textAlignment;
@@ -118,12 +147,18 @@ namespace TextEditorApp.Utils.DocumentFiles
 
         private bool _isSaved;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the document is saved.
+        /// Default value: true.
+        /// </summary>
         public bool IsSaved
         {
             get => _isSaved;
             set
             {
                 _isSaved = value;
+
+                // If the document is not saved, append "*" to the file name to indicate unsaved changes.
                 if (!IsSaved)
                 {
                     if (_fileName != null && !_fileName.EndsWith("*"))
@@ -132,6 +167,8 @@ namespace TextEditorApp.Utils.DocumentFiles
                         OnPropertyChanged(nameof(FileName));
                     }
                 }
+
+                // If the document is saved, remove "*" from the file name.
                 else
                 {
                     if (_fileName != null &&  _fileName.EndsWith("*"))
