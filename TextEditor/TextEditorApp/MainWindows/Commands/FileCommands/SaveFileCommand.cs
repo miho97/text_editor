@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
 
@@ -71,7 +68,7 @@ namespace TextEditorApp.MainWindows.Commands
                 }
                 catch (Exception)
                 {
-                    //MessageBox.Show($"Error in saving file");
+                    MessageBox.Show($"Error in saving file");
                 }
             }
         }

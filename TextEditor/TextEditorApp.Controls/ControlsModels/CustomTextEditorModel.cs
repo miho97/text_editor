@@ -36,37 +36,7 @@ namespace TextEditorApp.Controls.ControlsModels
                 CheckForNewVariable();
                 ExecuteCodeCompletion();
             };
-            //base.PreviewTextInput += (sender, args) =>
-            //{
-            //    HandleUserInput(sender, args);
-            //};
         }
-
-        //private void HandleUserInput(object sender, TextCompositionEventArgs e)
-        //{
-        //    List<string> validCharacters = new List<string> { "(", "{", "[", ")", "}", "]" };
-        //    if (validCharacters.Contains(e.Text))
-        //    {
-
-        //        int caretIndex = base.SelectionStart;
-        //        string text = base.Text;
-
-        //        int openBracketIndex = text.LastIndexOf('(', caretIndex - 1);
-        //        int closeBracketIndex = text.IndexOf(')', caretIndex-1);
-
-        //        if (openBracketIndex != -1 && closeBracketIndex != -1 && openBracketIndex < closeBracketIndex)
-        //        {
-
-        //            base.Select(openBracketIndex, closeBracketIndex - openBracketIndex + 1);
-        //            base.TextArea.SelectionBrush = Brushes.Red;
-
-        //            this.TextArea.Style
-        //            base.TextArea.Foreground = Brushes.Yellow; 
-
-        //            base.Select(caretIndex, 0);
-        //        }
-        //    }
-        //}
 
         private CustomHorizontalTextAlignment _textAlignment = CustomHorizontalTextAlignment.Left;
 
@@ -212,7 +182,7 @@ namespace TextEditorApp.Controls.ControlsModels
         {
             if (CurrentWord != "=" || base.Text == string.Empty) return;
 
-            int cursorIndex = base.SelectionStart;
+             int cursorIndex = base.SelectionStart;
             string text = base.Text;
 
             int endOfWord = cursorIndex - 2;

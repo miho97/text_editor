@@ -36,13 +36,11 @@ namespace TextEditorApp.MainWindows.Commands
 
         public void Execute(object? parameter)
         {
-            // tabItem function called on every raise of event Preview...
-            // += for possible list of events
             CallerViewModel.FileCount++;
             TabItem newTab = new TabItem();
+
             newTab.PreviewMouseRightButtonDown += (sender, args) =>
             {
-                // Ovdje smo u kontekstu gdje je args dostupan
                 CallerViewModel.OnRemoveTabCommand?.Execute(args);
             };
 

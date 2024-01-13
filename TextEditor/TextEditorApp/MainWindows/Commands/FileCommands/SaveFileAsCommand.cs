@@ -1,15 +1,8 @@
-﻿using ICSharpCode.AvalonEdit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System;
 using System.Windows.Input;
 using System.IO;
 using TextEditorApp.MainWindows.WinViewModels;
 using System.Windows;
-using RoslynPad.Editor;
 
 namespace TextEditorApp.MainWindows.Commands
 {
@@ -64,7 +57,7 @@ namespace TextEditorApp.MainWindows.Commands
                 }
                 catch (Exception)
                 {
-                    //MessageBox.Show($"Error in saving file");
+                    MessageBox.Show($"Error in saving file");
                 }
             }
         }
