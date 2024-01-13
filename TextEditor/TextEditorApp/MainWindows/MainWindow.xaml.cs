@@ -125,6 +125,7 @@ namespace TextEditorApp
         public static FindReplaceWindow? findReplaceWindow;
         private TextEditor? currentTextEditor;
 
+        // Otvaranje posebnog prozora za Find/Replace
         private void Find_Click(object sender, RoutedEventArgs e)
         {
             if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
@@ -137,56 +138,13 @@ namespace TextEditorApp
                         findReplaceWindow = new FindReplaceWindow(currentTextEditor);
                     }
 
-                    findReplaceWindow.FindAndHighlight(); // Show the window as a dialog
+                    findReplaceWindow.FindAndHighlight(); // Prikaži poseban prozor za Find/Replace
 
-                    // Reset findReplaceWindow after using it
+                    // Reset prozora nakon zatvaranja
                     findReplaceWindow = null;
                 }
             }
         }
-
-        private void Replace_Click(object sender, RoutedEventArgs e)
-        {
-            if (findReplaceWindow == null)
-            {
-                findReplaceWindow = new FindReplaceWindow(currentTextEditor);
-            }
-
-            if (findReplaceWindow.ShowDialog() == true)
-            {
-                string searchText = findReplaceWindow.SearchText;
-                string replaceText = findReplaceWindow.ReplaceText;
-                bool findNext = findReplaceWindow.ReplaceNext;
-
-                StringComparison comparison = findReplaceWindow.MatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-
-                int index = textEditor.Text.IndexOf(searchText, comparison);
-
-                if (index != -1)
-                {
-                    textEditor.Document.Replace(index, searchText.Length, replaceText);
-
-                    if (findNext)
-                    {
-                        // Find the next occurrence if Find Next is checked
-                        index = textEditor.Text.IndexOf(searchText, index + replaceText.Length, comparison);
-                        if (index != -1)
-                        {
-                            textEditor.Select(index, searchText.Length);
-                            textEditor.ScrollToLine(textEditor.Document.GetLineByOffset(index).LineNumber);
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Text not found", "Replace");
-                }
-
-                // Reset findReplaceWindow after using it
-                findReplaceWindow = null;
-            }
-        }
-
 
     }
 }
