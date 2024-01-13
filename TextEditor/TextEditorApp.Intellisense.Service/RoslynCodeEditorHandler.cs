@@ -7,13 +7,19 @@ using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.Intellisense.Service
 {
-    public class RoslynCodeEditorHandler
+    public class RoslynCodeEditorHandler : IDisposable
     {
         private CustomRoslynHost _host;
+        private DocumentId? documentId;
 
         public RoslynCodeEditorHandler()
         {
             _host = InitializeRoslynHost();
+        }
+
+        public void Dispose()
+        {
+            _host?.CloseDocument(documentId);
         }
 
         private CustomRoslynHost InitializeRoslynHost()
@@ -35,8 +41,8 @@ namespace TextEditorApp.Intellisense.Service
         public async Task InitializeRoslynCodeEditorAsync(CustomTextEditorModel roslynCodeEditor)
         {
             var workingDirectory = Directory.GetCurrentDirectory();
-            var documentId = await roslynCodeEditor.InitializeAsync(_host, new ClassificationHighlightColors(),
-            workingDirectory, string.Empty, SourceCodeKind.Script).ConfigureAwait(true);
+            documentId = await roslynCodeEditor.InitializeAsync(_host, new ClassificationHighlightColors(),
+            workingDirectory, roslynCodeEditor.Text, SourceCodeKind.Regular).ConfigureAwait(true);
         }
     }
 }
