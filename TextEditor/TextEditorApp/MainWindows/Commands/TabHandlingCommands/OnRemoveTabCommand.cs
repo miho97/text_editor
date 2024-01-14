@@ -9,25 +9,11 @@ using TextEditorApp.Utils.DocumentFiles;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class OnRemoveTabCommand : ICommand
+    internal class OnRemoveTabCommand : BaseCommandClass
     {
-        protected readonly MainWinViewModel CallerViewModel;
+        public OnRemoveTabCommand(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public OnRemoveTabCommand(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public override void Execute(object? parameter)
         {
             if (parameter is MouseEventArgs args && args.Source is TabItem tabItem && args.RightButton == MouseButtonState.Pressed && tabItem.Content is DockPanel dockPanel)
             {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -9,24 +8,12 @@ using RoslynPad.Editor;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class PrintCommand : ICommand
+    internal class PrintCommand : BaseCommandClass
     {
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-        protected readonly MainWinViewModel CallerViewModel;
 
-        public PrintCommand(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
+        public PrintCommand(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public override void Execute(object? parameter)
         {
             PrintDialog pDialog = new PrintDialog();
             pDialog.MaxPage = 1;

@@ -6,25 +6,11 @@ using System.Windows;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class OpenFileCommand : ICommand
+    internal class OpenFileCommand : BaseCommandClass
     {
-        protected readonly MainWinViewModel CallerViewModel;
+        public OpenFileCommand(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public OpenFileCommand(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public override void Execute(object? parameter)
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog();
 

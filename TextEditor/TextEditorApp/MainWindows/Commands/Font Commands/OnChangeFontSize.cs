@@ -9,25 +9,11 @@ using TextEditorApp.Utils.StaticModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class OnChangeFontSize : ICommand
+    internal class OnChangeFontSize : BaseCommandClass
     {
-        protected readonly MainWinViewModel CallerViewModel;
+        public OnChangeFontSize(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public OnChangeFontSize(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public override void Execute(object? parameter)
         {
             if (parameter is SelectionChangedEventArgs args && args.AddedItems[0] is FontSizeListModel fModel 
                 && fModel.FontSize is double fontSize)

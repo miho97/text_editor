@@ -1,31 +1,15 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class NewFileCommand : ICommand
+    internal class NewFileCommand : BaseCommandClass
     {
-        protected readonly MainWinViewModel CallerViewModel;
+        public NewFileCommand(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public NewFileCommand(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public override void Execute(object? parameter)
         {
             CallerViewModel.FileCount++;
             TabItem newTab = new TabItem();

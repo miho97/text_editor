@@ -1,29 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class SaveFileCommand : ICommand
+    internal class SaveFileCommand : BaseCommandClass
     {
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-        protected readonly MainWinViewModel CallerViewModel;
-
-        public SaveFileCommand(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public SaveFileCommand(MainWinViewModel callerViewModel) : base(callerViewModel) { }
+        public override void Execute(object? parameter)
         {
             if (CallerViewModel.ActiveTextEditor == null || CallerViewModel.ActiveTextEditor.DocumentModel.IsSaved == true)
             {

@@ -1,33 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Controls;
-using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
 using System.Windows;
 using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class OnShowLineNumbersChanged : ICommand
+    internal class OnShowLineNumbersChanged : BaseCommandClass
     {
-        protected readonly MainWinViewModel CallerViewModel;
+        public OnShowLineNumbersChanged(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public OnShowLineNumbersChanged(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parametar)
+        public override void Execute(object? parametar)
         {
             if (parametar is RoutedEventArgs args && args.Source is RibbonToggleButton toggleButton)
             {

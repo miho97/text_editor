@@ -8,25 +8,11 @@ using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
-    internal class OnTabSelectionChanged : ICommand
+    internal class OnTabSelectionChanged : BaseCommandClass
     {
-        protected readonly MainWinViewModel CallerViewModel;
+        public OnTabSelectionChanged(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
-        public OnTabSelectionChanged(MainWinViewModel callerViewModel)
-        {
-            CallerViewModel = callerViewModel;
-        }
-
-        #pragma warning disable CS0067
-        public event EventHandler? CanExecuteChanged;
-        #pragma warning restore CS0067
-
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
+        public override void Execute(object? parameter)
         {
             CallerViewModel.UpdateWindow();
         }
