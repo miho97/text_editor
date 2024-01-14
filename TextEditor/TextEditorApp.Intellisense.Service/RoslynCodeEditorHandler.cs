@@ -7,7 +7,7 @@ using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.Intellisense.Service
 {
-    public class RoslynCodeEditorHandler : IDisposable
+    public class RoslynCodeEditorHandler 
     {
         private CustomRoslynHost _host;
         private DocumentId? documentId;
@@ -15,11 +15,6 @@ namespace TextEditorApp.Intellisense.Service
         public RoslynCodeEditorHandler()
         {
             _host = InitializeRoslynHost();
-        }
-
-        public void Dispose()
-        {
-            _host?.CloseDocument(documentId);
         }
 
         private CustomRoslynHost InitializeRoslynHost()

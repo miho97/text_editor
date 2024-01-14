@@ -7,29 +7,36 @@ using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
+    /// <summary>
+    /// Command class for handling the Paste command, extending the <see cref="BaseCommandClass"/>.
+    /// </summary>
     internal class OnPasteCommand : BaseCommandClass
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnPasteCommand"/> class.
+        /// </summary>
+        /// <param name="callerViewModel">The ViewModel that invokes the command.</param>
         public OnPasteCommand(MainWinViewModel callerViewModel) : base(callerViewModel) { }
- 
+
+        /// <summary>
+        /// Executes the Paste command, pasting the content from the clipboard to the active editor..
+        /// </summary>
         public override void Execute(object? parameter)
         {
-            if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            var textEditor = CallerViewModel.ActiveTextEditor;
+            if (textEditor != null)
             {
-                var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
-                if (textEditor != null)
+                if (Clipboard.ContainsText())
                 {
-                    if (Clipboard.ContainsText())
+                    try { textEditor.Paste(); }
+                    catch (Exception)
                     {
-                        try { textEditor.Paste(); }
-                        catch (Exception)
-                        {
-                            MessageBox.Show($"Error in pasting to file");
-                        }
+                        MessageBox.Show($"Error in pasting to file");
                     }
-                    else
-                    {
-                        MessageBox.Show("You don't have anything in your clipboard.", "Clipboard");
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("You don't have anything in your clipboard.", "Clipboard");
                 }
             }
         }

@@ -8,24 +8,34 @@ using TextEditorApp.Utils.StaticModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
+    /// <summary>
+    /// Command class for handling changes in the selected programming language, extending the <see cref="BaseCommandClass"/>.
+    /// </summary>
     internal class OnLanguageChanged : BaseCommandClass
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnLanguageChanged"/> class.
+        /// </summary>
+        /// <param name="callerViewModel">The ViewModel that invokes the command.</param>
         public OnLanguageChanged(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
+        /// <summary>
+        /// Executes the command to handle changes in the selected programming language.
+        /// </summary>
+        /// 
 
+        // sets the newly selected programming language as a syntax highlighting standars, also saves the language to document model
         public override void Execute(object? parameter)
         {
-            if (parameter is RoutedEventArgs args && args.Source is ComboBox languageCombobox)
+            if (parameter is RoutedEventArgs args && args.Source is ComboBox languageCombobox && CallerViewModel.ActiveTextEditor != null)
             {
-                if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+                var textEditor = CallerViewModel.ActiveTextEditor;
+                var SelectedLanguage = languageCombobox.SelectedItem as string;
+
+                if(SelectedLanguage != null)
                 {
-                    var SelectedLanguage = languageCombobox.SelectedItem as string;
-                    var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
-                    if (textEditor != null && SelectedLanguage != null)
-                    {
-                        textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition(SelectedLanguage);
-                        textEditor.DocumentModel.DocumentLanguage = new LanguageViewModel(SelectedLanguage, true);
-                    }
+                    textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition(SelectedLanguage);
+                    textEditor.DocumentModel.DocumentLanguage = new LanguageViewModel(SelectedLanguage, true);
                 }
             }
         }

@@ -7,38 +7,34 @@ using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
+    /// <summary>
+    /// Command class for handling changes in the visibility of line numbers, extending the <see cref="BaseCommandClass"/>.
+    /// </summary>
     internal class OnShowLineNumbersChanged : BaseCommandClass
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnShowLineNumbersChanged"/> class.
+        /// </summary>
+        /// <param name="callerViewModel">The ViewModel that invokes the command.</param>
         public OnShowLineNumbersChanged(MainWinViewModel callerViewModel) : base(callerViewModel) { }
 
+        /// <summary>
+        /// Executes the command to change the visibility of line numbers in the active text editor.
+        /// </summary>
         public override void Execute(object? parametar)
         {
-            if (parametar is RoutedEventArgs args && args.Source is RibbonToggleButton toggleButton)
+            if (parametar is RoutedEventArgs args && args.Source is RibbonToggleButton toggleButton && CallerViewModel.ActiveTextEditor != null)
             {
+                var textEditor = CallerViewModel.ActiveTextEditor;
                 if (toggleButton.IsChecked == true)
                 {
-                    if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
-                    {
-                        var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
-                        if (textEditor != null)
-                        {
-                            textEditor.ShowLineNumbers = true;
-                        }
-                    }
+                    textEditor.ShowLineNumbers = true;
                 }
                 else
                 {
-                    if (CallerViewModel.MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
-                    {
-                        var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
-                        if (textEditor != null)
-                        {
-                            textEditor.ShowLineNumbers = false;
-                        }
-                    }
+                    textEditor.ShowLineNumbers = false;
                 }
             }
         }
-
     }
 }
