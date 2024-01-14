@@ -144,12 +144,18 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                 </RibbonGroup>
             </RibbonTab>
 
-            <!-- Settings -->
-            <RibbonMenuButton Label="Settings">
-                <RibbonMenuItem Header="Edit Preferences"/>
-                <RibbonMenuItem Header="Theme Settings"/>
-                <!-- More settings options -->
-            </RibbonMenuButton>
+
+
+            <RibbonTab Header="Settings">
+                <RibbonGroup Header="Tab Settings" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock Text="Tab Indentation Size" Margin="2,2,2,2"></TextBlock>
+                        <TextBox Width="50" TextAlignment="Left" HorizontalContentAlignment="Center" Text="{Binding MainIndentationSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <RibbonSeparator Margin="0,4,0,2"></RibbonSeparator>
+                        <RibbonToggleButton Label="Convert Tabs to Spaces" BorderBrush="Black" IsChecked="{Binding MainTabsToSpaces}"></RibbonToggleButton>
+                    </StackPanel>
+                </RibbonGroup>
+            </RibbonTab>
 
             <!-- Find & Replace -->
             <RibbonButton Label="Find/Replace" Command="{Binding OnFindClickCommand}" ></RibbonButton>

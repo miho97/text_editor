@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextEditorApp.Dialogs"
         mc:Ignorable="d"
-        Title="FindReplaceDialog" Height="507" Width="350"
+        Title="FindReplaceDialog" Height="150" Width="500"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
@@ -20,16 +20,18 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Border CornerRadius="10" Background="AliceBlue">
+    <Border CornerRadius="10" Background="PowderBlue">
         <Grid Margin="5">
-            <Border CornerRadius="5" Height="20" Width="20"  HorizontalAlignment="Right" VerticalAlignment="Top" Background="MediumVioletRed">
-                <Button Content="X" IsCancel="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Transparent" Background="Transparent"/>
-            </Border>
-            <StackPanel Margin="20">
-                <TextBlock Text="Find:" Margin="0,0,0,5" FontWeight="Bold" HorizontalAlignment="Center"/>
-                <!--<TextBox Style="{StaticResource FindReplaceTextBox}" x:Name="txtFind"/>-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="33*"/>
+                <RowDefinition Height="33*"/>
+                <RowDefinition Height="33*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <Border Width="200" Height="30" CornerRadius="10" Background="LightBlue" Margin="2,2,2,5" BorderBrush="Transparent">
+            <StackPanel Grid.Row="0" Margin="10, 0, 0, 0" Orientation="Horizontal" HorizontalAlignment="Left" >
+
+                <Border Width="200" Height="30" CornerRadius="10" Background="LightGray" Margin="5,0,5,0" BorderBrush="Transparent">
                     <Grid>
                         <TextBox Margin="1,1,1,1"
                                      BorderThickness="1"
@@ -61,12 +63,16 @@
                         </TextBlock>
                     </Grid>
                 </Border>
+                <Button Content="Find Previous" Width="100" Height="30" Click="Previous_Click" Margin="5,0,5,0"/>
+                <Button Content="Find Next" Width="100" Height="30" Click="Next_Click" Margin="5,0,5,0" />
+                <Border CornerRadius="5" Margin="5,0,5,0" Height="Auto" Width="20"  Background="Transparent">
+                    <Button Content="x" FontSize="20" IsCancel="True" HorizontalAlignment="Stretch"  BorderBrush="Transparent" Background="Transparent"/>
+                </Border>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="10, 0, 0, 0"  Orientation="Horizontal" HorizontalAlignment="Left">
 
-                <CheckBox x:Name="chkMatchCase" HorizontalContentAlignment="Center" Content="Match Case" Margin="0,0,0,5" Width="100" />
 
-                <TextBlock Text="Replace:" Margin="0,10,0,5" FontWeight="Bold" HorizontalAlignment="Center"/>
-                <!--<TextBox x:Name="txtReplace" Style="{StaticResource FindReplaceTextBox}" Tag="Replace"/>-->
-                <Border Width="200" Height="30" CornerRadius="10" Background="LightBlue" Margin="2,2,2,5" BorderBrush="Transparent">
+                <Border Width="200" Height="30" CornerRadius="10" Background="LightGray" Margin="5,0,5,0" BorderBrush="Transparent">
                     <Grid>
                         <TextBox Margin="1,1,1,1"
                      BorderThickness="1"
@@ -78,7 +84,7 @@
                      BorderBrush="Transparent" />
                         <TextBlock IsHitTestVisible="True" 
                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Text="Find"
+                       Text="Replace with..."
                        FontSize="11"
                        Margin="10,0,0,0"
                        Foreground="Black"
@@ -99,21 +105,27 @@
                     </Grid>
                 </Border>
 
-                <Button Content="Find Next" Width="100" Height="30" Click="Next_Click" Margin="0,0,0,5" />
-                <Button Content="Find Previous" Width="100" Height="30" Click="Previous_Click" Margin="0,0,0,5"/>
+                <Button Content="Replace" Width="100" Height="30" Click="Replace_Click" Margin="5,0,5,0"/>
 
-                <Button Content="Replace" Width="100" Height="30" Click="Replace_Click" Margin="0,0,0,5"/>
-                <CheckBox x:Name="chkReplaceNext" Content="Replace Next" Margin="0,0,0,5" Width="100" />
 
-                <Button Content="Replace All" Width="100" Height="30" Click="ReplaceAll_Click" Margin="0,0,0,5"/>
-                <CheckBox x:Name="chkCircularSearch" Content="Circular Search" Margin="0,0,0,5" Width="100"
-                      Checked="ChkCircularSearch_Checked" Unchecked="ChkCircularSearch_Unchecked"/>
+                <Button Content="Replace All" Width="100" Height="30" Click="ReplaceAll_Click" Margin="5,0,5,0"/>
+                
 
-                <TextBlock Text="Total Matches:" FontWeight="Bold" Margin="0,20,0,5" HorizontalAlignment="Center"/>
-                <TextBlock x:Name="lblTotalMatches" Text="0" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                
+            </StackPanel>
+            <StackPanel Grid.Row="2" Margin="10, 10, 0, 0"  Orientation="Horizontal" HorizontalAlignment="Left">
+                <CheckBox x:Name="chkMatchCase" HorizontalContentAlignment="Center" Content="Match Case" Margin="5,0,5,0" Width="100" />
+                <CheckBox x:Name="chkReplaceNext" Content="Replace Next" Margin="5,0,5,0" Width="100" />
+                <CheckBox x:Name="chkCircularSearch" Content="Circular Search" Margin="5,0,5,0" Width="100"
+      Checked="ChkCircularSearch_Checked" Unchecked="ChkCircularSearch_Unchecked"/>
+                
+            </StackPanel>
+            <StackPanel Grid.Row="3" Margin="10, 0, 0, 0"  Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Total Matches:" FontWeight="Bold" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="lblTotalMatches" Text="0" Margin="5,0,5,0" HorizontalAlignment="Center"/>
 
-                <TextBlock Text="Current Match:" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                <TextBlock x:Name="lblCurrentMatch" Text="0" HorizontalAlignment="Center"/>
+                <TextBlock Text="Current Match:" FontWeight="Bold" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="lblCurrentMatch" Text="0" Margin="5,0,5,0" HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
     </Border>

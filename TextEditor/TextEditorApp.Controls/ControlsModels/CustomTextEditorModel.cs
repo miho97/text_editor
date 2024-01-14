@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using System.Windows.Documents;
 using TextEditorApp.Controls.CodeCompletion;
 using ICSharpCode.AvalonEdit.Rendering;
+using System.ComponentModel;
 
 namespace TextEditorApp.Controls.ControlsModels
 {
@@ -25,6 +26,8 @@ namespace TextEditorApp.Controls.ControlsModels
         private DocumentFiles_Model _document;
         private DockPanel? _dockParent;
         private List<string> usedVariables;
+        private int _indentetionSize = 4;
+        private bool _tabsToSpaces = false;
 
         // used to remeber if the primitive code completion in enabled or disabled
         // here it is important because we use it to disable Adorner for code completion
@@ -44,6 +47,10 @@ namespace TextEditorApp.Controls.ControlsModels
                 this.Height = DockParent.ActualHeight * 0.98;
                 UpdateStatusBar();
             };
+
+            base.Options.IndentationSize = IndentationSize;
+            base.Options.ConvertTabsToSpaces = ConvertTabsToSpaces;
+
 
             this.SizeChanged += (sender, e) =>
             {
@@ -111,6 +118,38 @@ namespace TextEditorApp.Controls.ControlsModels
                 {
                     _currentWord = value;
                     OnPropertyChanged(nameof(CurrentWord));
+                }
+            }
+        }
+
+        public int IndentationSize
+        {
+            get { return _indentetionSize; }
+            set
+            {
+                if (_indentetionSize != value)
+                {
+                    _indentetionSize = value;
+                    base.Options.IndentationSize = _indentetionSize;
+                    OnPropertyChanged(nameof(IndentationSize));
+                }
+            }
+        }
+
+        [DefaultValue(false)]
+        /// <summary>
+        /// Gets or sets if the tabs are converted to spaces in text.
+        /// </summary>
+        public bool ConvertTabsToSpaces
+        {
+            get { return _tabsToSpaces; }
+            set
+            {
+                if (_tabsToSpaces != value)
+                {
+                    _tabsToSpaces = value;
+                    base.Options.ConvertTabsToSpaces = _tabsToSpaces;
+                    OnPropertyChanged(nameof(ConvertTabsToSpaces));
                 }
             }
         }

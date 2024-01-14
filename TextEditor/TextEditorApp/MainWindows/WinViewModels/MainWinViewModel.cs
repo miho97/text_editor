@@ -31,7 +31,30 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private bool _IsBrowserEnabled;
         private FontSizeListModel? _selectedFontSize;
         private LanguageViewModel? _ChosenLanguage;
+        private int _MainIndentationSize = 8;
+        private bool _tabsToSpaces;
 
+        public string MainIndentationSize
+        {
+            get { return _MainIndentationSize.ToString(); }
+            set
+            {
+                _MainIndentationSize = int.Parse(value);
+                ActiveTextEditor.IndentationSize = _MainIndentationSize;
+                OnPropertyChanged(nameof(MainIndentationSize));
+            }
+        }
+
+        public bool MainTabsToSpaces
+        {
+            get { return _tabsToSpaces; }
+            set
+            {
+                _tabsToSpaces = value;
+                ActiveTextEditor.ConvertTabsToSpaces = _tabsToSpaces;
+                OnPropertyChanged(nameof(MainTabsToSpaces));
+            }
+        }
         public CustomHorizontalTextAlignment HorizontalTextAlignment
         {
             get { return _HorizontalTextAlignment; }
@@ -173,6 +196,8 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
                     IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
                     IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
+                    textEditor.IndentationSize = int.Parse(MainIndentationSize);
+                    textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
                 }
             }
         }
