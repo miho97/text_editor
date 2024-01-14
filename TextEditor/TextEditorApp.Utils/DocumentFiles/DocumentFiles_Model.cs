@@ -16,6 +16,7 @@ namespace TextEditorApp.Utils.DocumentFiles
     public class DocumentFiles_Model : ViewModelBase
     {
         private string? _filePath;
+        private string? _fileStatus;
         public string FilePath
         {
             get
@@ -27,6 +28,20 @@ namespace TextEditorApp.Utils.DocumentFiles
             {
                 _filePath = value;
                 OnPropertyChanged(nameof(FilePath));
+            }
+        }
+
+        public string FileStatus
+        {
+            get
+            {
+                return _fileStatus!;
+            }
+
+            set
+            {
+                _fileStatus = value;
+                OnPropertyChanged(nameof(FileStatus));
             }
         }
 
@@ -55,6 +70,7 @@ namespace TextEditorApp.Utils.DocumentFiles
         {
             _documentLanguage = new LanguageViewModel("None", true);
             _fileName = "Untitled.txt";
+            FileStatus = "Status bar for : " + FileName;
             IsSaved = true;
         }
 

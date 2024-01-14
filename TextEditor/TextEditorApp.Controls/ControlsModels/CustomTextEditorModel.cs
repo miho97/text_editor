@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using System.Windows.Documents;
 using TextEditorApp.Dialogs.CodeCompetionDialog;
 using ICSharpCode.AvalonEdit.Rendering;
+using ICSharpCode.AvalonEdit;
 
 namespace TextEditorApp.Controls.ControlsModels
 {
@@ -39,13 +40,24 @@ namespace TextEditorApp.Controls.ControlsModels
             usedVariables = new List<string>();
             _document = new DocumentFiles_Model();
 
+            this.Loaded += (sender, e) =>
+            {
+                this.Height = DockParent.ActualHeight * 0.98;
+                UpdateStatusBar();
+            };
+
+            this.SizeChanged += (sender, e) =>
+            {
+                this.Height = DockParent.ActualHeight * 0.98;
+            };
+
             // setting a few view properties
             base.ClipToBounds = true;
             base.IsBraceCompletionEnabled = true;
             base.ShowLineNumbers = false;
             base.IsReadOnly = false;
             base.HorizontalAlignment = HorizontalAlignment.Stretch;
-            base.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            base.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
             // adding a few functionalities to event handler that gets triggered on every 
             base.TextChanged += (sender, args) =>
@@ -54,6 +66,11 @@ namespace TextEditorApp.Controls.ControlsModels
                 UpdateCurrentWord();
                 CheckForNewVariable();
                 ExecuteCodeCompletion();
+            };
+
+            base.TextArea.Caret.PositionChanged += (sender, args) =>
+            {
+                UpdateStatusBar();
             };
         }
 
@@ -353,6 +370,13 @@ namespace TextEditorApp.Controls.ControlsModels
                     adornerLayer.Remove(adorner);
                 }
             }
+        }
+
+        // updates status bar at the bottom of the page
+        private void UpdateStatusBar()
+        {
+            this.DocumentModel.FileStatus = "Status bar for: " +  this.DocumentModel.FileName + "\t" + "length: " + this.Text.Length + " lines: " + this.LineCount + "\t\t" +
+                 " pos : " + this.TextArea.Caret.Location;
         }
     }
 }

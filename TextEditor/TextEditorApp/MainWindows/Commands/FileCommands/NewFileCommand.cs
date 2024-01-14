@@ -42,7 +42,7 @@ namespace TextEditorApp.MainWindows.Commands
 
             // we are adding new text status bar to tab's panel
             TextBlock statusBar = new TextBlock();
-            DockPanel.SetDock(statusBar, Dock.Bottom);
+            DockPanel.SetDock(statusBar, Dock.Top);
             panel.Children.Add(statusBar);
             
 
@@ -51,12 +51,14 @@ namespace TextEditorApp.MainWindows.Commands
 
             // we are binding tab header to file name of the document inside the Editor
             // this ensures that any changes to the filename will be visible in the tab's header 
-            var binding = new Binding(nameof(textEditor.DocumentModel.FileName));
-            binding.Source = textEditor.DocumentModel;
-            newTab.SetBinding(HeaderedContentControl.HeaderProperty, binding);
+            var tabHeaderTextBinding = new Binding(nameof(textEditor.DocumentModel.FileName));
+            tabHeaderTextBinding.Source = textEditor.DocumentModel;
+            newTab.SetBinding(HeaderedContentControl.HeaderProperty, tabHeaderTextBinding);
 
-            // TODO - bind status bar text to something from the document model
-            statusBar.Text = "Status bar for " + newTab.Header;
+            // bind status bar text to FileStatus from the document model
+            var statusBarTextBinding = new Binding(nameof(textEditor.DocumentModel.FileStatus));
+            statusBarTextBinding.Source = textEditor.DocumentModel;
+            statusBar.SetBinding(TextBlock.TextProperty, statusBarTextBinding);
 
 
             // adding the newly created editor to Main Tab
