@@ -10,25 +10,44 @@ using ICSharpCode.AvalonEdit.Rendering;
 
 namespace TextEditorApp.Controls.ControlsModels
 {
+
+    /// <summary>
+    /// Represents a custom text editor model that extends the CustomTextEditorBaseModel class.
+    /// </summary>
+ 
+
+    // this will be the model base for our Text Editor - the only reason we are using RoslynCodeEditor and not just simple RichTextBox is because
+    // we want to expand our app with addiotional use ceses such as syntax highlighting for multiple languages, advanced code completion for C# and .NET
+    // enabling/disabling code lines etc. Basic operations that are mentioned in the project description can all be done using the same logic just with RichTextBox
+    // control from WPF
     public class CustomTextEditorModel : CustomTextEditorBaseModel
     {
         private DocumentFiles_Model _document;
         private DockPanel? _dockParent;
-        private bool uglyDirtyCompletionDisabler = false;
         private List<string> usedVariables;
 
+        // used to remeber if the primitive code completion in enabled or disabled
+        // here it is important because we use it to disable Adorner for code completion
+        private bool uglyDirtyCompletionDisabler = false;
+       
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomTextEditorModel"/> class.
+        /// </summary>
         public CustomTextEditorModel() : base()
         {
             usedVariables = new List<string>();
-            this.ClipToBounds = true;
-            base.IsBraceCompletionEnabled = true;
             _document = new DocumentFiles_Model();
+
+            // setting a few view properties
+            base.ClipToBounds = true;
+            base.IsBraceCompletionEnabled = true;
             base.ShowLineNumbers = false;
             base.IsReadOnly = false;
             base.HorizontalAlignment = HorizontalAlignment.Stretch;
             base.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
+            // adding a few functionalities to event handler that gets triggered on every 
             base.TextChanged += (sender, args) =>
             {
                 DocumentModel.IsSaved = false;
@@ -52,6 +71,9 @@ namespace TextEditorApp.Controls.ControlsModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the model <see cref="DocumentFiles_Model"/> representing the document associated with the text editor.
+        /// </summary>
         public DocumentFiles_Model DocumentModel
         {
             get => _document;
@@ -77,6 +99,9 @@ namespace TextEditorApp.Controls.ControlsModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the dock pandel that is the visual parent of the Editor.
+        /// </summary>
         public DockPanel DockParent
         {
             get { return _dockParent ?? (_dockParent = new DockPanel()); }
@@ -92,6 +117,9 @@ namespace TextEditorApp.Controls.ControlsModels
 
         private bool _isShowNumbersEnabled;
 
+        /// <summary>
+        /// Gets or sets NumbersShown property.
+        /// </summary>
         public bool IsShowNumbersEnabled
         {
             get => _isShowNumbersEnabled;
@@ -104,6 +132,9 @@ namespace TextEditorApp.Controls.ControlsModels
         }
         private bool _isIntellisenseEnabled;
 
+        /// <summary>
+        /// Gets or sets the advanced code completion property.
+        /// </summary>
         public bool IsIntellisenseEnabled
         {
             get => _isIntellisenseEnabled;
@@ -114,6 +145,9 @@ namespace TextEditorApp.Controls.ControlsModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the primitive code completion property.
+        /// </summary>
         public bool IsPrimIntellisenseEnabled
         {
             get => !uglyDirtyCompletionDisabler;
@@ -124,6 +158,12 @@ namespace TextEditorApp.Controls.ControlsModels
             }
         }
 
+        /// <summary>
+        /// Private function used to update the current active word in the editor. 
+        /// </summary>
+        /// 
+
+        // basic algorithm - we look from the cursor to the beginning of the document, skip all of the whitespaces until we find an active word 
         private void UpdateCurrentWord()
         {
             int cursorPosition = base.SelectionStart;
@@ -149,6 +189,12 @@ namespace TextEditorApp.Controls.ControlsModels
             CurrentWord = currentWord;
         }
 
+        /// <summary>
+        /// Private function used to insert a chosen word instead of the active one.
+        /// </summary>
+
+
+        // In a nutshell we remove the current active word within the cursor and insert the selected word
         private void InsertSelectedWord(string selectedWord)
         {
             if (string.IsNullOrEmpty(selectedWord)) return;
@@ -168,6 +214,7 @@ namespace TextEditorApp.Controls.ControlsModels
                 endOfWord++;
             }
 
+            // calls to Remove/Insert will againt trigger OnTextChanged so we want to temporarily disable the completion Adorner
             var activeCompFilter = uglyDirtyCompletionDisabler;
             uglyDirtyCompletionDisabler = true;
 
@@ -178,6 +225,12 @@ namespace TextEditorApp.Controls.ControlsModels
             uglyDirtyCompletionDisabler = activeCompFilter;
         }
 
+        // private function called OnTextChanged event. Usef to determine if a user has specified a new variable so we can add it to the 
+        // usedVariables list. 
+        // Since it would be too much to write a full lexer we decided to 'call' a variable everything that comes before '=' sign.
+        // So in case user writes 'private string MyPrivateString = "some_text";' we would have a new variable MyPrivateString and 
+        // it will be added to usedVariables
+        // For the obvious reasons we only want to remember the variable once
         private void CheckForNewVariable()
         {
             if (CurrentWord != "=" || base.Text == string.Empty) return;
@@ -215,6 +268,8 @@ namespace TextEditorApp.Controls.ControlsModels
 
         }
 
+        // private helper function that is used to determine which keywords and variables should be presented in the code completion combobox
+        //  here we use a string query to find all of the possible matches in usedVariables and in CSKeywords.AllKeywords
         private List<string> GetMatchingKeywords()
         {
             if (CurrentWord == string.Empty)  {
@@ -227,7 +282,7 @@ namespace TextEditorApp.Controls.ControlsModels
                 .ToList();
         }
 
-
+        // handler that ckecks if we have some possible matches for our current word and calls the Adorner
         private void ExecuteCodeCompletion()
         {
             if (uglyDirtyCompletionDisabler) return;
@@ -237,25 +292,36 @@ namespace TextEditorApp.Controls.ControlsModels
             }
         }
 
+        // function that handles the logic of creation and adding the Adorner to the view
         private void AddKeywordsAdorner(List<string> keywords)
         {
-            var area = this;
-
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(area);
+            // first we remove all of the Adorner if such exists which includes previous code suggestions
             RemoveAllAdorners();
 
+            // here we determine the position of the Adorner
+            // we want it to be right below the current letx meaning the caret position but it is needed to convert to position of the carret to 
+            // coordinate values
             var caretPosition = base.TextArea.Caret.Position;
             var caretVisualPosition = base.TextArea.TextView.GetVisualPosition(caretPosition, VisualYPosition.LineTop);
+
+            // a new CustomCompletionAdorner is created and added to the Adorner layer of the text editor control
+            var area = this;
+            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(area);
             var comboBoxAdorner = new CustomCompletionAdorner(area, caretVisualPosition, CreateComboForAdorner(keywords));
             adornerLayer.Add(comboBoxAdorner);
         }
 
+        // basically a small custom combobox class packed in a function
+        // this combobox will contain all of the code suggestions 
+        // and will render inside of the Adorner
         private ComboBox CreateComboForAdorner(List<string> keywords)
         {
             var comboBox = new ComboBox();
             comboBox.ItemsSource = keywords;
             comboBox.IsEnabled = true;
 
+            // if the user selects something from the list of suggested words that word will be inserted, 
+            // combobox will close, Adorner will be destroyed and text editor will again get focused
             comboBox.SelectionChanged += (sender, args) =>
             {
                 if (comboBox.SelectedValue != null)
@@ -272,6 +338,7 @@ namespace TextEditorApp.Controls.ControlsModels
             return comboBox;
         }
 
+        // helper function used to remove all adorners in the adorner layer of the text editor control 
         private void RemoveAllAdorners()
         {
             var area = this;

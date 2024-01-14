@@ -1,7 +1,13 @@
 ﻿namespace TextEditorApp.Common
 {
+    /// <summary>
+    /// Provides a static class containing a list of common C# keywords.
+    /// </summary>
     public static class CSKeywords
     {
+        /// <summary>
+        /// Gets a list of all C# keywords.
+        /// </summary>
         public static readonly List<string> AllKeywords = new List<string>
         {
             // C# keywords

@@ -1,5 +1,6 @@
 ﻿namespace TextEditorApp.Common.Enums
 {
+    // enum used to represent horizontal alignment
     public enum CustomHorizontalTextAlignment
     {
         Left = 0,

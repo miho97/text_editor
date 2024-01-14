@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 
 
-
+// TODO - delete if not needed
 namespace TextEditorApp.Dialogs.EditorSaveFileDialog
 {
     public class EditorSaveFileDialog
