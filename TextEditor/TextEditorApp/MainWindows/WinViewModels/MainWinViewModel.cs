@@ -309,6 +309,9 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private ICommand? _OnAlignCommand;
         public ICommand OnAlignCommand => _OnAlignCommand ??= new OnAlignCommand(this);
 
+        private ICommand? _OnFindClickCommand;
+        public ICommand OnFindClickCommand => _OnFindClickCommand ??= new OnFindClickCommand(this);
+
         /// Clipboard commands
 
         private ICommand? _OnPasteCommand;

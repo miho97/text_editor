@@ -14,7 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TextEditorApp.Common\TextEditorApp.Common.csproj" />
     <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />
-    <ProjectReference Include="..\TextEditorApp.Dialogs\TextEditorApp.Dialogs.csproj" />
   </ItemGroup>
 
 </Project>

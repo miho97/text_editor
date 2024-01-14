@@ -3,16 +3,16 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Documents;
 
-namespace TextEditorApp.Dialogs.CodeCompetionDialog
-{
+namespace TextEditorApp.Controls.CodeCompletion
+{ 
 
     /// <summary>
     /// Represents a custom adorner that displays a ComboBox for completion suggestions.
     /// </summary>
 
 
-    // since combobox used for code suggestions must render over the currently active text box we decided to use Adorner
-    // this is a custom implementation od an Adorner that will display completion suggestions
+// since combobox used for code suggestions must render over the currently active text box we decided to use Adorner
+// this is a custom implementation od an Adorner that will display completion suggestions
     public class CustomCompletionAdorner : Adorner
     {
         public ComboBox comboBox;

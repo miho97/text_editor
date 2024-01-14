@@ -5,9 +5,8 @@ using TextEditorApp.Utils.DocumentFiles;
 using System.Windows;
 using Microsoft.CodeAnalysis;
 using System.Windows.Documents;
-using TextEditorApp.Dialogs.CodeCompetionDialog;
+using TextEditorApp.Controls.CodeCompletion;
 using ICSharpCode.AvalonEdit.Rendering;
-using ICSharpCode.AvalonEdit;
 
 namespace TextEditorApp.Controls.ControlsModels
 {

@@ -1,0 +1,52 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="{x:Type TextBox}"
+        x:Key = "FindReplaceTextBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border CornerRadius="10"
+                            Background="LightBlue"
+                            Width="200" 
+                            Margin="2,2,2,5"
+                            BorderBrush="Transparent">
+                        <Grid>
+                            <Rectangle StrokeThickness="1" Margin="2,2,2,2"/>
+                            <TextBox Margin="1,1,1,1"
+                                     Text="{TemplateBinding Text}"
+                                     BorderThickness="1"
+                                     Background="Transparent"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5"
+                                     Foreground="Black"
+                                     x:Name="FindBox"
+                                     BorderBrush="Transparent"
+                                     />
+                            <TextBlock IsHitTestVisible="True" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Text="Find"
+                                       FontSize="11"
+                                       Margin="10,0,0,0"
+                                       Foreground="Black"
+                                       Grid.Column="1"
+                                       x:Name="FindBoxBlock">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=FindBox}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                    </Style>
+                                </TextBlock.Style>
+                                
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+</ResourceDictionary>

@@ -1,16 +1,14 @@
-﻿using ICSharpCode.AvalonEdit;
-using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.Windows.Input;
+using TextEditorApp.Controls.ControlsModels;
 
-namespace TextEditorApp
+namespace TextEditorApp.Dialogs
 {
     /// <summary>
-    /// Interaction logic for FindReplaceWindow.xaml
+    /// Interaction logic for FindReplaceDialog.xaml
     /// </summary>
-    public partial class FindReplaceWindow : Window
+    public partial class FindReplaceDialog : Window
     {
         public string SearchText { get; private set; } = string.Empty;
         public string ReplaceText { get; private set; } = string.Empty;
@@ -23,10 +21,10 @@ namespace TextEditorApp
         private int currentMatchIndex = 0;
         private bool replaced;
 
-        private readonly TextEditor textEditor;
+        private readonly CustomTextEditorModel textEditor;
         private int currentIndex = -1;
 
-        public FindReplaceWindow(TextEditor textEditor)
+        public FindReplaceDialog(CustomTextEditorModel textEditor)
         {
             InitializeComponent();
             this.textEditor = textEditor;
@@ -49,6 +47,7 @@ namespace TextEditorApp
         {
             SearchText = txtFind.Text;
             ReplaceText = txtReplace.Text;
+            var a = txtFind.Tag;
             MatchCase = chkMatchCase.IsChecked ?? false;
             ReplaceNext = chkReplaceNext.IsChecked ?? false;
 
@@ -162,7 +161,7 @@ namespace TextEditorApp
             MatchCase = chkMatchCase.IsChecked ?? false;
             ReplaceNext = chkReplaceNext.IsChecked ?? false;
             replaced = true;
-    
+
             // Ako je Replace Next checkbox označen zamijeni sljedeći match
             // Ako ne zamijeni označeni text
             if (ReplaceNext)
@@ -230,11 +229,11 @@ namespace TextEditorApp
                 currentIndex = textEditor.Text.IndexOf(searchText, currentIndex + 1, comparison);
 
                 // Ako smo došli do kraja kreni ispočetka tražiti
-                if(currentIndex == -1 && CircularSearch)
+                if (currentIndex == -1 && CircularSearch)
                 {
                     currentIndex = textEditor.Text.IndexOf(searchText, 0, comparison);
                     currentMatchIndex = 0;
-                    if(currentIndex == -1)
+                    if (currentIndex == -1)
                     {
                         MessageBox.Show("No more matches found", "Replace");
                         return false;
@@ -248,7 +247,7 @@ namespace TextEditorApp
 
                     return true; // Pronađen match, zamijenjen i nastavlja se traženje
                 }
-                
+
                 // Zamjena ako nismo došli do kraja dokumenta
                 if (currentIndex != -1)
                 {
@@ -307,8 +306,11 @@ namespace TextEditorApp
         private void UpdateMatchLabels()
         {
             // Update totalMatches i currentMatchIndex
-            lblTotalMatches.Content = totalMatches.ToString();
-            lblCurrentMatch.Content = currentMatchIndex.ToString();
+            lblTotalMatches.Text = totalMatches.ToString();
+            lblCurrentMatch.Text = currentMatchIndex.ToString();
+            //lblTotalMatches.Content = totalMatches.ToString();
+            //lblCurrentMatch.Content = currentMatchIndex.ToString();
+
         }
 
         private int CountTotalMatches(string searchText)
@@ -333,6 +335,12 @@ namespace TextEditorApp
             }
 
             return count;
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
     }
 }

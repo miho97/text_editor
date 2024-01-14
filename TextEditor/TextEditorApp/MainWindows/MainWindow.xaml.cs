@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using TextEditorApp.MainWindows.WinViewModels;
 
 
@@ -21,51 +23,5 @@ namespace TextEditorApp
 
             DataContext = new MainWinViewModel(MainTabControl, FontSizeComboBox);
         }
-
-        private void Browser_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
-
-        }
-
-        private void FontSizeInput_KeyDown(object sender, KeyEventArgs e)
-        {
-            if( e.Key == Key.Enter)
-            {
-                if (int.TryParse(FontSizeInput.Text, out int newSize) && (newSize>0))
-                {
-                    ApplyFontSize(newSize);
-                }
-                FontSizePopup.IsOpen = false;
-            }
-        }
-        private void FontSizePopup_LostFocus(object sender, RoutedEventArgs e)
-        {
-            FontSizePopup.IsOpen = false;
-        }
-        */
-        public static FindReplaceWindow? findReplaceWindow;
-        private TextEditor? currentTextEditor;
-
-        // Otvaranje posebnog prozora za Find/Replace
-        private void Find_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
-            {
-                currentTextEditor = dockPanel.Children.OfType<TextEditor>().FirstOrDefault();
-                if (currentTextEditor != null)
-                {
-                    if (findReplaceWindow == null)
-                    {
-                        findReplaceWindow = new FindReplaceWindow(currentTextEditor);
-                    }
-
-                    findReplaceWindow.FindAndHighlight(); // Prikaži poseban prozor za Find/Replace
-
-                    // Reset prozora nakon zatvaranja
-                    findReplaceWindow = null;
-                }
-            }
-        }
-
     }
 }

@@ -152,10 +152,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
             </RibbonMenuButton>
 
             <!-- Find & Replace -->
-            <RibbonMenuButton Label="Find Replace">
-                <RibbonMenuItem Header="Find/Replace" Click="Find_Click"/>
-                <!-- Additional options for Find & Replace -->
-            </RibbonMenuButton>
+            <RibbonButton Label="Find/Replace" Command="{Binding OnFindClickCommand}" ></RibbonButton>
 
         </Ribbon>
 
