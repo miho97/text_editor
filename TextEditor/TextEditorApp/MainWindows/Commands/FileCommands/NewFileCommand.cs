@@ -36,6 +36,7 @@ namespace TextEditorApp.MainWindows.Commands
 
             // we are adding new text Editor to tab's panel
             var textEditor = new CustomTextEditorModel();
+            textEditor.IsDarkModeEnabled = CallerViewModel.IsThemeChangeEnabled;
             DockPanel.SetDock(textEditor, Dock.Top);
             panel.Children.Add(textEditor);
             textEditor.DockParent = panel; // we need to remember the visual parent of the editor

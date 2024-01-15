@@ -12,26 +12,29 @@
         mc:Ignorable="d"
         Title="TextEditor"
         WindowState="Maximized">
+
+    <Window.Resources>
+        <enum:EnumToBoolConverter x:Key="EnumConverter" />
+        <enum:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:CallMethodAction TargetObject="{Binding}" MethodName="OnWindowClosing" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Window.Resources>
-        <enum:EnumToBoolConverter x:Key="EnumConverter" />
-        <enum:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </Window.Resources>
-    <DockPanel Margin="1">
-        <Ribbon DockPanel.Dock="Top" Height="135">
+    
+    <DockPanel Margin="1" >
+        <Ribbon DockPanel.Dock="Top" Height="135" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
             <!-- Application Menu -->
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F">
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N" Header="New" Command="{Binding NewFileCommand}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Header="Open" Command="{Binding OpenFileCommand}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileCommand}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/SaveFileAs.png" Header="Save As..." Command="{Binding SaveFileAsCommand}"/>
+                <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N" Header="New" Command="{Binding NewFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Header="Open" Command="{Binding OpenFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/SaveFileAs.png" Header="Save As..." Command="{Binding SaveFileAsCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
                     <RibbonSeparator />
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Print.png" Header="Print" Command="{Binding PrintCommand}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Print.png" Header="Print" Command="{Binding PrintCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
@@ -39,9 +42,9 @@
 
             <RibbonTab Header="Home">
                 <RibbonGroup Header="Clipboard">
-                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png" Command="{Binding OnPasteCommand}"/>
-                    <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png" Command="{Binding OnCutCommand}"/>
-                    <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png" Command="{Binding OnCopyCommand}"/>
+                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png" Command="{Binding OnPasteCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
+                    <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png" Command="{Binding OnCutCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
+                    <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png" Command="{Binding OnCopyCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
                 </RibbonGroup>
                 <RibbonGroup Header="Text Alignment">
                     <RibbonControlGroup>

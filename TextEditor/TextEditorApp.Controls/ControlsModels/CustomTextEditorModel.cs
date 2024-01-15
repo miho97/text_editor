@@ -34,6 +34,7 @@ namespace TextEditorApp.Controls.ControlsModels
         private List<string> usedVariables;
         private int _indentetionSize = 4;
         private bool _tabsToSpaces = false;
+        private bool _IsDarkModeEnabled = false;
 
         // used to remeber if the primitive code completion in enabled or disabled
         // here it is important because we use it to disable Adorner for code completion
@@ -69,6 +70,7 @@ namespace TextEditorApp.Controls.ControlsModels
             base.IsReadOnly = false;
             base.HorizontalAlignment = HorizontalAlignment.Stretch;
             base.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            base.Background = Brushes.White;
 
 
             // adding a few functionalities to event handler that gets triggered on every 
@@ -427,6 +429,27 @@ namespace TextEditorApp.Controls.ControlsModels
             var brushConverter = new System.Windows.Media.BrushConverter();
             var stringColor = (string)brushConverter.ConvertToString(brushColor) ?? "black";
             return (Color)System.Windows.Media.ColorConverter.ConvertFromString(stringColor);
+        }
+
+        public bool IsDarkModeEnabled
+        {
+            get { return _IsDarkModeEnabled; }
+            set
+            {
+                if (_IsDarkModeEnabled != value)
+                {
+                    _IsDarkModeEnabled = value;
+                    OnPropertyChanged(nameof(IsDarkModeEnabled));
+                    if (_IsDarkModeEnabled)
+                    {
+                        base.Background = Brushes.LightGray;
+                    }
+                    else
+                    {
+                        base.Background = Brushes.White;
+                    }
+                }
+            }
         }
     }
 }

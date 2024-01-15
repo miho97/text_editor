@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush Color="#fff" x:Key="Button"/>
+    <SolidColorBrush Color="#1c1b21" x:Key="Text"/>
+    <SolidColorBrush Color="#fff" x:Key="Background"/>
+
+    <SolidColorBrush Color="#fff" x:Key="TabBackground"/>
+    <SolidColorBrush Color="#353b48" x:Key="TabText"/>
+
+    <SolidColorBrush Color="#1c1b21" x:Key="MenuText"/>
+    <SolidColorBrush Color="#1c1b21" x:Key="MenuItemText"/>
+    <SolidColorBrush Color="#fff" x:Key="MenuBackground"/>
+
+    <SolidColorBrush Color="#fff" x:Key="RibbonGroupBackground"/>
+    <SolidColorBrush Color="Gray" x:Key="RibbonGroupText"/>
+    <SolidColorBrush Color="#353b48" x:Key="RibbonGroupButtonText"/>
+
+    <SolidColorBrush Color="#fff" x:Key="RibbonToggleButtonBackground"/>
+    <SolidColorBrush Color="#353b48" x:Key="RibbonToggleButtonText"/>
+
+    <SolidColorBrush Color="LightBlue" x:Key="DockPanelTopBackground"/>
+
+    <SolidColorBrush Color="LightGray" x:Key="WebBrowserBackground"/>
+
+
+    <SolidColorBrush Color="LightGray" x:Key="TextBoxBackground"/>
+
+</ResourceDictionary>

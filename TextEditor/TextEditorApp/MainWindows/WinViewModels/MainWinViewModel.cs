@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using System.Printing;
 using Color = System.Windows.Media.Color;
+using Brushes = System.Windows.Media.Brushes;
 using System.Runtime.CompilerServices;
 
 namespace TextEditorApp.MainWindows.WinViewModels
@@ -48,6 +49,18 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private Color _selColor;
         private bool _IsCursive = false;
         private bool _IsBolded = false;
+        private bool _IsThemeChangeEnabled = false;
+
+        public bool IsThemeChangeEnabled
+        {
+            get { return _IsThemeChangeEnabled; }
+            set
+            {
+                _IsThemeChangeEnabled = value;
+                OnPropertyChanged(nameof(IsThemeChangeEnabled));
+            }
+
+        }
 
 
         public string MainIndentationSize
@@ -281,6 +294,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     IsCursive = (textEditor.FontStyle == FontStyles.Italic);
                     textEditor.IndentationSize = int.Parse(MainIndentationSize);
                     textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
+                    textEditor.IsDarkModeEnabled = IsThemeChangeEnabled;
                 }
             }
         }
@@ -408,6 +422,10 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         private ICommand? _OnItalicChanged;
         public ICommand OnItalicChanged => _OnItalicChanged ??= new OnItalicChanged(this);
+
+        /// Theme Commands
+        private ICommand? _OnThemeChange;
+        public ICommand OnThemeChange => _OnThemeChange ??= new OnThemeChange(this);
 
         //// Editor related commands
 
