@@ -227,7 +227,20 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 xshdReader.Read();
                 HighlightingManager.Instance.RegisterHighlighting("CustomSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
             }
-            
+
+            relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\GraphSyntax.xsdh";
+            filePath = Path.GetFullPath(relativePath);
+            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+            {
+                xshdContent = reader.ReadToEnd();
+            }
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
+            {
+                xshdReader.Read();
+                HighlightingManager.Instance.RegisterHighlighting("GraphSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
+            }
+
         }
 
         private void Init()
