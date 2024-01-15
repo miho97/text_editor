@@ -8,6 +8,12 @@ using System.Windows.Documents;
 using TextEditorApp.Controls.CodeCompletion;
 using ICSharpCode.AvalonEdit.Rendering;
 using System.ComponentModel;
+using System.Windows.Media.Animation;
+using System.Drawing;
+using System.Windows.Media;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
 
 namespace TextEditorApp.Controls.ControlsModels
 {
@@ -51,7 +57,6 @@ namespace TextEditorApp.Controls.ControlsModels
             base.Options.IndentationSize = IndentationSize;
             base.Options.ConvertTabsToSpaces = ConvertTabsToSpaces;
 
-
             this.SizeChanged += (sender, e) =>
             {
                 this.Height = DockParent.ActualHeight * 0.98;
@@ -65,10 +70,10 @@ namespace TextEditorApp.Controls.ControlsModels
             base.HorizontalAlignment = HorizontalAlignment.Stretch;
             base.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
+
             // adding a few functionalities to event handler that gets triggered on every 
             base.TextChanged += (sender, args) =>
             {
-                DocumentModel.IsSaved = false;
                 UpdateCurrentWord();
                 CheckForNewVariable();
                 ExecuteCodeCompletion();
@@ -415,6 +420,13 @@ namespace TextEditorApp.Controls.ControlsModels
         {
             this.DocumentModel.FileStatus = "Status bar for: " +  this.DocumentModel.FileName + "\t" + "length: " + this.Text.Length + " lines: " + this.LineCount + "\t\t" +
                  " pos : " + this.TextArea.Caret.Location;
+        }
+
+        public static Color ForegroundToColor(Brush brushColor)
+        {
+            var brushConverter = new System.Windows.Media.BrushConverter();
+            var stringColor = (string)brushConverter.ConvertToString(brushColor) ?? "black";
+            return (Color)System.Windows.Media.ColorConverter.ConvertFromString(stringColor);
         }
     }
 }

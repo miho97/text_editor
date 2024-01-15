@@ -14,6 +14,18 @@ using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.Common.Enums;
 using System.Windows;
 using Microsoft.CodeAnalysis;
+using ICSharpCode.AvalonEdit;
+using Microsoft.VisualBasic.ApplicationServices;
+using System;
+using System.IO;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Printing;
+using Color = System.Windows.Media.Color;
+using System.Runtime.CompilerServices;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {
@@ -33,6 +45,10 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private LanguageViewModel? _ChosenLanguage;
         private int _MainIndentationSize = 8;
         private bool _tabsToSpaces;
+        private Color _selColor;
+        private bool _IsCursive = false;
+        private bool _IsBolded = false;
+
 
         public string MainIndentationSize
         {
@@ -42,6 +58,39 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 _MainIndentationSize = int.Parse(value);
                 ActiveTextEditor.IndentationSize = _MainIndentationSize;
                 OnPropertyChanged(nameof(MainIndentationSize));
+            }
+        }
+
+        public bool IsCursive
+        {
+            get { return _IsCursive; }
+            set
+            {
+                _IsCursive = value;
+                OnPropertyChanged(nameof(IsCursive));
+            }
+        }
+
+        public bool IsBolded
+        {
+            get { return _IsBolded; }
+            set
+            {
+                if(_IsBolded != value)
+                {
+                    _IsBolded = value;
+                    OnPropertyChanged(nameof(IsBolded));
+                }
+            }
+        }
+
+        public Color SelectedFontColor
+        {
+            get { return _selColor; }
+            set
+            {
+                _selColor = value;
+                OnPropertyChanged(nameof(SelectedFontColor));
             }
         }
 
@@ -158,9 +207,27 @@ namespace TextEditorApp.MainWindows.WinViewModels
             MainTabControl = _MainTabControl;
             FontSizeComboBox = _FontCombo;
 
+            RegisterCustomHighlighting();
             Init();
-
             UpdateWindow();
+        }
+        private void RegisterCustomHighlighting()
+        {
+            string relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\CustomSyntax.xsdh";
+            string filePath = Path.GetFullPath(relativePath);
+            string xshdContent;
+            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+            {
+                xshdContent = reader.ReadToEnd();
+            }
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
+            {
+                xshdReader.Read();
+                HighlightingManager.Instance.RegisterHighlighting("CustomSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
+            }
+            
         }
 
         private void Init()
@@ -196,6 +263,9 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
                     IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
                     IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
+                    SelectedFontColor = CustomTextEditorModel.ForegroundToColor(textEditor.Foreground);
+                    IsBolded = (textEditor.FontWeight == FontWeights.Bold);
+                    IsCursive = (textEditor.FontStyle == FontStyles.Italic);
                     textEditor.IndentationSize = int.Parse(MainIndentationSize);
                     textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
                 }
@@ -316,6 +386,15 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         private ICommand? _OnFontFamilyChanged;
         public ICommand OnFontFamilyChanged => _OnFontFamilyChanged ??= new OnFontFamilyChanged(this);
+
+        private ICommand? _OnFontColorChange;
+        public ICommand OnFontColorChange => _OnFontColorChange ??= new OnFontColorChange(this);
+
+        private ICommand? _OnBoldChanged;
+        public ICommand OnBoldChanged => _OnBoldChanged ??= new OnBoldChanged(this);
+
+        private ICommand? _OnItalicChanged;
+        public ICommand OnItalicChanged => _OnItalicChanged ??= new OnItalicChanged(this);
 
         //// Editor related commands
 

@@ -16,6 +16,9 @@
     <None Remove="Resources\Images\Copy.png" />
     <None Remove="Resources\Images\Cut.png" />
     <None Remove="Resources\Images\File.png" />
+    <None Remove="Resources\Images\FontHandlers\Bold.png" />
+    <None Remove="Resources\Images\FontHandlers\Italic.png" />
+    <None Remove="Resources\Images\FontHandlers\Underline.png" />
     <None Remove="Resources\Images\OpenFile.png" />
     <None Remove="Resources\Images\Paste.png" />
     <None Remove="Resources\Images\Print.png" />
@@ -46,6 +49,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\File.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\FontHandlers\Bold.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\FontHandlers\Italic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\FontHandlers\Underline.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\OpenFile.png">
@@ -82,11 +94,6 @@
     <ProjectReference Include="..\TextEditorApp.Dialogs\TextEditorApp.Dialogs.csproj" />
     <ProjectReference Include="..\TextEditorApp.Intellisense.Service\TextEditorApp.Intellisense.Service.csproj" />
     <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="MainWindows\Commands\Font Commands\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">

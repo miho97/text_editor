@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:TextEditorApp" 
         xmlns:enum="clr-namespace:TextEditorApp.Common.Enums;assembly=TextEditorApp.Common" 
         xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:toolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit.NET5"
         mc:Ignorable="d"
         Title="TextEditor"
         WindowState="Maximized">
@@ -59,7 +60,12 @@
                     </RibbonControlGroup>
                 </RibbonGroup>
                 <RibbonGroup Header="Font format">
-                    <StackPanel Orientation="Horizontal">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="50*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <ComboBox x:Name="FontFamilyComboBox" Width="90" VerticalAlignment="Center" HorizontalAlignment="Left"
 ItemsSource="{Binding FontFamilies}" Text="{Binding ChosenFontFamily.Fontfamily, Mode=TwoWay, UpdateSourceTrigger=Default}" IsEditable="False" IsTextSearchEnabled="True">
                             <i:Interaction.Triggers>
@@ -90,10 +96,37 @@ ItemsSource="{Binding FontFamilies}" Text="{Binding ChosenFontFamily.Fontfamily,
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <toolkit:ColorPicker Margin="4" Width="50" DisplayColorAndName="True" ToolTip="Set text foreground color for the whole document."
+                                             SelectedColor="{Binding SelectedFontColor, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectedColorChanged">
+                                    <i:InvokeCommandAction Command="{Binding OnFontColorChange}" PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </toolkit:ColorPicker>
                     </StackPanel>
+                        <StackPanel Margin="0,5,0,0" Grid.Row="1" Orientation="Horizontal">
+                            <RibbonToggleButton BorderThickness="2" SmallImageSource="../Resources/Images/FontHandlers/Bold.png" IsChecked="{Binding IsBolded, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding OnBoldChanged}" PassEventArgsToCommand="True" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </RibbonToggleButton>
+                            <RibbonToggleButton BorderThickness="2" SmallImageSource="../Resources/Images/FontHandlers/Italic.png" IsChecked="{Binding IsCursive, Mode=TwoWay, UpdateSourceTrigger=Default}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding OnItalicChanged}" PassEventArgsToCommand="True" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </RibbonToggleButton>
+                        </StackPanel>
+                    </Grid>
                 </RibbonGroup>
+                
                 <RibbonGroup Header="Languages">
-                    <ComboBox x:Name="DocumentLanguage" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    <ComboBox x:Name="DocumentLanguage" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="Set programming language for syntax highlighting."
 ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=Default}" IsEditable="False" IsTextSearchEnabled="True">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
@@ -107,8 +140,10 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </RibbonGroup>
+                
                 <RibbonGroup Header="Intellisense">
-                    <RibbonToggleButton Label="Enable Primitive Code Completion" HorizontalAlignment="Center"  IsChecked="{Binding IsPrimCodeCompletionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                    <RibbonToggleButton Label="Enable Primitive Code Completion" HorizontalAlignment="Center"  ToolTip="Enable droppdown list with suggested keywords and recently used variables."
+                                        IsChecked="{Binding IsPrimCodeCompletionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Checked">
                                 <i:InvokeCommandAction Command="{Binding OnPrimCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
@@ -149,7 +184,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
             <RibbonTab Header="Settings">
                 <RibbonGroup Header="Tab Settings" HorizontalAlignment="Center">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <TextBlock Text="Tab Indentation Size" Margin="2,2,2,2"></TextBlock>
+                        <TextBlock Text="Tab Indentation Size" Margin="2,2,2,2" ToolTip="Sets the number of units used for tab. &#x0a; One unit corresponds to the size one letter x in the current font size."></TextBlock>
                         <TextBox Width="50" TextAlignment="Left" HorizontalContentAlignment="Center" Text="{Binding MainIndentationSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         <RibbonSeparator Margin="0,4,0,2"></RibbonSeparator>
                         <RibbonToggleButton Label="Convert Tabs to Spaces" BorderBrush="Black" IsChecked="{Binding MainTabsToSpaces}"></RibbonToggleButton>
@@ -158,7 +193,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
             </RibbonTab>
 
             <!-- Find & Replace -->
-            <RibbonButton Label="Find/Replace" Command="{Binding OnFindClickCommand}" ></RibbonButton>
+            <RibbonButton Label="Find/Replace" Command="{Binding OnFindClickCommand}" ToolTip="Open the Find/Replace dialog." ></RibbonButton>
 
         </Ribbon>
 
