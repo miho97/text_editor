@@ -29,16 +29,54 @@ namespace TextEditorApp.Controls.ControlsModels
     // control from WPF
     public class CustomTextEditorModel : CustomTextEditorBaseModel
     {
+        public enum Mode
+        {
+            dark,
+            white
+        };
         private DocumentFiles_Model _document;
         private DockPanel? _dockParent;
         private List<string> usedVariables;
         private int _indentetionSize = 4;
         private bool _tabsToSpaces = false;
         private bool _IsDarkModeEnabled = false;
+        public Mode currentMode = Mode.white;
 
         // used to remeber if the primitive code completion in enabled or disabled
         // here it is important because we use it to disable Adorner for code completion
         private bool uglyDirtyCompletionDisabler = false;
+
+
+        // updates done when switching between dark/white mode
+        public void UpdateVisualMode(Mode mode)
+        {
+            if (mode == currentMode) return;
+            if(mode == Mode.white) {
+                currentMode = Mode.white;
+                base.Background = Brushes.White;
+                base.TextArea.Background = Brushes.White;
+
+                if (base.Foreground.ToString() == "#FFFFFFFF") // if there is some non-standard choice of color text we will leave it as as
+                {
+                    base.Foreground = Brushes.Black;
+                }
+                base.LineNumbersForeground = Brushes.Black;
+            }
+            else if(mode == Mode.dark)
+            {
+                currentMode = Mode.dark;
+                
+                if (base.Foreground.ToString() == "#FF000000") // if there is some non-standard choice of color text we will leave it as as
+                {
+                    base.Foreground = Brushes.White;
+                }
+                base.Background = Brushes.DimGray;
+                base.TextArea.Background = Brushes.DimGray;
+                base.LineNumbersForeground = Brushes.LightGray;
+                base.TextArea.TextView.CurrentLineBackground = Brushes.Black;
+                //base.TextArea.SelectionBrush = Brushes.LightGray;
+            }
+        }
        
 
         /// <summary>
@@ -46,6 +84,12 @@ namespace TextEditorApp.Controls.ControlsModels
         /// </summary>
         public CustomTextEditorModel() : base()
         {
+
+            var fr = base.Foreground; // {#FF000000}
+            var fr1 = base.TextArea.Background;
+            var fr2 = base.LineNumbersForeground; // {#FF808080}
+            var fr3 = base.TextArea.TextView.CurrentLineBackground;
+            var fr4 = base.TextArea.SelectionBrush;
             usedVariables = new List<string>();
             _document = new DocumentFiles_Model();
 
@@ -440,14 +484,14 @@ namespace TextEditorApp.Controls.ControlsModels
                 {
                     _IsDarkModeEnabled = value;
                     OnPropertyChanged(nameof(IsDarkModeEnabled));
-                    if (_IsDarkModeEnabled)
-                    {
-                        base.Background = Brushes.LightGray;
-                    }
-                    else
-                    {
-                        base.Background = Brushes.White;
-                    }
+                    //if (_IsDarkModeEnabled)
+                    //{
+                    //    base.Background = Brushes.LightGray;
+                    //}
+                    //else
+                    //{
+                    //    base.Background = Brushes.White;
+                    //}
                 }
             }
         }

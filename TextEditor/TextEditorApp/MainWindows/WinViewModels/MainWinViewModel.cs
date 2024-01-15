@@ -282,6 +282,10 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
                 if (textEditor != null)
                 {
+                    textEditor.IndentationSize = int.Parse(MainIndentationSize);
+                    textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
+
+
                     ChosenLanguage = textEditor.DocumentModel.DocumentLanguage;
                     SelectedFontSize = textEditor.DocumentModel.FontSize;
                     IsShowLineNumbers = textEditor.IsShowNumbersEnabled;
@@ -289,12 +293,17 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
                     IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
                     IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
+
+                    textEditor.IsDarkModeEnabled = IsThemeChangeEnabled;
+                    textEditor.UpdateVisualMode(
+                        IsThemeChangeEnabled ? CustomTextEditorModel.Mode.dark : CustomTextEditorModel.Mode.white
+                    );
+
                     SelectedFontColor = CustomTextEditorModel.ForegroundToColor(textEditor.Foreground);
                     IsBolded = (textEditor.FontWeight == FontWeights.Bold);
                     IsCursive = (textEditor.FontStyle == FontStyles.Italic);
-                    textEditor.IndentationSize = int.Parse(MainIndentationSize);
-                    textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
-                    textEditor.IsDarkModeEnabled = IsThemeChangeEnabled;
+                    
+                    
                 }
             }
         }

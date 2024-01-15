@@ -7,6 +7,8 @@ using System.Windows.Controls.Ribbon;
 using System.Windows;
 using TextEditorApp.MainWindows.WinViewModels;
 using TextEditorApp.Utils.ThemeHandling;
+using System.Drawing;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace TextEditorApp.MainWindows.Commands
 {
@@ -25,14 +27,16 @@ namespace TextEditorApp.MainWindows.Commands
                 if (toggleButton.IsChecked == true)
                 {
 
-                    ThemeManager.ChangeTheme(new Uri("/TextEditorApp;component/MainWindows/Commands/ThemeCommands/DarkTheme.xaml", UriKind.RelativeOrAbsolute));
+                    ThemeManager.ChangeTheme(new Uri("pack://application:,,,/TextEditorApp.Utils;component/ThemeHandling/Theme/DarkTheme.xaml", UriKind.RelativeOrAbsolute));
                     CallerViewModel.IsThemeChangeEnabled = true;
+                    CallerViewModel.UpdateWindow();
 
                 }
                 else
                 {
-                    ThemeManager.ChangeTheme(new Uri("/TextEditorApp;component/MainWindows/Commands/ThemeCommands/LightTheme.xaml", UriKind.RelativeOrAbsolute));
+                    ThemeManager.ChangeTheme(new Uri("pack://application:,,,/TextEditorApp.Utils;component/ThemeHandling/Theme/LightTheme.xaml", UriKind.RelativeOrAbsolute));
                     CallerViewModel.IsThemeChangeEnabled = false;
+                    CallerViewModel.UpdateWindow();
                 }
 
 

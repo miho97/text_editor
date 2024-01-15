@@ -13,9 +13,12 @@ namespace TextEditorApp.Utils.ThemeHandling
         {
             ResourceDictionary Theme = new ResourceDictionary() { Source = theme };
 
-            var app = Application.Current;
-            app.Resources.MergedDictionaries.Clear();
-            app.Resources.MergedDictionaries.Add(Theme);
+            Window mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.Resources.MergedDictionaries.Clear();
+                mainWindow.Resources.MergedDictionaries.Add(Theme);
+            }
 
         }
     }

@@ -14,8 +14,11 @@
         WindowState="Maximized">
 
     <Window.Resources>
-        <enum:EnumToBoolConverter x:Key="EnumConverter" />
-        <enum:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/TextEditorApp.Utils;component/ThemeHandling/Theme/LightTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     
     <i:Interaction.Triggers>
@@ -28,7 +31,7 @@
         <Ribbon DockPanel.Dock="Top" Height="135" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
             <!-- Application Menu -->
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F" >
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N" Header="New" Command="{Binding NewFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Header="Open" Command="{Binding OpenFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
                     <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
@@ -40,13 +43,13 @@
 
             <!--Clipboard options-->
 
-            <RibbonTab Header="Home">
+            <RibbonTab Header="Home" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
                 <RibbonGroup Header="Clipboard">
                     <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png" Command="{Binding OnPasteCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
                     <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png" Command="{Binding OnCutCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
                     <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png" Command="{Binding OnCopyCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
                 </RibbonGroup>
-                <RibbonGroup Header="Text Alignment">
+                <RibbonGroup Header="Text Alignment" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupText}">
                     <RibbonControlGroup>
                         <RibbonRadioButton SmallImageSource="../Resources/Images/Alignment/alignLeft.png" 
                                            IsChecked="{Binding HorizontalTextAlignment, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:CustomHorizontalTextAlignment.Left}}"
@@ -62,7 +65,7 @@
                                            Command="{Binding OnAlignCommand}" CommandParameter="{x:Static enum:CustomHorizontalTextAlignment.Justified}"/>
                     </RibbonControlGroup>
                 </RibbonGroup>
-                <RibbonGroup Header="Font format">
+                <RibbonGroup Header="Font format" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupText}">
                     <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50*"/>
@@ -127,8 +130,8 @@ ItemsSource="{Binding FontFamilies}" Text="{Binding ChosenFontFamily.Fontfamily,
                         </StackPanel>
                     </Grid>
                 </RibbonGroup>
-                
-                <RibbonGroup Header="Languages">
+
+                <RibbonGroup Header="Languages" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupText}">
                     <ComboBox x:Name="DocumentLanguage" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="Set programming language for syntax highlighting."
 ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=Default}" IsEditable="False" IsTextSearchEnabled="True">
                         <i:Interaction.Triggers>
@@ -143,10 +146,10 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </RibbonGroup>
-                
-                <RibbonGroup Header="Intellisense">
+
+                <RibbonGroup Header="Intellisense" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupText}">
                     <RibbonToggleButton Label="Enable Primitive Code Completion" HorizontalAlignment="Center"  ToolTip="Enable droppdown list with suggested keywords and recently used variables."
-                                        IsChecked="{Binding IsPrimCodeCompletionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                                        IsChecked="{Binding IsPrimCodeCompletionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}" Background="{DynamicResource RibbonToggleButtonBackground}" Foreground="{DynamicResource RibbonToggleButtonText}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Checked">
                                 <i:InvokeCommandAction Command="{Binding OnPrimCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
@@ -157,7 +160,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </i:Interaction.Triggers>
                     </RibbonToggleButton>
                     <RibbonSeparator/>
-                    <RibbonToggleButton Label="Enable Code Completion" HorizontalAlignment="Center"  IsChecked="{Binding IsCodeCompletitionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                    <RibbonToggleButton Label="Enable Code Completion" HorizontalAlignment="Center"  IsChecked="{Binding IsCodeCompletitionEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}" Background="{DynamicResource RibbonToggleButtonBackground}" Foreground="{DynamicResource RibbonToggleButtonText}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Checked">
                                 <i:InvokeCommandAction Command="{Binding OnCodeCompletitionCommand}" PassEventArgsToCommand="True"/>
@@ -168,7 +171,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </i:Interaction.Triggers>
                     </RibbonToggleButton>
                     <RibbonSeparator/>
-                    <RibbonToggleButton Label="Show Line Numbers" HorizontalAlignment="Center" IsChecked="{Binding IsShowLineNumbers, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                    <RibbonToggleButton Label="Show Line Numbers" HorizontalAlignment="Center" IsChecked="{Binding IsShowLineNumbers, Mode=TwoWay, UpdateSourceTrigger=Default}" Background="{DynamicResource RibbonToggleButtonBackground}" Foreground="{DynamicResource RibbonToggleButtonText}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:InvokeCommandAction Command="{Binding OnShowLineNumbersChanged}" PassEventArgsToCommand="True"/>
@@ -176,15 +179,15 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </i:Interaction.Triggers>
                     </RibbonToggleButton>
                 </RibbonGroup>
-                <RibbonGroup Header="Web browser">
-                    <RibbonToggleButton Label="Enable Web Browser" HorizontalAlignment="Center" IsChecked="{Binding IsBrowserEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                <RibbonGroup Header="Web browser" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupText}">
+                    <RibbonToggleButton Label="Enable Web Browser" HorizontalAlignment="Center" IsChecked="{Binding IsBrowserEnabled, Mode=TwoWay, UpdateSourceTrigger=Default}" Background="{DynamicResource RibbonToggleButtonBackground}" Foreground="{DynamicResource RibbonToggleButtonText}">
                     </RibbonToggleButton>
                 </RibbonGroup>
             </RibbonTab>
 
 
 
-            <RibbonTab Header="Settings">
+            <RibbonTab Header="Settings" Background="{DynamicResource TabBackground}" Foreground="{DynamicResource TabText}">
                 <RibbonGroup Header="Tab Settings" HorizontalAlignment="Center">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock Text="Tab Indentation Size" Margin="2,2,2,2" ToolTip="Sets the number of units used for tab. &#x0a; One unit corresponds to the size one letter x in the current font size."></TextBlock>
@@ -193,15 +196,26 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         <RibbonToggleButton Label="Convert Tabs to Spaces" BorderBrush="Black" IsChecked="{Binding MainTabsToSpaces}"></RibbonToggleButton>
                     </StackPanel>
                 </RibbonGroup>
+                <RibbonGroup Header="Dark mode Settings" HorizontalAlignment="Center">
+                    <RibbonToggleButton Label="Enable Dark Theme" Background="{DynamicResource Button}" Foreground="{DynamicResource RibbonToggleButtonText}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding OnThemeChange}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RibbonToggleButton>
+                </RibbonGroup>
             </RibbonTab>
 
             <!-- Find & Replace -->
-            <RibbonButton Label="Find/Replace" Command="{Binding OnFindClickCommand}" ToolTip="Open the Find/Replace dialog." ></RibbonButton>
+            <RibbonButton Label="Find/Replace" Command="{Binding OnFindClickCommand}" ToolTip="Open the Find/Replace dialog." Background="{DynamicResource TabBackground}" Foreground="{DynamicResource TabText}" >
+                
+            </RibbonButton>
 
         </Ribbon>
 
         <!-- Main Content Area -->
-        <DockPanel LastChildFill="True">
+        <DockPanel LastChildFill="True" Background="LightGray">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="70*"/>
@@ -209,7 +223,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Background="LightBlue">
 
-                    <DockPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="882">
+                    <DockPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="882" Background="{DynamicResource DockPanelTopBackground}">
                         <TabControl DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainTabControl" ItemsSource="{Binding _MainTabControl}" >
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
@@ -222,7 +236,7 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
                         </TabControl>
                     </DockPanel>
                 </Border>
-                <Border Grid.Column="1" Background="LightGray">
+                <Border Grid.Column="1" Background="{DynamicResource WebBrowserBackground}">
                     <DockPanel DockPanel.Dock="Right" Visibility="{Binding IsBrowserEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"  Margin="5,20,5,5">
                 <DockPanel DockPanel.Dock="Top"  Margin="2,2,2,2" Width="Auto">
                     <Button DockPanel.Dock="Top" Content="Back" Command="{Binding WebBrowser.BackCommand, ElementName=Browser}" Width="Auto">
