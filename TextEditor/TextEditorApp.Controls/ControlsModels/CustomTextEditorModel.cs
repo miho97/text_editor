@@ -34,7 +34,25 @@ namespace TextEditorApp.Controls.ControlsModels
         private DocumentFiles_Model _document;
         private DockPanel _dockParent;
         private bool uglyDirtyCompletionDisabler = false;
+        private bool _IsDarkModeEnabled = false;
 
+        public bool IsDarkModeEnabled
+        {
+            get { return _IsDarkModeEnabled; }
+            set { if (_IsDarkModeEnabled != value)
+                {
+                    _IsDarkModeEnabled = value;
+                    OnPropertyChanged(nameof(IsDarkModeEnabled));
+                    if (_IsDarkModeEnabled)
+                    {
+                        base.Background = Brushes.LightGray;
+                    } else
+                    {
+                        base.Background = Brushes.White;
+                    }
+                }
+            }
+        }
 
         public CustomTextEditorModel() : base()
         {
@@ -51,6 +69,7 @@ namespace TextEditorApp.Controls.ControlsModels
                 UpdateCurrentWord();
                 ExecuteCodeCompletion();
             };
+            base.Background = Brushes.White;
             //base.PreviewTextInput += (sender, args) =>
             //{
             //    HandleUserInput(sender, args);

@@ -25,10 +25,11 @@ using RoslynPad.Roslyn;
 using System.IO;
 using System.Reflection;
 using TextEditorApp.Intellisense.Service;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {
-    internal class MainWinViewModel : ViewModelBase
+    public class MainWinViewModel : ViewModelBase
     {
 
         private TabControl? _MainTabControl;
@@ -40,6 +41,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private CustomHorizontalTextAlignment _HorizontalTextAlignment;
         private CustomTextEditorModel _activeTextEditor;
         private bool _IsBrowserEnabled;
+        private bool _IsThemeChangeEnabled = false;
 
         public CustomHorizontalTextAlignment HorizontalTextAlignment
         {
@@ -49,6 +51,15 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 _HorizontalTextAlignment = value;
                 OnPropertyChanged(nameof(HorizontalTextAlignment));
             }
+        }
+
+        public bool IsThemeChangeEnabled {
+            get { return _IsThemeChangeEnabled; }
+            set {
+                _IsThemeChangeEnabled = value;
+                OnPropertyChanged(nameof(IsThemeChangeEnabled));
+            }
+
         }
 
         public bool IsBrowserEnabled
@@ -182,6 +193,8 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
                     IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
                     IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
+
+                    textEditor.IsDarkModeEnabled = IsThemeChangeEnabled;
                 }
             }
         }
@@ -289,8 +302,10 @@ namespace TextEditorApp.MainWindows.WinViewModels
         /// 
         ///  Commands section
         /// 
-        /// 
 
+        /// Theme Commands
+        private ICommand? _OnThemeChange;
+        public ICommand OnThemeChange => _OnThemeChange ??= new OnThemeChange(this);
 
         /// Font commands
 

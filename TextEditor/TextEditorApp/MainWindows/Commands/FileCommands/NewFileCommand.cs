@@ -51,6 +51,8 @@ namespace TextEditorApp.MainWindows.Commands
             DockPanel.SetDock(statusBar, Dock.Bottom);
 
             var textEditor = new CustomTextEditorModel();
+            textEditor.IsDarkModeEnabled = CallerViewModel.IsThemeChangeEnabled;
+
             DockPanel.SetDock(textEditor, Dock.Top);
 
             panel.Children.Add(statusBar);
