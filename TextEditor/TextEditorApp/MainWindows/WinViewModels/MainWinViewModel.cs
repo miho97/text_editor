@@ -14,25 +14,17 @@ using TextEditorApp.Controls.ControlsModels;
 using TextEditorApp.Common.Enums;
 using System.Windows;
 using Microsoft.CodeAnalysis;
-using ICSharpCode.AvalonEdit;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
 using System.IO;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using System.Reflection;
 using System.Text;
 using System.Xml;
-using System.Printing;
 using Color = System.Windows.Media.Color;
-using Brushes = System.Windows.Media.Brushes;
-using System.Runtime.CompilerServices;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {
     internal class MainWinViewModel : ViewModelBase
     {
-
+        // private members
         private TabControl? _MainTabControl;
         private ComboBox? _FontSizeComboBox;
         private bool _IsShowLineNumbers;
@@ -47,9 +39,29 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private int _MainIndentationSize = 8;
         private bool _tabsToSpaces;
         private Color _selColor;
+        private int _FileCount;
         private bool _IsCursive = false;
         private bool _IsBolded = false;
         private bool _IsThemeChangeEnabled = false;
+        private List<string> _DocumentLanguages = new List<string> { "None" };
+        private List<int> FontSizeList => new List<int> { 12, 16, 20 };
+        private ObservableCollection<FontSizeListModel> _fontSizes = new ObservableCollection<FontSizeListModel>(); 
+        private ObservableCollection<FontFamilyModel> _fontFamilies = new ObservableCollection<FontFamilyModel>();
+
+        // Constructor
+
+        public MainWinViewModel(TabControl _MainTabControl, ComboBox _FontCombo)
+        {
+            MainTabControl = _MainTabControl;
+            FontSizeComboBox = _FontCombo;
+
+            RegisterCustomHighlighting();
+            Init();
+            UpdateWindow();
+        }
+
+        // public getters - setters
+        // all are verbose enough so we won't document them one by one
 
         public bool IsThemeChangeEnabled
         {
@@ -61,7 +73,6 @@ namespace TextEditorApp.MainWindows.WinViewModels
             }
 
         }
-
 
         public string MainIndentationSize
         {
@@ -147,6 +158,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
             }
         }
 
+        // main currently active text editor
         public CustomTextEditorModel ActiveTextEditor
         {
             get { return _activeTextEditor ?? (_activeTextEditor = new CustomTextEditorModel()); }
@@ -187,9 +199,6 @@ namespace TextEditorApp.MainWindows.WinViewModels
             }
         }
 
-
-        private int _FileCount;
-
         public int FileCount
         {
             get { return _FileCount; }
@@ -215,47 +224,103 @@ namespace TextEditorApp.MainWindows.WinViewModels
                 OnPropertyChanged(nameof(_FontSizeComboBox));
             }
         }
-        public MainWinViewModel(TabControl _MainTabControl, ComboBox _FontCombo)
-        {
-            MainTabControl = _MainTabControl;
-            FontSizeComboBox = _FontCombo;
 
-            RegisterCustomHighlighting();
-            Init();
-            UpdateWindow();
+        public FontSizeListModel SelectedFontSize
+        {
+            get { return _selectedFontSize ?? (_selectedFontSize = new FontSizeListModel()); }
+            set
+            {
+                _selectedFontSize = value;
+                OnPropertyChanged(nameof(SelectedFontSize));
+            }
         }
-        private void RegisterCustomHighlighting()
+        public LanguageViewModel ChosenLanguage
         {
-            string relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\CustomSyntax.xsdh";
-            string filePath = Path.GetFullPath(relativePath);
-            string xshdContent;
-            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+            get { return _ChosenLanguage ?? (_ChosenLanguage = new LanguageViewModel()); }
+            set
             {
-                xshdContent = reader.ReadToEnd();
+                _ChosenLanguage = value;
+                OnPropertyChanged(nameof(ChosenLanguage));
             }
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.DtdProcessing = DtdProcessing.Ignore;
-            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
-            {
-                xshdReader.Read();
-                HighlightingManager.Instance.RegisterHighlighting("CustomSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
-            }
-
-            relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\GraphSyntax.xsdh";
-            filePath = Path.GetFullPath(relativePath);
-            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
-            {
-                xshdContent = reader.ReadToEnd();
-            }
-            settings.DtdProcessing = DtdProcessing.Ignore;
-            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
-            {
-                xshdReader.Read();
-                HighlightingManager.Instance.RegisterHighlighting("GraphSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
-            }
-
         }
 
+        public List<string> DocumentLanguages
+        {
+            get { return _DocumentLanguages; }
+            set
+            {
+                _DocumentLanguages = value;
+                OnPropertyChanged(nameof(DocumentLanguages));
+            }
+        }
+
+        public ObservableCollection<FontSizeListModel> FontSizes
+        {
+            get { return _fontSizes; }
+            set
+            {
+                _fontSizes = value;
+                OnPropertyChanged(nameof(FontSizes));
+            }
+        }
+
+        public ObservableCollection<FontFamilyModel> FontFamilies
+        {
+            get { return _fontFamilies; }
+            set
+            {
+                _fontFamilies = value;
+                OnPropertyChanged(nameof(FontFamilies));
+            }
+        }
+        
+
+        //public helper functions
+
+        // extension to OnWindowClose handler for Main Win - in practice use to check if there are some unsaved files
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            if (CancelMainWinClosing()) e.Cancel = true;
+        }
+
+        // main funtion that handles updates on the window upon switching tabs ond or big UI changes such as theme change
+        public void UpdateWindow()
+        {
+            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
+            {
+                var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
+                if (textEditor != null)
+                {
+                    // properties related to tabs indentation are global so text editor must take them from the win/app model
+                    textEditor.IndentationSize = int.Parse(MainIndentationSize);
+                    textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
+
+                    // dark/white theme is also global for the app
+                    textEditor.IsDarkModeEnabled = IsThemeChangeEnabled;
+                    textEditor.UpdateVisualMode(
+                        IsThemeChangeEnabled ? CustomTextEditorModel.Mode.dark : CustomTextEditorModel.Mode.white
+                    );
+
+                    // some properties that are displayed in the app ribbon are dependant on the tab/editor/document so 
+                    // window needs to read them from the editor's model
+                    ChosenLanguage = textEditor.DocumentModel.DocumentLanguage;
+                    SelectedFontSize = textEditor.DocumentModel.FontSize;
+                    IsShowLineNumbers = textEditor.IsShowNumbersEnabled;
+                    ChosenFontFamily = textEditor.DocumentModel.DocumentFontFamily;
+                    HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
+                    IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
+                    IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
+                    SelectedFontColor = CustomTextEditorModel.ForegroundToColor(textEditor.Foreground);
+                    IsBolded = (textEditor.FontWeight == FontWeights.Bold);
+                    IsCursive = (textEditor.FontStyle == FontStyles.Italic);
+                }
+            }
+        }
+
+        // private helper functions
+
+
+        // initialization of the main window and it's model - used only in constructor
         private void Init()
         {
             foreach (var fontFamily in Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList())
@@ -275,106 +340,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
             NewFileCommand.Execute(this);
         }
 
-        public void UpdateWindow()
-        {
-            if (MainTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is DockPanel dockPanel)
-            {
-                var textEditor = dockPanel.Children.OfType<CustomTextEditorModel>().FirstOrDefault();
-                if (textEditor != null)
-                {
-                    textEditor.IndentationSize = int.Parse(MainIndentationSize);
-                    textEditor.ConvertTabsToSpaces = MainTabsToSpaces;
-
-
-                    ChosenLanguage = textEditor.DocumentModel.DocumentLanguage;
-                    SelectedFontSize = textEditor.DocumentModel.FontSize;
-                    IsShowLineNumbers = textEditor.IsShowNumbersEnabled;
-                    ChosenFontFamily = textEditor.DocumentModel.DocumentFontFamily;
-                    HorizontalTextAlignment = textEditor.DocumentModel.TextAlignment;
-                    IsCodeCompletitionEnabled = textEditor.IsIntellisenseEnabled;
-                    IsPrimCodeCompletionEnabled = textEditor.IsPrimIntellisenseEnabled;
-
-                    textEditor.IsDarkModeEnabled = IsThemeChangeEnabled;
-                    textEditor.UpdateVisualMode(
-                        IsThemeChangeEnabled ? CustomTextEditorModel.Mode.dark : CustomTextEditorModel.Mode.white
-                    );
-
-                    SelectedFontColor = CustomTextEditorModel.ForegroundToColor(textEditor.Foreground);
-                    IsBolded = (textEditor.FontWeight == FontWeights.Bold);
-                    IsCursive = (textEditor.FontStyle == FontStyles.Italic);
-                    
-                    
-                }
-            }
-        }
-
-        private List<int> FontSizeList => new List<int> { 12, 16, 20 };
-
-        
-
-        public FontSizeListModel SelectedFontSize
-        {
-            get { return _selectedFontSize ?? (_selectedFontSize = new FontSizeListModel()); }
-            set
-            {
-                _selectedFontSize = value;
-                OnPropertyChanged(nameof(SelectedFontSize));
-            }
-        }
-
-        
-
-        public LanguageViewModel ChosenLanguage
-        {
-            get { return _ChosenLanguage ?? (_ChosenLanguage = new LanguageViewModel()); }
-            set
-            {
-                _ChosenLanguage = value;
-                OnPropertyChanged(nameof(ChosenLanguage));
-            }
-        }
-
-        private List<string> _DocumentLanguages = new List<string> { "None"};
-
-        public List<string> DocumentLanguages
-        {
-            get { return _DocumentLanguages; }
-            set
-            {
-                _DocumentLanguages = value;
-                OnPropertyChanged(nameof(DocumentLanguages));
-            }
-        }
-
-        private ObservableCollection<FontSizeListModel> _fontSizes = new ObservableCollection<FontSizeListModel>();
-
-        public ObservableCollection<FontSizeListModel> FontSizes
-        {
-            get { return _fontSizes; }
-            set
-            {
-                _fontSizes = value;
-                OnPropertyChanged(nameof(FontSizes));
-            }
-        }
-
-        private ObservableCollection<FontFamilyModel> _fontFamilies = new ObservableCollection<FontFamilyModel>();
-
-        public ObservableCollection<FontFamilyModel> FontFamilies
-        {
-            get { return _fontFamilies; }
-            set
-            {
-                _fontFamilies = value;
-                OnPropertyChanged(nameof(FontFamilies));
-            }
-        }
-
-        public void OnWindowClosing(object sender, CancelEventArgs e)
-        {
-            if ( CancelMainWinClosing() ) e.Cancel = true;
-        }
-
+        // used upon closing to check if there are some unsaved files and the prompt the user if so
         private bool CancelMainWinClosing()
         {
             foreach (var tab in MainTabControl.Items.OfType<TabItem>())
@@ -391,6 +357,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
             return false;
         }
 
+        // used to prompt the user upon closing if there are some unsaved files
         private bool CancelMainWinDialogOptions()
         {
             MessageBoxResult result = MessageBox.Show("You've got some unsaved doucuments. Are you sure you want to quit before saving them? " +
@@ -405,6 +372,41 @@ namespace TextEditorApp.MainWindows.WinViewModels
                     return true;
             }
             return false;
+        }
+
+        // aux function used to integrate 2 custom snytax languages
+        private void RegisterCustomHighlighting()
+        {
+            string relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\CustomSyntax.xsdh";
+            string filePath = Path.GetFullPath(relativePath);
+            string xshdContent;
+            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+            {
+                xshdContent = reader.ReadToEnd();
+            }
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
+            {
+                xshdReader.Read();
+                HighlightingManager.Instance.RegisterHighlighting("CustomSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
+            }
+
+            // grapf language - similar to cypher
+
+            relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\GraphSyntax.xsdh";
+            filePath = Path.GetFullPath(relativePath);
+            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+            {
+                xshdContent = reader.ReadToEnd();
+            }
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
+            {
+                xshdReader.Read();
+                HighlightingManager.Instance.RegisterHighlighting("GraphSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
+            }
+
         }
 
 

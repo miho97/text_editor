@@ -7,16 +7,26 @@ using TextEditorApp.Controls.ControlsModels;
 
 namespace TextEditorApp.Intellisense.Service
 {
+    /// <summary>
+    /// Handles the interaction between the Roslyn code editor and the application.
+    /// </summary>
     public class RoslynCodeEditorHandler 
     {
         private CustomRoslynHost _host;
         private DocumentId? documentId;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoslynCodeEditorHandler"/> class.
+        /// </summary>
         public RoslynCodeEditorHandler()
         {
             _host = InitializeRoslynHost();
         }
 
+        /// <summary>
+        /// Initializes the Roslyn host with the required assemblies.
+        /// </summary>
+        /// <returns>The initialized CustomRoslynHost.</returns>
         private CustomRoslynHost InitializeRoslynHost()
         {
             var host = new CustomRoslynHost(additionalAssemblies: new[]
@@ -33,6 +43,11 @@ namespace TextEditorApp.Intellisense.Service
                         );
             return host;
         }
+
+        /// <summary>
+        /// Initializes the Roslyn code editor asynchronously.
+        /// </summary>
+        /// <param name="roslynCodeEditor">The CustomTextEditorModel representing the Roslyn code editor.</param>
         public async Task InitializeRoslynCodeEditorAsync(CustomTextEditorModel roslynCodeEditor)
         {
             var workingDirectory = Directory.GetCurrentDirectory();

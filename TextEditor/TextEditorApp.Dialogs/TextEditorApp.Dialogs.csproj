@@ -9,9 +9,6 @@
 
 
   <!--TODO - delete if not needed-->
-  <ItemGroup>
-    <Folder Include="AboutDialog\" />
-  </ItemGroup>
 
 
   <ItemGroup>

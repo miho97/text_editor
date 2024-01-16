@@ -15,6 +15,9 @@ using Xceed.Wpf.Toolkit;
 
 namespace TextEditorApp.MainWindows.Commands
 {
+    /// <summary>
+    /// Command for handling font color changes in the text editor.
+    /// </summary>
     internal class OnFontColorChange : BaseCommandClass
     {
         /// <summary>
@@ -29,11 +32,15 @@ namespace TextEditorApp.MainWindows.Commands
         public override void Execute(object? parameter)
         {
             // Selected color ili SelectedcolorTExt
-            if (parameter is RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> args && args.Source is ColorPicker picker  && picker.SelectedColorText is string selCol)
+            if (parameter is RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> args && args.Source is ColorPicker picker  && picker.SelectedColorText is string selCol && selCol != null)
             {
                 var textEditor = CallerViewModel.ActiveTextEditor;
                 var converter = new System.Windows.Media.BrushConverter();
-                textEditor.Foreground = (Brush)converter.ConvertFromString(selCol) ?? Brushes.Black;
+
+                // over the top null-check because of non stoping complier warnings
+                selCol ??= "FFFFFFFF";
+                var conversion = converter.ConvertFromString(selCol);
+                textEditor.Foreground = (conversion != null) ? (Brush)conversion : Brushes.Black;
             }
         }
     }

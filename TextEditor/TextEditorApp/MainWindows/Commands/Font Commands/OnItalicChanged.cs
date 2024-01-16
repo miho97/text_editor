@@ -9,6 +9,9 @@ using TextEditorApp.MainWindows.WinViewModels;
 
 namespace TextEditorApp.MainWindows.Commands
 {
+    /// <summary>
+    /// Command for handling cursive family changes in the text editor.
+    /// </summary>
     internal class OnItalicChanged : BaseCommandClass
     {
         /// <summary>

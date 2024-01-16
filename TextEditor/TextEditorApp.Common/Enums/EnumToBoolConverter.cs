@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace TextEditorApp.Common.Enums
 {
+    // in our case used to convert from CustomHorizontalTextAlignment to bool for text alignment radio buttons
     public class EnumToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

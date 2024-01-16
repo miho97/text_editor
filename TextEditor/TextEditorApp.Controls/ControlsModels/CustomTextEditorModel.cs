@@ -8,12 +8,10 @@ using System.Windows.Documents;
 using TextEditorApp.Controls.CodeCompletion;
 using ICSharpCode.AvalonEdit.Rendering;
 using System.ComponentModel;
-using System.Windows.Media.Animation;
-using System.Drawing;
-using System.Windows.Media;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
+using System.Windows.Media;
 
 namespace TextEditorApp.Controls.ControlsModels
 {
@@ -44,7 +42,9 @@ namespace TextEditorApp.Controls.ControlsModels
 
         // used to remeber if the primitive code completion in enabled or disabled
         // here it is important because we use it to disable Adorner for code completion
-        private bool uglyDirtyCompletionDisabler = false;
+
+        // at the start of the new document we want to disable any kind of code compeltion
+        private bool uglyDirtyCompletionDisabler = true;
 
 
         // updates done when switching between dark/white mode
@@ -73,8 +73,6 @@ namespace TextEditorApp.Controls.ControlsModels
                 base.Background = Brushes.DimGray;
                 base.TextArea.Background = Brushes.DimGray;
                 base.LineNumbersForeground = Brushes.LightGray;
-                base.TextArea.TextView.CurrentLineBackground = Brushes.Black;
-                //base.TextArea.SelectionBrush = Brushes.LightGray;
             }
         }
        
@@ -95,6 +93,7 @@ namespace TextEditorApp.Controls.ControlsModels
 
             base.Options.IndentationSize = IndentationSize;
             base.Options.ConvertTabsToSpaces = ConvertTabsToSpaces;
+            base.Options.HighlightCurrentLine = true;
 
             this.SizeChanged += (sender, e) =>
             {
@@ -114,6 +113,7 @@ namespace TextEditorApp.Controls.ControlsModels
             // adding a few functionalities to event handler that gets triggered on every 
             base.TextChanged += (sender, args) =>
             {
+                this.DocumentModel.IsSaved = false;
                 UpdateCurrentWord();
                 CheckForNewVariable();
                 ExecuteCodeCompletion();
@@ -462,10 +462,11 @@ namespace TextEditorApp.Controls.ControlsModels
                  " pos : " + this.TextArea.Caret.Location;
         }
 
+        // simple helper function usef to convert from Brush 'color' to system color
         public static Color ForegroundToColor(Brush brushColor)
         {
             var brushConverter = new System.Windows.Media.BrushConverter();
-            var stringColor = (string)brushConverter.ConvertToString(brushColor) ?? "black";
+            var stringColor = (brushColor != null) ? brushConverter.ConvertToString(brushColor) : brushConverter.ConvertToString(Brushes.Black);
             return (Color)System.Windows.Media.ColorConverter.ConvertFromString(stringColor);
         }
 
@@ -478,14 +479,6 @@ namespace TextEditorApp.Controls.ControlsModels
                 {
                     _IsDarkModeEnabled = value;
                     OnPropertyChanged(nameof(IsDarkModeEnabled));
-                    //if (_IsDarkModeEnabled)
-                    //{
-                    //    base.Background = Brushes.LightGray;
-                    //}
-                    //else
-                    //{
-                    //    base.Background = Brushes.White;
-                    //}
                 }
             }
         }

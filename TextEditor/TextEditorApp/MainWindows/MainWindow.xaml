@@ -145,7 +145,7 @@ ItemsSource="{Binding FontFamilies}" Text="{Binding ChosenFontFamily.Fontfamily,
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </RibbonToggleButton>
-                            <RibbonToggleButton BorderThickness="2" BorderBrush="{DynamicResource RibbonGroupButtonText}" SmallImageSource="../Resources/Images/FontHandlers/Italic.png" IsChecked="{Binding IsCursive, Mode=TwoWay, UpdateSourceTrigger=Default}" >
+                            <RibbonToggleButton BorderThickness="2" Margin="4,0,0,0" BorderBrush="{DynamicResource RibbonGroupButtonText}" SmallImageSource="../Resources/Images/FontHandlers/Italic.png" IsChecked="{Binding IsCursive, Mode=TwoWay, UpdateSourceTrigger=Default}" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
                                         <i:InvokeCommandAction Command="{Binding OnItalicChanged}" PassEventArgsToCommand="True" />

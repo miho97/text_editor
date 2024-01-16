@@ -28,7 +28,9 @@ namespace TextEditorApp.MainWindows.Commands
             CallerViewModel = callerViewModel;
         }
 
+        #pragma warning disable 67 // Disable 'event not used' warning
         public event EventHandler? CanExecuteChanged;
+        #pragma warning restore 67 // Restore 'event not used' warning
 
         // for our use cases it is ok if all of the commands are enabled
         public bool CanExecute(object? parameter)
