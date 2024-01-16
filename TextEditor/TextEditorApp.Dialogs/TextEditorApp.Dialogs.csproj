@@ -7,10 +7,6 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-
-  <!--TODO - delete if not needed-->
-
-
   <ItemGroup>
     <ProjectReference Include="..\TextEditorApp.Utils\TextEditorApp.Utils.csproj" />
     <ProjectReference Include="..\TextEditorApp.Controls\TextEditorApp.Controls.csproj" />
