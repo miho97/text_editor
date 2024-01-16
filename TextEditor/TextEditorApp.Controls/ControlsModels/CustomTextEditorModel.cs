@@ -84,12 +84,6 @@ namespace TextEditorApp.Controls.ControlsModels
         /// </summary>
         public CustomTextEditorModel() : base()
         {
-
-            var fr = base.Foreground; // {#FF000000}
-            var fr1 = base.TextArea.Background;
-            var fr2 = base.LineNumbersForeground; // {#FF808080}
-            var fr3 = base.TextArea.TextView.CurrentLineBackground;
-            var fr4 = base.TextArea.SelectionBrush;
             usedVariables = new List<string>();
             _document = new DocumentFiles_Model();
 

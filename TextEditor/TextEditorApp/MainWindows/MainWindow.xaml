@@ -32,20 +32,45 @@
             <!-- Application Menu -->
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu SmallImageSource="../Resources/Images/AppMenu.png" KeyTip="F" >
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N" Header="New" Command="{Binding NewFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Header="Open" Command="{Binding OpenFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Header="Save" Command="{Binding SaveFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/SaveFileAs.png" Header="Save As..." Command="{Binding SaveFileAsCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/File.png" KeyTip="N"  Command="{Binding NewFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                        <RibbonApplicationMenuItem.Header>
+                            <TextBlock Text="New" Foreground="Black"/>
+                        </RibbonApplicationMenuItem.Header>
+                    </RibbonApplicationMenuItem>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/OpenFile.png" KeyTip="O" Command="{Binding OpenFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                        <RibbonApplicationMenuItem.Header>
+                            <TextBlock Text="Open" Foreground="Black"/>
+                        </RibbonApplicationMenuItem.Header>
+                    </RibbonApplicationMenuItem>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Save.png" KeyTip="O" Command="{Binding SaveFileCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                        <RibbonApplicationMenuItem.Header>
+                            <TextBlock Text="Save" Foreground="Black"/>
+                        </RibbonApplicationMenuItem.Header>
+                    </RibbonApplicationMenuItem>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/SaveFileAs.png"  Command="{Binding SaveFileAsCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                        <RibbonApplicationMenuItem.Header>
+                            <TextBlock Text="Save As..." Foreground="Black"/>
+                        </RibbonApplicationMenuItem.Header>
+                    </RibbonApplicationMenuItem>
                     <RibbonSeparator />
-                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Print.png" Header="Print" Command="{Binding PrintCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}"/>
+                    <RibbonApplicationMenuItem ImageSource="../Resources/Images/Print.png"  Command="{Binding PrintCommand}" Background="{DynamicResource MenuBackground}" Foreground="{DynamicResource MenuText}">
+                        <RibbonApplicationMenuItem.Header>
+                            <TextBlock Text="Print" Foreground="Black"/>
+                        </RibbonApplicationMenuItem.Header>
+                    </RibbonApplicationMenuItem>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
             <!--Clipboard options-->
 
-            <RibbonTab Header="Home" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
-                <RibbonGroup Header="Clipboard">
-                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png" Command="{Binding OnPasteCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
+            <RibbonTab   Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
+                <RibbonTab.Header>
+                    <TextBlock Text="Home" 
+                       Background="{DynamicResource RibbonGroupBackground}" 
+                       Foreground="{DynamicResource MenuText}"/>
+                </RibbonTab.Header>
+                <RibbonGroup Header="Clipboard" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupText}">
+                    <RibbonButton Label="Paste" LargeImageSource="../Resources/Images/Paste.png" Command="{Binding OnPasteCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/> <!--Background="{DynamicResource RibbonToggleButtonBackground}" Foreground="{DynamicResource RibbonToggleButtonText}"-->
                     <RibbonButton Label="Cut" SmallImageSource="../Resources/Images/Cut.png" Command="{Binding OnCutCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
                     <RibbonButton Label="Copy" SmallImageSource="../Resources/Images/Copy.png" Command="{Binding OnCopyCommand}" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource RibbonGroupButtonText}"/>
                 </RibbonGroup>
@@ -113,14 +138,14 @@ ItemsSource="{Binding FontFamilies}" Text="{Binding ChosenFontFamily.Fontfamily,
                         </toolkit:ColorPicker>
                     </StackPanel>
                         <StackPanel Margin="0,5,0,0" Grid.Row="1" Orientation="Horizontal">
-                            <RibbonToggleButton BorderThickness="2" SmallImageSource="../Resources/Images/FontHandlers/Bold.png" IsChecked="{Binding IsBolded, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                            <RibbonToggleButton BorderBrush="{DynamicResource RibbonGroupButtonText}" BorderThickness="2" SmallImageSource="../Resources/Images/FontHandlers/Bold.png" IsChecked="{Binding IsBolded, Mode=TwoWay, UpdateSourceTrigger=Default}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
                                         <i:InvokeCommandAction Command="{Binding OnBoldChanged}" PassEventArgsToCommand="True" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </RibbonToggleButton>
-                            <RibbonToggleButton BorderThickness="2" SmallImageSource="../Resources/Images/FontHandlers/Italic.png" IsChecked="{Binding IsCursive, Mode=TwoWay, UpdateSourceTrigger=Default}" >
+                            <RibbonToggleButton BorderThickness="2" BorderBrush="{DynamicResource RibbonGroupButtonText}" SmallImageSource="../Resources/Images/FontHandlers/Italic.png" IsChecked="{Binding IsCursive, Mode=TwoWay, UpdateSourceTrigger=Default}" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
                                         <i:InvokeCommandAction Command="{Binding OnItalicChanged}" PassEventArgsToCommand="True" />
@@ -187,16 +212,19 @@ ItemsSource="{Binding DocumentLanguages}" Text="{Binding ChosenLanguage.Selected
 
 
 
-            <RibbonTab Header="Settings" Background="{DynamicResource TabBackground}" Foreground="{DynamicResource TabText}">
-                <RibbonGroup Header="Tab Settings" HorizontalAlignment="Center">
+            <RibbonTab   Background="{DynamicResource TabBackground}" Foreground="{DynamicResource TabText}">
+                <RibbonTab.Header>
+                    <TextBlock Text="Settings" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}"/>
+                </RibbonTab.Header>
+                <RibbonGroup Header="Tab Settings" HorizontalAlignment="Center"  Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <TextBlock Text="Tab Indentation Size" Margin="2,2,2,2" ToolTip="Sets the number of units used for tab. &#x0a; One unit corresponds to the size one letter x in the current font size."></TextBlock>
                         <TextBox Width="50" TextAlignment="Left" HorizontalContentAlignment="Center" Text="{Binding MainIndentationSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         <RibbonSeparator Margin="0,4,0,2"></RibbonSeparator>
-                        <RibbonToggleButton Label="Convert Tabs to Spaces" BorderBrush="Black" IsChecked="{Binding MainTabsToSpaces}"></RibbonToggleButton>
+                        <RibbonToggleButton Label="Convert Tabs to Spaces" BorderBrush="{DynamicResource MenuText}" IsChecked="{Binding MainTabsToSpaces}"></RibbonToggleButton>
                     </StackPanel>
                 </RibbonGroup>
-                <RibbonGroup Header="Dark mode Settings" HorizontalAlignment="Center">
+                <RibbonGroup Header="Dark mode Settings" HorizontalContentAlignment="Center" Background="{DynamicResource RibbonGroupBackground}" Foreground="{DynamicResource MenuText}">
                     <RibbonToggleButton Label="Enable Dark Theme" Background="{DynamicResource Button}" Foreground="{DynamicResource RibbonToggleButtonText}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
