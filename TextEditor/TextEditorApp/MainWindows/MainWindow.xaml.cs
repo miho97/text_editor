@@ -15,6 +15,9 @@ namespace TextEditorApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
+    // in here we are just setting Data context to View Model ant redirecting everything to VM
     public partial class MainWindow : Window
     {
         public MainWindow()

@@ -22,6 +22,9 @@ using Color = System.Windows.Media.Color;
 
 namespace TextEditorApp.MainWindows.WinViewModels
 {
+    /// <summary>
+    /// ViewModel class for the main window and in practice for the whole app.
+    /// </summary>
     internal class MainWinViewModel : ViewModelBase
     {
         // private members
@@ -50,6 +53,12 @@ namespace TextEditorApp.MainWindows.WinViewModels
 
         // Constructor
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWinViewModel"/> class.
+        /// </summary>
+        /// <param name="_MainTabControl">The main TabControls.</param>
+        /// <param name="_FontCombo">The Combobox that controls font size.</param>
         public MainWinViewModel(TabControl _MainTabControl, ComboBox _FontCombo)
         {
             MainTabControl = _MainTabControl;
