@@ -59,7 +59,7 @@ namespace TextEditorApp.MainWindows.Commands
         /// <returns>True if the user chooses to save or not save, False if the user cancels the operation.</returns>
         private bool SaveOptionOnCloseEditorTab(DocumentFiles_Model docModel)
         {
-            MessageBoxResult result = MessageBox.Show("Save file " + docModel.FileName, "Save?", MessageBoxButton.YesNoCancel);
+            MessageBoxResult result = MessageBox.Show("You have unsaved changes in your file. Do you wish to save file " + docModel.FileName, "Save?", MessageBoxButton.YesNoCancel);
             switch (result)
             {
                 case MessageBoxResult.Yes:

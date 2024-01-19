@@ -44,7 +44,7 @@ namespace TextEditorApp.MainWindows.WinViewModels
         private bool _IsBolded = false;
         private bool _IsThemeChangeEnabled = false;
         private List<string> _DocumentLanguages = new List<string> { "None" };
-        private List<int> FontSizeList => new List<int> { 12, 16, 20 };
+        private List<int> FontSizeList => new List<int> { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72  };
         private ObservableCollection<FontSizeListModel> _fontSizes = new ObservableCollection<FontSizeListModel>(); 
         private ObservableCollection<FontFamilyModel> _fontFamilies = new ObservableCollection<FontFamilyModel>();
 

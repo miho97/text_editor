@@ -35,6 +35,7 @@ namespace TextEditorApp.MainWindows.Commands
                 }
                 else
                 {
+                    textEditor.SyntaxHighlighting = null;
                     textEditor.CompletionProvider = null;
                 }
             }
