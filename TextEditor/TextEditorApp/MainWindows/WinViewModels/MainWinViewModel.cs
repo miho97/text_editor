@@ -377,25 +377,13 @@ namespace TextEditorApp.MainWindows.WinViewModels
         // aux function used to integrate 2 custom snytax languages
         private void RegisterCustomHighlighting()
         {
-            string relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\CustomSyntax.xsdh";
-            string filePath = Path.GetFullPath(relativePath);
-            string xshdContent;
-            using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
-            {
-                xshdContent = reader.ReadToEnd();
-            }
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.DtdProcessing = DtdProcessing.Ignore;
-            using (XmlReader xshdReader = XmlReader.Create(new StringReader(xshdContent), settings))
-            {
-                xshdReader.Read();
-                HighlightingManager.Instance.RegisterHighlighting("CustomSyntax", new string[0], HighlightingLoader.Load(xshdReader, HighlightingManager.Instance));
-            }
-
             // grapf language - similar to cypher
 
-            relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\GraphSyntax.xsdh";
-            filePath = Path.GetFullPath(relativePath);
+            string relativePath = "..\\..\\..\\..\\TextEditorApp.Utils\\GraphSyntax.xsdh";
+            string filePath = Path.GetFullPath(relativePath);
+            string xshdContent;
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.DtdProcessing = DtdProcessing.Ignore;
             using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
             {
                 xshdContent = reader.ReadToEnd();
