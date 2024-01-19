@@ -87,7 +87,7 @@ namespace TextEditorApp.Controls.ControlsModels
 
             this.Loaded += (sender, e) =>
             {
-                this.Height = DockParent.ActualHeight * 0.98;
+                this.Height = DockParent.ActualHeight * 0.95;
                 UpdateStatusBar();
             };
 
@@ -97,7 +97,7 @@ namespace TextEditorApp.Controls.ControlsModels
 
             this.SizeChanged += (sender, e) =>
             {
-                this.Height = DockParent.ActualHeight * 0.98;
+                this.Height = DockParent.ActualHeight * 0.95;
             };
 
             // setting a few view properties
